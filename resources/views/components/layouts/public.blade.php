@@ -6,6 +6,8 @@
 
     <title>{{ $title ?? 'UNMARIS Sumba' }}</title>
 
+    {{-- icon --}}
+    <link rel="icon" href="{{ asset('logo.png') }}" type="image/png">
     <!-- Figtree via Bunny -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -74,7 +76,7 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div x-cloak x-show="open" x-transition class="md:hidden bg-unmaris-blue px-4 pb-4 space-y-2">
+        <div x-cloak x-show="open" x-transition class="hidden md:hidden bg-unmaris-blue px-4 pb-4 space-y-2">
 
             <a class="mobile-link font-semibold text-unmaris-yellow">Beranda</a>
 
@@ -172,7 +174,7 @@
                     </li>
                     <li class="flex items-center space-x-2">
                         <x-heroicon-s-phone class="w-5 h-5" />
-                        <span>+62 877-5012-4895</span>
+                        <span>+62 90-23-99000</span>
                     </li>
                 </ul>
             </div>
