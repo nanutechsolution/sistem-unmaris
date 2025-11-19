@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LpmController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\Public\AkademikController;
-use App\Http\Controllers\Public\PostController;
+use App\Http\Controllers\PublicAnnouncementController;
 use App\Livewire\Akademik\DosenManager;
 use App\Livewire\Akademik\MahasiswaManager;
 use App\Livewire\Akademik\MataKuliahManager;
@@ -9,6 +14,8 @@ use App\Livewire\Dashboard;
 use App\Livewire\KRS\KartuHasilStudi;
 use App\Livewire\KRS\PengisianKrs;
 use App\Livewire\KRS\ValidasiKrs;
+use App\Livewire\Lpm\QualityAnnouncements;
+use App\Livewire\Lpm\QualityDocuments;
 use App\Livewire\Manajemen\CategoryManager;
 use App\Livewire\Manajemen\FakultasManager;
 use App\Livewire\Manajemen\PageManager;
@@ -18,20 +25,23 @@ use App\Livewire\Manajemen\SettingsManager;
 use App\Livewire\Manajemen\TahunAkademikManager;
 use App\Livewire\Perkuliahan\InputNilai;
 use App\Livewire\Perkuliahan\KelasManager;
-use App\Models\Fakultas;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', function () {
-    $fakultas = Fakultas::orderBy('nama_fakultas', 'asc')->get();
-    return view('public.home', compact('fakultas'));
-})->name('public.home');
+Route::get('/', HomeController::class)->name('home');
+Route::get('/kontak', [ContactController::class, 'index'])->name('public.contact');
+Route::get('/kontak/store', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/fakultas-dan-prodi', [AkademikController::class, 'fakultasProdi'])->name('public.fakultas');
 Route::get('/berita', [PostController::class, 'index'])->name('public.posts.index');
-Route::get('/berita/{slug}', [PostController::class, 'show'])->name('public.posts.show');
+Route::get('/baca/berita/{slug}', [PostController::class, 'show'])->name('public.posts.show');
 Route::get('/kategori/{slug}', [PostController::class, 'byCategory'])->name('public.posts.category');
-
-
+Route::get('/announcements  ', [PublicAnnouncementController::class, 'index'])->name('public.pengumuman.index');
+Route::get('/read/announcements/{slug}', [PublicAnnouncementController::class, 'show'])->name('public.announcements.show');
+Route::get('/lpm', [LpmController::class, 'index'])->name('lpm.index');
+Route::get('/lpm/document/{slug}', [LpmController::class, 'document'])->name('lpm.document');
+Route::get('/lpm/announcement/{slug}', [LpmController::class, 'announcement'])->name('lpm.announcement');
+Route::get('/lpm/announcements', [LpmController::class, 'announcementsIndex'])->name('lpm.announcements.all');
+Route::get('/lpm/profile', [LpmController::class, 'profile'])->name('lpm.profile');
+Route::get('/page/{slug}', [PageController::class, 'show'])->name('pages.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('dashboard', Dashboard::class)->name('dashboard');
@@ -50,6 +60,9 @@ Route::get('manajemen/halaman', PageManager::class)->name('pages.index');
 Route::get('manajemen/pengaturan', SettingsManager::class)->name('settings.index');
 Route::get('manajemen/kategori', CategoryManager::class)->name('categories.index');
 Route::get('manajemen/berita', PostManager::class)->name('posts.index');
+Route::get('manajemen/quality-documents', QualityDocuments::class)->name('quality-documents.index');
+Route::get('manajemen/quality-announcements', QualityAnnouncements::class)->name('quality-announcements.index');
+
 Route::view('profile', 'profile')->name('profile');
 });
 

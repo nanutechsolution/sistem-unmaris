@@ -28,44 +28,40 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
-        <!-- Email Address -->
+    <form wire:submit="login" class="space-y-4">
+        <!-- Email -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
+            <x-text-input wire:model.defer="form.email" id="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-unmaris-yellow focus:border-unmaris-yellow" type="email" required autofocus />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+            <x-text-input wire:model.defer="form.password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-unmaris-yellow focus:border-unmaris-yellow" type="password" required />
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+        <div class="flex items-center justify-between text-sm">
+            <label class="inline-flex items-center gap-2">
+                <input wire:model="form.remember" type="checkbox" class="rounded border-gray-300 text-unmaris-blue shadow-sm focus:ring-unmaris-yellow">
+                <span class="text-gray-700">{{ __('Remember me') }}</span>
             </label>
-        </div>
 
-        <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
+            <a href="{{ route('password.request') }}" class="text-unmaris-blue hover:underline">Lupa password?</a>
             @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
         </div>
+
+        <button type="submit" class="w-full bg-unmaris-yellow text-unmaris-blue font-bold py-2 px-4 rounded hover:bg-yellow-400">
+            Masuk
+        </button>
+
+        <p class="text-center text-sm text-gray-500 mt-4">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="text-unmaris-blue font-semibold hover:underline">Daftar di sini</a>
+        </p>
     </form>
 </div>

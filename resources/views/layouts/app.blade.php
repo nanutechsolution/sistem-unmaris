@@ -19,110 +19,244 @@
 </head>
 <body class="font-sans antialiased">
     <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100">
+        @php
+        // Definisi struktur menu
+        $menuItems = [
+        [
+        'title' => 'Dashboard',
+        'route' => 'dashboard',
+        'icon' => 'fas fa-tachometer-alt',
+        'active_check' => 'dashboard',
+        ],
+        [
+        'title' => 'Manajemen Website & Data',
+        'heading' => true,
+        ],
+        [
+        'title' => 'Data Dasar',
+        'icon' => 'fas fa-database',
+        'active_check' => 'manajemen/fakultas*|manajemen/prodi*|manajemen/tahun-akademik*',
+        'submenu' => [
+        ['title' => 'Fakultas', 'route' => 'fakultas.index', 'active_check' => 'manajemen/fakultas*'],
+        ['title' => 'Program Studi', 'route' => 'prodi.index', 'active_check' => 'manajemen/prodi*'],
+        ['title' => 'Tahun Akademik', 'route' => 'tahun-akademik.index', 'active_check' => 'manajemen/tahun-akademik*'],
+        ]
+        ],
+        [
+        'title' => 'Konten & Pengaturan',
+        'icon' => 'fas fa-cogs',
+        'active_check' => 'manajemen/halaman*|manajemen/pengaturan*|manajemen/kategori*|manajemen/berita*',
+        'submenu' => [
+        ['title' => 'Halaman Statis', 'route' => 'pages.index', 'active_check' => 'manajemen/halaman*'],
+        ['title' => 'Pengaturan Website', 'route' => 'settings.index', 'active_check' => 'manajemen/pengaturan*'],
+        ['title' => 'Kategori Berita', 'route' => 'categories.index', 'active_check' => 'manajemen/kategori*'],
+        ['title' => 'Berita', 'route' => 'posts.index', 'active_check' => 'manajemen/berita*'],
+        ]
+        ],
+        [
+        'title' => 'Penjaminan Mutu (LPM)',
+        'icon' => 'fas fa-certificate',
+        'active_check' => 'manajemen/quality-documents*|manajemen/quality-announcements*',
+        'submenu' => [
+        ['title' => 'Quality Documents', 'route' => 'quality-documents.index', 'active_check' => 'manajemen/quality-documents*'],
+        ['title' => 'Quality Announcements', 'route' => 'quality-announcements.index', 'active_check' => 'manajemen/quality-announcements*'],
+        ]
+        ],
+        [
+        'title' => 'Akademik & User',
+        'heading' => true,
+        ],
+        [
+        'title' => 'Data User',
+        'icon' => 'fas fa-users',
+        'active_check' => 'akademik/mahasiswa*|akademik/dosen*',
+        'submenu' => [
+        ['title' => 'Mahasiswa', 'route' => 'mahasiswa.index', 'active_check' => 'akademik/mahasiswa*'],
+        ['title' => 'Dosen', 'route' => 'dosen.index', 'active_check' => 'akademik/dosen*'],
+        ]
+        ],
+        [
+        'title' => 'Kurikulum & Matkul',
+        'icon' => 'fas fa-book',
+        'active_check' => 'akademik/mata-kuliah*',
+        'submenu' => [
+        ['title' => 'Mata Kuliah', 'route' => 'matakuliah.index', 'active_check' => 'akademik/mata-kuliah*'],
+        ]
+        ],
+        [
+        'title' => 'Perkuliahan',
+        'heading' => true,
+        ],
+        [
+        'title' => 'Proses Belajar Mengajar',
+        'icon' => 'fas fa-chalkboard-teacher',
+        'active_check' => 'perkuliahan/kelas*|perkuliahan/krs*|perkuliahan/validasi-krs*|perkuliahan/input-nilai*|perkuliahan/khs*',
+        'submenu' => [
+        ['title' => 'Penawaran Kelas', 'route' => 'kelas.index', 'active_check' => 'perkuliahan/kelas*'],
+        ['title' => 'Pengisian KRS', 'route' => 'krs.index', 'active_check' => 'perkuliahan/krs*'],
+        ['title' => 'Validasi KRS', 'route' => 'krs.validasi', 'active_check' => 'perkuliahan/validasi-krs*'],
+        ['title' => 'Input Nilai (Dosen)', 'route' => 'nilai.input', 'active_check' => 'perkuliahan/input-nilai*'],
+        ['title' => 'KHS (Mahasiswa)', 'route' => 'khs.index', 'active_check' => 'perkuliahan/khs*'],
+        ]
+        ],
+        ];
+        @endphp
         <aside class="fixed inset-y-0 left-0 z-30 w-64 bg-unmaris-blue text-white transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto flex flex-col" :class="{'translate-x-0': sidebarOpen}" x-cloak>
+            {{-- Header Logo & Title --}}
             <div class="p-4 flex-shrink-0">
-                <a href="/">
-                    <img src="{{ asset('logo.png') }}" alt="Logo UNMARIS" class="h-16 w-auto mx-auto">
+                <a href="{{ route('dashboard') }}" class="flex flex-col items-center">
+                    <img src="{{ asset('logo.png') }}" alt="Logo UNMARIS" class="h-16 w-auto">
+                    <h2 class="text-center text-xl font-bold text-unmaris-yellow mt-2">
+                        SIAKAD UNMARIS
+                    </h2>
                 </a>
-                <h2 class="text-center text-xl font-semibold text-unmaris-yellow mt-2">
-                    SIAKAD UNMARIS
-                </h2>
             </div>
 
+            {{-- Menu Items PHP Array --}}
+            @php
+            // ----------------------------------------------------------------------------------------------------------------------
+            // ** MENU DATA STRUCTURE (DEFINE MENU HIERARCHY HERE) **
+            // ----------------------------------------------------------------------------------------------------------------------
+            $menuItems = [
+            [
+            'title' => 'Dashboard',
+            'route' => 'dashboard',
+            'icon' => 'fas fa-tachometer-alt',
+            'active_check' => 'dashboard',
+            ],
+            [
+            'title' => 'Manajemen Website & Data',
+            'heading' => true,
+            ],
+            [
+            'title' => 'Data Dasar',
+            'icon' => 'fas fa-database',
+            'active_check' => 'manajemen/fakultas*|manajemen/prodi*|manajemen/tahun-akademik*',
+            'submenu' => [
+            ['title' => 'Fakultas', 'route' => 'fakultas.index', 'active_check' => 'manajemen/fakultas*'],
+            ['title' => 'Program Studi', 'route' => 'prodi.index', 'active_check' => 'manajemen/prodi*'],
+            ['title' => 'Tahun Akademik', 'route' => 'tahun-akademik.index', 'active_check' => 'manajemen/tahun-akademik*'],
+            ]
+            ],
+            [
+            'title' => 'Konten & Pengaturan',
+            'icon' => 'fas fa-cogs',
+            'active_check' => 'manajemen/halaman*|manajemen/pengaturan*|manajemen/kategori*|manajemen/berita*',
+            'submenu' => [
+            ['title' => 'Halaman Statis', 'route' => 'pages.index', 'active_check' => 'manajemen/halaman*'],
+            ['title' => 'Pengaturan Website', 'route' => 'settings.index', 'active_check' => 'manajemen/pengaturan*'],
+            ['title' => 'Kategori Berita', 'route' => 'categories.index', 'active_check' => 'manajemen/kategori*'],
+            ['title' => 'Berita', 'route' => 'posts.index', 'active_check' => 'manajemen/berita*'],
+            ]
+            ],
+            [
+            'title' => 'Penjaminan Mutu (LPM)',
+            'icon' => 'fas fa-certificate',
+            // Pastikan rute di Livewire Component (yang Anda buat sebelumnya) sudah terdaftar
+            'active_check' => 'manajemen/quality-documents*|manajemen/quality-announcements*',
+            'submenu' => [
+            ['title' => 'Quality Documents', 'route' => 'quality-documents.index', 'active_check' => 'manajemen/quality-documents*'],
+            ['title' => 'Quality Announcements', 'route' => 'quality-announcements.index', 'active_check' => 'manajemen/quality-announcements*'],
+            ]
+            ],
+            [
+            'title' => 'Akademik & User',
+            'heading' => true,
+            ],
+            [
+            'title' => 'Data User',
+            'icon' => 'fas fa-users',
+            'active_check' => 'akademik/mahasiswa*|akademik/dosen*',
+            'submenu' => [
+            ['title' => 'Mahasiswa', 'route' => 'mahasiswa.index', 'active_check' => 'akademik/mahasiswa*'],
+            ['title' => 'Dosen', 'route' => 'dosen.index', 'active_check' => 'akademik/dosen*'],
+            ]
+            ],
+            [
+            'title' => 'Kurikulum',
+            'icon' => 'fas fa-book',
+            'active_check' => 'akademik/mata-kuliah*',
+            'submenu' => [
+            ['title' => 'Mata Kuliah', 'route' => 'matakuliah.index', 'active_check' => 'akademik/mata-kuliah*'],
+            ]
+            ],
+            [
+            'title' => 'Perkuliahan',
+            'heading' => true,
+            ],
+            [
+            'title' => 'Proses B-M',
+            'icon' => 'fas fa-chalkboard-teacher',
+            'active_check' => 'perkuliahan/kelas*|perkuliahan/krs*|perkuliahan/validasi-krs*|perkuliahan/input-nilai*|perkuliahan/khs*',
+            'submenu' => [
+            ['title' => 'Penawaran Kelas', 'route' => 'kelas.index', 'active_check' => 'perkuliahan/kelas*'],
+            ['title' => 'Pengisian KRS', 'route' => 'krs.index', 'active_check' => 'perkuliahan/krs*'],
+            ['title' => 'Validasi KRS', 'route' => 'krs.validasi', 'active_check' => 'perkuliahan/validasi-krs*'],
+            ['title' => 'Input Nilai (Dosen)', 'route' => 'nilai.input', 'active_check' => 'perkuliahan/input-nilai*'],
+            ['title' => 'KHS (Mahasiswa)', 'route' => 'khs.index', 'active_check' => 'perkuliahan/khs*'],
+            ]
+            ],
+            ];
+            // Function untuk mengecek status aktif
+            $isActive = function ($check) {
+            $checks = explode('|', $check);
+            foreach ($checks as $c) {
+            if (request()->is($c)) {
+            return true;
+            }
+            }
+            return false;
+            };
+            @endphp
+
+            {{-- Navigasi Menu --}}
             <nav class="flex-1 overflow-y-auto px-2 space-y-1 pb-4">
 
-                <a href="{{ route('dashboard') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('dashboard'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('dashboard')
-                    ])>
-                    Dashboard
-                </a>
-
+                @foreach ($menuItems as $item)
+                @if (isset($item['heading']))
+                {{-- Kategori Utama (Heading) --}}
                 <p class="px-4 pt-4 pb-2 text-xs font-semibold text-unmaris-yellow/50 uppercase">
-                    Manajemen
+                    {{ $item['title'] }}
                 </p>
-                <a href="{{ route('fakultas.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/fakultas*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/fakultas*')
-                    ])>
-                    Fakultas
-                </a>
-                <a href="{{ route('prodi.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/prodi*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/prodi*')
-                    ])>
-                    Program Studi
-                </a>
-                <a href="{{ route('tahun-akademik.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/tahun-akademik*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/tahun-akademik*')
-                    ])>
-                    Tahun Akademik
-                </a>
+                @elseif (isset($item['submenu']))
+                {{-- Menu dengan Submenu --}}
+                @php
+                $isParentActive = $isActive($item['active_check']);
+                @endphp
+                <div x-data="{ open: @json($isParentActive) }" class="transition duration-200">
+                    <button @click="open = !open" class="w-full flex justify-between items-center py-2.5 px-4 rounded transition duration-200
+                        @if ($isParentActive) bg-unmaris-yellow text-unmaris-blue font-medium @else hover:bg-unmaris-yellow hover:text-unmaris-blue @endif">
+                        <span>
+                            <i class="{{ $item['icon'] }} w-4 mr-2"></i>
+                            {{ $item['title'] }}
+                        </span>
+                        <i class="fas fa-chevron-down w-4 h-4 transition-transform" :class="{'transform rotate-180': open}"></i>
+                    </button>
 
-                <a href="{{ route('pages.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/halaman*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/halaman*')
-                    ])>
-                    Halaman Statis
+                    <div x-show="open" x-collapse.duration.300ms>
+                        <ul class="pl-6 space-y-1 mt-1 border-l border-unmaris-yellow/50">
+                            @foreach ($item['submenu'] as $subitem)
+                            <a href="{{ route($subitem['route']) }}" class="block py-2 px-4 rounded transition duration-200 text-sm
+                                    @if ($isActive($subitem['active_check'])) bg-unmaris-yellow/20 text-unmaris-yellow font-medium @else hover:bg-unmaris-yellow/10 @endif">
+                                {{ $subitem['title'] }}
+                            </a>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @else
+                {{-- Menu Tanpa Submenu (Single Link) --}}
+                @php
+                $isLinkActive = $isActive($item['active_check']);
+                @endphp
+                <a href="{{ route($item['route']) }}" class="block py-2.5 px-4 rounded transition duration-200 flex items-center
+                    @if ($isLinkActive) bg-unmaris-yellow text-unmaris-blue font-medium @else hover:bg-unmaris-yellow hover:text-unmaris-blue @endif">
+                    <i class="{{ $item['icon'] ?? 'fas fa-link' }} w-4 mr-2"></i>
+                    {{ $item['title'] }}
                 </a>
-                <a href="{{ route('settings.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/pengaturan*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/pengaturan*')
-                    ])>
-                    Pengaturan Website
-                </a>
-                <a href="{{ route('categories.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/kategori*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/kategori*')
-                    ])>
-                    Kategori Berita
-                </a>
-                <a href="{{ route('posts.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('manajemen/berita*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('manajemen/berita*')
-                    ])>
-                    Berita
-                </a>
-                <p class="px-4 pt-4 pb-2 text-xs font-semibold text-unmaris-yellow/50 uppercase">
-                    Akademik
-                </p>
-                <a href="{{ route('mahasiswa.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('akademik/mahasiswa*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('akademik/mahasiswa*')
-                    ])>
-                    Mahasiswa
-                </a>
-                <a href="{{ route('dosen.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('akademik/dosen*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('akademik/dosen*')
-                    ])>
-                    Dosen
-                </a>
-                <a href="{{ route('matakuliah.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('akademik/mata-kuliah*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('akademik/mata-kuliah*')
-                    ])>
-                    Mata Kuliah
-                </a>
+                @endif
+                @endforeach
 
-                <p class="px-4 pt-4 pb-2 text-xs font-semibold text-unmaris-yellow/50 uppercase">
-                    Perkuliahan
-                </p>
-                <a href="{{ route('kelas.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('perkuliahan/kelas*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('perkuliahan/kelas*')
-                    ])>
-                    Penawaran Kelas
-                </a>
-                <a href="{{ route('krs.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('perkuliahan/krs*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('perkuliahan/krs*')
-                    ])>
-                    Pengisian KRS
-                </a>
-                <a href="{{ route('krs.validasi') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('perkuliahan/validasi-krs*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('perkuliahan/validasi-krs*')
-                    ])>
-                    Validasi KRS
-                </a>
-                <a href="{{ route('nilai.input') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('perkuliahan/input-nilai*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('perkuliahan/input-nilai*')
-                    ])>
-                    Input Nilai (Dosen)
-                </a>
-                <a href="{{ route('khs.index') }}" @class([ 'block py-2.5 px-4 rounded transition duration-200' , 'bg-unmaris-yellow text-unmaris-blue font-medium'=> request()->is('perkuliahan/khs*'),
-                    'hover:bg-unmaris-yellow hover:text-unmaris-blue' => !request()->is('perkuliahan/khs*')
-                    ])>
-                    KHS (Mahasiswa)
-                </a>
             </nav>
         </aside>
         <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 z-20 bg-black/50 lg:hidden" x-cloak></div>
@@ -168,6 +302,5 @@
         </div>
     </div>
 
-    @livewireScripts
 </body>
 </html>

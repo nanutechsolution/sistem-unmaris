@@ -4,28 +4,40 @@
 [x-cloak] {
     display: none !important;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme components for UNMARIS - paste after tailwind directives */
 @layer components {
-    .nav-link {
-        @apply text-white/90 hover:text-white px-3 py-2 transition font-medium cursor-pointer;
+    .btn {
+        @apply inline-flex items-center justify-center rounded-xl-2 px-5 py-2.5 font-semibold transition;
     }
 
-    .nav-link-active {
-        @apply text-unmaris-yellow;
+    .btn-primary {
+        @apply btn bg-unmaris-blue text-white shadow-brand-sm hover:bg-unmaris-blue-700;
     }
 
-    .mobile-link {
-        @apply block text-white/90 px-3 py-2 hover:text-white cursor-pointer;
+    .btn-secondary {
+        @apply btn border border-unmaris-blue text-unmaris-blue bg-white hover:bg-unmaris-blue/5;
     }
 
-    .mobile-btn {
-        @apply w-full text-left text-white/90 px-3 py-2 hover:text-white cursor-pointer;
+    .card {
+        @apply bg-brand-surface border border-brand-border rounded-2xl p-6 shadow-brand-sm;
     }
 
-    .mobile-sub {
-        @apply pl-4 border-l border-white/20 space-y-1;
-    }
-
-    .mobile-sub-item {
-        @apply block text-white/80 hover:text-white py-1 cursor-pointer;
+    .badge-accent {
+        @apply inline-flex items-center gap-2 px-3 py-1 rounded-full bg-unmaris-yellow/10 text-unmaris-yellow font-medium;
     }
 }
+
+/* Small utilities useful for hero glow */
+.hero-glow {
+    filter: blur(40px);
+    opacity: 0.95;
+}
+.pagination li a {
+        color: white; /* ganti teks */
+        background-color: #3b82f6; /* ganti background */
+    }

@@ -71,7 +71,6 @@ class PageManager extends Component
         $this->slug = $page->slug;
         $this->content = $page->content;
         $this->status = $page->status;
-
         $this->showModal = true;
     }
 
@@ -96,7 +95,6 @@ class PageManager extends Component
         $this->resetPage();
     }
 
-    // Tidak ada 'delete' untuk halaman, kita arsipkan saja (set ke Draft)
     public function archive(Page $page)
     {
         $page->update(['status' => 'Draft']);

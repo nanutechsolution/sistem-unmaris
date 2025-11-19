@@ -64,7 +64,6 @@
 
     <!-- MODAL TAMBAH/EDIT DATA -->
     <div x-data="{ show: @entangle('showModal') }" x-show="show" x-on:keydown.escape.window="show = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" x-cloak>
-
         <!-- Latar Belakang Modal -->
         <div @click="show = false" class="absolute inset-0"></div>
 
@@ -94,9 +93,9 @@
                     <div wire:ignore class="space-y-1">
                         <label for="content" class="block text-sm font-medium text-gray-700">Konten</label>
 
-                        <input id="contentInput" type="hidden" wire:model="content">
+                        <input id="contentInput" type="hidden" wire:model.defer="content">
 
-                        <trix-editor input="contentInput" class="trix-content"></trix-editor>
+                        <trix-editor input="contentInput" x-ref="trixEditor" class="trix-content"></trix-editor>
 
                         @error('content')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -126,10 +125,17 @@
         </div>
     </div>
 
+
     <script>
-        document.addEventListener('trix-change', function(e) {
-            @this.set('content', e.target.value)
-        })
+        document.addEventListener('livewire:load', () => {
+            Livewire.hook('message.processed', () => {
+                const editor = document.querySelector('[x-ref=trixEditor]');
+                if (editor) {
+                    editor.editor.loadHTML(@js($content)); // konten lama dimasukkan
+                }
+            });
+        });
+
     </script>
 
 </div>

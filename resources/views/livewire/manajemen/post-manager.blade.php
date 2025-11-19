@@ -173,7 +173,6 @@
             </form>
         </div>
     </div>
-
     {{-- TRIX SYNC --}}
     <script>
         document.addEventListener("trix-change", e => {

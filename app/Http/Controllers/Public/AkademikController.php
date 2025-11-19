@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Fakultas; // <-- Panggil Model Fakultas kita
+use App\Models\Fakultas;
 
 class AkademikController extends Controller
 {
