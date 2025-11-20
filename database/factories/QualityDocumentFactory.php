@@ -7,58 +7,58 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\QualityDocument>
- */
 class QualityDocumentFactory extends Factory
 {
-    /**
-     * Nama model yang sesuai dengan factory ini.
-     *
-     * @var string
-     */
     protected $model = QualityDocument::class;
 
-    /**
-     * Definisikan status default model.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
-        // Daftar kategori yang valid sesuai dengan enum di Migration
-        $categories = ['SOP', 'Kebijakan Mutu', 'Manual Mutu', 'Panduan', 'Formulir', 'Instruksi Kerja'];
+        $categories = [
+            'SOP',
+            'Kebijakan Mutu',
+            'Manual Mutu',
+            'Panduan',
+            'Formulir',
+            'Instruksi Kerja',
+        ];
 
-        $title = fake()->sentence(5, true);
-        $category = fake()->randomElement($categories);
+        // Judul realistis seperti dokumen mutu
+        $realisticTitles = [
+            'Prosedur Pengendalian Dokumen',
+            'Prosedur Manajemen Risiko',
+            'Instruksi Kerja Penggunaan APD',
+            'Panduan Audit Internal Mutu',
+            'Prosedur Pelayanan Mahasiswa Baru',
+            'Manual Mutu Sistem Manajemen Universitas',
+            'Kebijakan Mutu Fakultas Teknik',
+        ];
+
+        $title = fake()->randomElement($realisticTitles);
 
         return [
-            // Kode Dokumen: Contoh format [Kategori]-[Nomor Unik]
-            'kode' => Str::upper(Str::substr($category, 0, 3)) . '-' . fake()->unique()->numerify('###'),
+            'title'           => $title,
+            'slug'            => Str::slug($title) . '-' . Str::random(5),
 
-            // Judul Dokumen
-            'title' => $title,
+            // nomor dokumen realistis ISO 9001
+            'kode' => 'DOC-' . fake()->numerify('###/SMK/##'),
 
-            // Slug dibuat dari judul + unik ID untuk menghindari duplikasi
-            'slug' => Str::slug($title) . '-' . fake()->unique()->uuid(),
+            // kategori sesuai ENUM
+            'category'        => fake()->randomElement($categories),
 
-            // Kategori dari daftar enum yang telah ditentukan
-            'category' => $category,
+            // versi realistis
+            // 'version'         => fake()->randomElement(['1.0', '1.1', '2.0', '2.1']),
 
-            // Simulasikan file path (di storage/app/public/quality-docs/...)
-            'file_path' => 'quality-docs/' . Str::slug($title) . '-' . fake()->randomLetter() . '.pdf',
+            // tanggal penerbitan
+            'published_at'     => fake()->dateTimeBetween('-2 years', 'now'),
 
-            // Deskripsi
-            'description' => fake()->paragraph(2),
+            // user yang membuat (ambil acak dari tabel user)
+            // 'user_id'         => User::inRandomOrder()->first()->id ?? User::factory(),
 
-            // Tanggal Publikasi (dapat berupa null atau tanggal 7 hari terakhir)
-            'published_at' => fake()->optional(0.8)->dateTimeBetween('-1 year', 'now'),
+            // file dummy yang tampak seperti dokumen asli
+            'file_path'       => 'documents/' . Str::random(10) . '.pdf',
 
-            // ID Pengguna yang membuat. Asumsi User ID 1 atau acak dari User model.
-            'created_by' => User::inRandomOrder()->first()->id ?? 1,
-
-            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
-            'updated_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            // deskripsi realistis
+            'description'     => fake()->sentence(10),
         ];
     }
 }

@@ -25,6 +25,7 @@ use App\Livewire\KRS\PengisianKrs;
 use App\Livewire\KRS\ValidasiKrs;
 use App\Livewire\Lpm\QualityAnnouncements;
 use App\Livewire\Lpm\QualityDocuments;
+use App\Livewire\Manajemen\PmbGelombangManager;
 use App\Livewire\Manajemen\CategoryManager;
 use App\Livewire\Manajemen\FakultasManager;
 use App\Livewire\Manajemen\PageManager;
@@ -60,7 +61,7 @@ Route::get('/pmb', [PmbController::class , 'index'])->name('public.pmb.index');
 Route::get('/kemahasiswaan', [KemahasiswaanController::class , 'index'])->name('kemahasiswaan.index');
 Route::get('/lppm', [LppmController::class, 'index'])->name('lppm.index');
 Route::get('/fasilitas-kampus', [FasilitasController::class, 'index'])->name('fasilitas.index');
-Route::get('/akreditasi', [AkreditasiController::class, 'institusi'])->name('akreditasi.institusi');
+Route::get('/akreditasi/institusi', [AkreditasiController::class, 'institusi'])->name('akreditasi.institusi');
 Route::get('/akreditasi/program-studi', [AkreditasiController::class, 'programStudi'])->name('akreditasi.prodi');
 Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
 
@@ -85,6 +86,8 @@ Route::get('manajemen/berita', PostManager::class)->name('posts.index');
 Route::get('manajemen/quality-documents', QualityDocuments::class)->name('quality-documents.index');
 Route::get('manajemen/quality-announcements', QualityAnnouncements::class)->name('quality-announcements.index');
 Route::get('manajemen/kurikulum', KurikulumManager::class)->name('kurikulum.index');
+Route::get('manajemen/slider', App\Livewire\Manajemen\SliderManager::class)->name('sliders.index');
+Route::get('manajemen/pmb-gelombang', PmbGelombangManager::class)->name('pmb-gelombang.index');
 Route::view('profile', 'profile')->name('profile');
 });
 

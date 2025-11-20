@@ -29,7 +29,6 @@
                         Lihat Alur & Syarat
                     </a>
                 </div>
-
                 {{-- Mini Trust Proof --}}
                 <div class="mt-10 flex items-center justify-center lg:justify-start gap-4 text-sm text-blue-200">
                     <div class="flex -space-x-3">
@@ -44,7 +43,7 @@
             {{-- Right Image / Visual --}}
             <div class="relative hidden lg:block">
                 <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 transform rotate-3 hover:rotate-0 transition duration-500">
-                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-auto object-cover">
+                    <!-- <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-auto object-cover"> -->
                     
                     {{-- Floating Badge --}}
                     <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/50 max-w-xs">
@@ -73,9 +72,18 @@
                 @foreach($jadwal as $j)
                 <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 relative overflow-hidden group hover:-translate-y-2 transition duration-300">
                     @if($j['status'] == 'Dibuka')
-                        <div class="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">SEDANG DIBUKA</div>
+                        <div class="absolute top-0 right-0 bg-green-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-sm">
+                            SEDANG DIBUKA
+                        </div>
+                    @elseif($j['status'] == 'Segera')
+                        <!-- Tambahan untuk Status Segera -->
+                        <div class="absolute top-0 right-0 bg-yellow-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-sm">
+                            AKAN DATANG
+                        </div>
                     @elseif($j['status'] == 'Tutup')
-                        <div class="absolute top-0 right-0 bg-gray-400 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl">DITUTUP</div>
+                        <div class="absolute top-0 right-0 bg-gray-400 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-sm">
+                            DITUTUP
+                        </div>
                     @endif
 
                     <h3 class="text-xl font-bold text-unmaris-blue mb-2">{{ $j['gelombang'] }}</h3>
@@ -86,10 +94,20 @@
                         <p class="text-sm font-bold text-gray-800">{{ $j['promo'] }}</p>
                     </div>
 
-                    @if($j['status'] == 'Dibuka')
-                        <a href="https://pmb.unmaris.ac.id" class="block w-full py-2 bg-unmaris-blue text-white text-center rounded-lg font-bold text-sm hover:bg-unmaris-yellow hover:text-unmaris-blue transition">Daftar Gelombang Ini</a>
+                     @if($j['status'] == 'Dibuka')
+                        <a href="https://pmb.unmaris.ac.id" class="block w-full py-3 bg-unmaris-blue text-white text-center rounded-lg font-bold text-sm hover:bg-yellow-400 hover:text-unmaris-blue transition shadow-lg shadow-blue-200">
+                            Daftar Gelombang Ini
+                        </a>
+                    @elseif($j['status'] == 'Segera')
+                        <!-- Tombol Kuning untuk Segera -->
+                        <button disabled class="block w-full py-3 bg-yellow-100 text-yellow-700 text-center rounded-lg font-bold text-sm cursor-not-allowed border border-yellow-200">
+                            Segera Dibuka
+                        </button>
                     @else
-                        <button disabled class="block w-full py-2 bg-gray-100 text-gray-400 text-center rounded-lg font-bold text-sm cursor-not-allowed">Belum Dibuka</button>
+                        <!-- Tombol Abu untuk Tutup -->
+                        <button disabled class="block w-full py-3 bg-gray-100 text-gray-400 text-center rounded-lg font-bold text-sm cursor-not-allowed border border-gray-200">
+                            Pendaftaran Ditutup
+                        </button>
                     @endif
                 </div>
                 @endforeach

@@ -27,13 +27,11 @@ class MataKuliah extends Model
 
     public function kelas() {
     return $this->hasMany(Kelas::class);
-}
-
-public function kurikulum() {
-        return $this->belongsTo(Kurikulum::class);
     }
 
-    // Relasi Prasyarat (Self-Join)
+    public function kurikulum() {
+        return $this->belongsTo(Kurikulum::class);
+    }
     public function prasyarats() {
         return $this->belongsToMany(MataKuliah::class, 'mk_prasyarats', 'mata_kuliah_id', 'prasyarat_id')
                     ->withPivot('nilai_min');

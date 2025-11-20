@@ -4,6 +4,7 @@ namespace App\Livewire\Akademik;
 
 use App\Models\MataKuliah;
 use App\Models\ProgramStudi;
+use App\Models\Kurikulum; 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -17,22 +18,29 @@ class MataKuliahManager extends Component
     use WithPagination;
 
     public $search = '';
+    public $filterProdi = '';
 
-    // --- Properti Modal & Form ---
     public $showModal = false;
     public $isEditing = false;
     public ?MataKuliah $editingMataKuliah = null;
 
-    // --- Properti Form ---
+    // --- Form Properties ---
     public $kode_mk;
     public $nama_mk;
-    public $program_studi_id;
+    public $program_studi_id; 
+    public $kurikulum_id;     
     public $sks;
     public $semester;
+    public $sifat = 'Wajib';  
+    public $syarat_sks_lulus = 0; 
+    
+    public $prasyarat_ids = []; 
     // -------------------------
 
-    // Properti untuk dropdown
+    // Data Dropdown
     public $programStudis = [];
+    public $kurikulums = []; 
+    public $availablePrasyarats = [];
 
     protected function rules()
     {
@@ -45,27 +53,64 @@ class MataKuliahManager extends Component
             ],
             'nama_mk' => 'required|string|max:255',
             'program_studi_id' => 'required|exists:program_studis,id',
-            'sks' => 'required|integer|min:1|max:6',
+            'kurikulum_id' => 'required|exists:kurikulums,id', 
+            'sks' => 'required|integer|min:0|max:6', 
             'semester' => 'required|integer|min:1|max:14',
+            'sifat' => 'required|in:Wajib,Pilihan,MKDU',
+            'syarat_sks_lulus' => 'integer|min:0',
+            'prasyarat_ids' => 'array',
+            'prasyarat_ids.*' => 'exists:mata_kuliahs,id', 
         ];
     }
 
     public function mount()
     {
-        $this->loadDropdownData();
+        $this->programStudis = ProgramStudi::orderBy('nama_prodi')->get();
     }
 
-    public function loadDropdownData()
+    // Saat Prodi Berubah
+    public function updatedProgramStudiId($value)
     {
-        $this->programStudis = ProgramStudi::orderBy('nama_prodi')->get();
+        if ($value) {
+            $this->kurikulums = Kurikulum::where('program_studi_id', $value)
+                                         ->orderBy('tahun_mulai', 'desc')
+                                         ->get();
+        } else {
+            $this->kurikulums = [];
+        }
+        $this->kurikulum_id = null;
+        $this->availablePrasyarats = []; // Reset prasyarat
+    }
+
+    // Kita load semua MK lain di kurikulum ini
+    public function updatedKurikulumId($value)
+    {
+        if ($value) {
+            $query = MataKuliah::where('kurikulum_id', $value);
+            
+            // Jika sedang edit, jangan tampilkan diri sendiri di daftar syarat
+            if ($this->isEditing && $this->editingMataKuliah) {
+                $query->where('id', '!=', $this->editingMataKuliah->id);
+            }
+
+            $this->availablePrasyarats = $query->orderBy('semester')
+                                               ->orderBy('nama_mk')
+                                               ->get();
+        } else {
+            $this->availablePrasyarats = [];
+        }
     }
 
     public function resetForm()
     {
         $this->reset([
-            'kode_mk', 'nama_mk', 'program_studi_id', 'sks', 'semester',
+            'kode_mk', 'nama_mk', 'program_studi_id', 'kurikulum_id', 
+            'sks', 'semester', 'sifat', 'syarat_sks_lulus', 'prasyarat_ids', 
             'isEditing', 'editingMataKuliah'
         ]);
+        $this->sifat = 'Wajib';
+        $this->kurikulums = []; 
+        $this->availablePrasyarats = [];
         $this->resetErrorBag();
     }
 
@@ -87,7 +132,18 @@ class MataKuliahManager extends Component
         $this->program_studi_id = $mataKuliah->program_studi_id;
         $this->sks = $mataKuliah->sks;
         $this->semester = $mataKuliah->semester;
+        $this->sifat = $mataKuliah->sifat;
+        $this->syarat_sks_lulus = $mataKuliah->syarat_sks_lulus;
 
+        // Isi data dropdown
+        $this->updatedProgramStudiId($this->program_studi_id);
+        $this->kurikulum_id = $mataKuliah->kurikulum_id;
+        
+        // Load Prasyarat
+        $this->updatedKurikulumId($this->kurikulum_id); // Load list available
+        // Ambil ID prasyarat yang sudah tersimpan
+        $this->prasyarat_ids = $mataKuliah->prasyarats()->pluck('prasyarat_id')->toArray();
+        
         $this->showModal = true;
     }
 
@@ -101,49 +157,43 @@ class MataKuliahManager extends Component
     {
         $validatedData = $this->validate();
 
+        // Kita pisahkan data MK dan data relasi prasyarat
+        $mkData = collect($validatedData)->except(['prasyarat_ids'])->toArray();
+
         if ($this->isEditing) {
-            $this->editingMataKuliah->update($validatedData);
+            $this->editingMataKuliah->update($mkData);
+            $mk = $this->editingMataKuliah;
         } else {
-            MataKuliah::create($validatedData);
+            $mk = MataKuliah::create($mkData);
         }
+
+        // Sync Prasyarat (Many-to-Many)
+        // Ini akan mengisi tabel mk_prasyarats
+        $mk->prasyarats()->sync($this->prasyarat_ids);
 
         $this->closeModal();
         $this->resetPage();
     }
 
-    // --- Logika Hapus ---
     public $showDeleteModal = false;
     public ?MataKuliah $deletingMataKuliah = null;
-
-    public function openDeleteModal(MataKuliah $mataKuliah)
-    {
-        $this->deletingMataKuliah = $mataKuliah;
-        $this->showDeleteModal = true;
-    }
-
-    public function closeDeleteModal()
-    {
-        $this->showDeleteModal = false;
-        $this->deletingMataKuliah = null;
-    }
-
-    public function delete()
-    {
-        if ($this->deletingMataKuliah) {
-            $this->deletingMataKuliah->delete();
-            $this->closeDeleteModal();
-            $this->resetPage();
-        }
-    }
-    // --- Akhir Logika Hapus ---
+    public function openDeleteModal(MataKuliah $mataKuliah) { $this->deletingMataKuliah = $mataKuliah; $this->showDeleteModal = true; }
+    public function closeDeleteModal() { $this->showDeleteModal = false; $this->deletingMataKuliah = null; }
+    public function delete() { if ($this->deletingMataKuliah) { try { $this->deletingMataKuliah->delete(); $this->closeDeleteModal(); $this->resetPage(); } catch (\Exception $e) { session()->flash('error', 'Gagal menghapus: MK ini sudah digunakan.'); $this->closeDeleteModal(); } } }
 
     public function render()
     {
-        $mataKuliahs = MataKuliah::with('programStudi')
-            ->when($this->search, function ($query) {
-                $query->where('nama_mk', 'like', '%' . $this->search . '%')
-                      ->orWhere('kode_mk', 'like', '%' . $this->search . '%');
+        $mataKuliahs = MataKuliah::with(['programStudi', 'kurikulum', 'prasyarats']) // Eager load prasyarat
+            ->when($this->filterProdi, function ($query) {
+                $query->where('program_studi_id', $this->filterProdi);
             })
+            ->when($this->search, function ($query) {
+                $query->where(function($q) {
+                    $q->where('nama_mk', 'like', '%' . $this->search . '%')
+                      ->orWhere('kode_mk', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->orderBy('program_studi_id')
             ->orderBy('semester', 'asc')
             ->orderBy('nama_mk', 'asc')
             ->paginate(10);

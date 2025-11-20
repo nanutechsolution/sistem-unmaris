@@ -595,7 +595,7 @@ new class extends Component
                         </div>
                     </div>
                 </div>
-                <a href="/berita" class="px-4 py-2 rounded-full hover:bg-white/10 transition duration-300 {{ request()->is('berita*') ? 'text-unmaris-yellow bg-white/10' : '' }}">Berita</a>
+                <a href="/berita" class="px-4 py-2 rounded-full hover:bg-white/10 transition duration-300 {{ request()->is('berita*') ||request()->is('baca/berita*')  ? 'text-unmaris-yellow bg-white/10' : '' }}">Berita</a>
                 <a href="/lppm" class="px-4 py-2 rounded-full hover:bg-white/10 transition duration-300 {{ request()->is('lppm*') ? 'text-unmaris-yellow bg-white/10' : '' }}">LPPM</a>
                 <div class="flex space-x-1 items-center font-medium text-sm">
                     <a href="/kontak" class="px-5 py-2 rounded-full text-white hover:bg-white/10 transition duration-300">Kontak</a>

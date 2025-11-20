@@ -16,6 +16,7 @@ class Mahasiswa extends Model
         'nim',
         'nama_lengkap',
         'program_studi_id',
+        'kurikulum_id',
         'status_mahasiswa',
         'angkatan',
         'email',
@@ -38,20 +39,10 @@ class Mahasiswa extends Model
     /**
      * Relasi ke Program Studi (Mahasiswa ini milik prodi apa).
      */
-    public function programStudi()
-    {
-        return $this->belongsTo(ProgramStudi::class);
-    }
-
+    public function programStudi(){return $this->belongsTo(ProgramStudi::class);}
+    public function krs() {return $this->hasMany(Krs::class);}
     /**
-     * (Opsional) Relasi ke User (untuk login)
+     * Relasi ke Kurikulum (Mahasiswa ini ikut kurikulum versi mana)
      */
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-
-    public function krs() {
-    return $this->hasMany(Krs::class);
-}
+    public function kurikulum(){return $this->belongsTo(Kurikulum::class);}
 }

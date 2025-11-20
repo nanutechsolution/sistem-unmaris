@@ -40,23 +40,24 @@
         'submenu' => [
         ['title' => 'Fakultas', 'route' => 'fakultas.index', 'active_check' => 'manajemen/fakultas*'],
         ['title' => 'Program Studi', 'route' => 'prodi.index', 'active_check' => 'manajemen/prodi*'],
-        ['title' => 'Kurikulum', 'route' => 'kurikulum.index', 'active_check' => 'manajemen/kurikulum*'],
         ['title' => 'Tahun Akademik', 'route' => 'tahun-akademik.index', 'active_check' => 'manajemen/tahun-akademik*'],
         ]
         ],
         [
         'title' => 'Konten & Pengaturan',
         'icon' => 'fas fa-cogs',
-        'active_check' => 'manajemen/halaman*|manajemen/pengaturan*|manajemen/kategori*|manajemen/berita*',
+        'active_check' => 'manajemen/halaman*|manajemen/pengaturan*|manajemen/kategori*|manajemen/berita*|manajemen/slider*|manajemen/pmb-gelombang*baca/berita*',
         'submenu' => [
+        ['title' => 'Banner Depan', 'route' => 'sliders.index', 'active_check' => 'manajemen/slider*'],
         ['title' => 'Halaman Statis', 'route' => 'pages.index', 'active_check' => 'manajemen/halaman*'],
         ['title' => 'Pengaturan Website', 'route' => 'settings.index', 'active_check' => 'manajemen/pengaturan*'],
         ['title' => 'Kategori Berita', 'route' => 'categories.index', 'active_check' => 'manajemen/kategori*'],
-        ['title' => 'Berita', 'route' => 'posts.index', 'active_check' => 'manajemen/berita*'],
+        ['title' => 'Berita', 'route' => 'posts.index', 'active_check' => 'manajemen/berita*|baca/berita*'],
+        ['title' => 'Gelombang PMB', 'route' => 'pmb-gelombang.index', 'active_check' => 'manajemen/pmb-gelombang*'],
         ]
         ],
         [
-        'title' => 'Penjaminan Mutu (LPM)',
+        'title' => 'LPM',
         'icon' => 'fas fa-certificate',
         'active_check' => 'manajemen/quality-documents*|manajemen/quality-announcements*',
         'submenu' => [
@@ -80,8 +81,9 @@
         [
         'title' => 'Kurikulum & Matkul',
         'icon' => 'fas fa-book',
-        'active_check' => 'akademik/mata-kuliah*',
+        'active_check' => 'akademik/mata-kuliah*|manajemen/kurikulum*',
         'submenu' => [
+        ['title' => 'Kurikulum', 'route' => 'kurikulum.index', 'active_check' => 'manajemen/kurikulum*'],
         ['title' => 'Mata Kuliah', 'route' => 'matakuliah.index', 'active_check' => 'akademik/mata-kuliah*'],
         ]
         ],
@@ -137,23 +139,24 @@
             'submenu' => [
             ['title' => 'Fakultas', 'route' => 'fakultas.index', 'active_check' => 'manajemen/fakultas*'],
             ['title' => 'Program Studi', 'route' => 'prodi.index', 'active_check' => 'manajemen/prodi*'],
-            ['title' => 'Kurikulum', 'route' => 'kurikulum.index', 'active_check' => 'manajemen/kurikulum*'],
             ['title' => 'Tahun Akademik', 'route' => 'tahun-akademik.index', 'active_check' => 'manajemen/tahun-akademik*'],
             ]
             ],
             [
             'title' => 'Konten & Pengaturan',
             'icon' => 'fas fa-cogs',
-            'active_check' => 'manajemen/halaman*|manajemen/pengaturan*|manajemen/kategori*|manajemen/berita*',
+            'active_check' => 'manajemen/halaman*|manajemen/pengaturan*|manajemen/kategori*|manajemen/berita*|manajemen/slider*|manajemen/pmb-gelombang*|baca/berita*',
             'submenu' => [
+            ['title' => 'Banner Depan', 'route' => 'sliders.index', 'active_check' => 'manajemen/slider*'],
             ['title' => 'Halaman Statis', 'route' => 'pages.index', 'active_check' => 'manajemen/halaman*'],
             ['title' => 'Pengaturan Website', 'route' => 'settings.index', 'active_check' => 'manajemen/pengaturan*'],
             ['title' => 'Kategori Berita', 'route' => 'categories.index', 'active_check' => 'manajemen/kategori*'],
-            ['title' => 'Berita', 'route' => 'posts.index', 'active_check' => 'manajemen/berita*'],
+            ['title' => 'Berita', 'route' => 'posts.index', 'active_check' => 'manajemen/berita*|baca/berita*'],
+            ['title' => 'Gelombang PMB', 'route' => 'pmb-gelombang.index', 'active_check' => 'manajemen/pmb-gelombang*'],
             ]
             ],
             [
-            'title' => 'Penjaminan Mutu (LPM)',
+            'title' => 'LPM',
             'icon' => 'fas fa-certificate',
             // Pastikan rute di Livewire Component (yang Anda buat sebelumnya) sudah terdaftar
             'active_check' => 'manajemen/quality-documents*|manajemen/quality-announcements*',
@@ -178,8 +181,9 @@
             [
             'title' => 'Kurikulum',
             'icon' => 'fas fa-book',
-            'active_check' => 'akademik/mata-kuliah*',
+            'active_check' => 'akademik/mata-kuliah*|manajemen/kurikulum*',
             'submenu' => [
+            ['title' => 'Kurikulum', 'route' => 'kurikulum.index', 'active_check' => 'manajemen/kurikulum*'],
             ['title' => 'Mata Kuliah', 'route' => 'matakuliah.index', 'active_check' => 'akademik/mata-kuliah*'],
             ]
             ],

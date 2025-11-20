@@ -37,7 +37,7 @@
                 <div class="bg-unmaris-blue p-6 rounded-2xl shadow-xl text-white">
                     <h3 class="font-bold text-lg mb-2">Butuh Bantuan?</h3>
                     <p class="text-sm text-blue-100 mb-4">Hubungi Pustakawan via chat langsung.</p>
-                    <a href="/kontak" class="inline-block w-full py-2 bg-unmaris-yellow text-unmaris-blue font-bold rounded-lg hover:bg-white transition text-sm">
+                    <a href="/kontak" class="inline-block w-full py-2 bg-unmaris-yellow text-unmaris-blue font-bold rounded-lg hover:bg-white transition text-sm ">
                         Live Chat Support
                     </a>
                 </div>
