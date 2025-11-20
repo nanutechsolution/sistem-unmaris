@@ -43,7 +43,9 @@ class PostController extends Controller
                         ->first();
 
         // Ambil daftar kategori untuk sidebar filter
-        $categories = Category::withCount('posts')->get();
+       $categories = Category::withCount(['posts' => function ($query) {
+    $query->where('status', 'published');
+}])->having('posts_count', '>', 0)->get();
 
         return view('public.posts.index', compact('posts', 'headline', 'categories'));
     }
@@ -70,17 +72,19 @@ class PostController extends Controller
     public function byCategory($slug): View
 {
     $category = Category::where('slug', $slug)->firstOrFail();
-
     $posts = Post::where('category_id', $category->id)
-                 ->where('status', 'Published')
-                 ->with(['author', 'category'])
-                 ->orderBy('published_at', 'desc')
-                 ->paginate(9);
+    ->where('status', 'Published')
+    ->with(['author', 'category'])
+    ->orderBy('published_at', 'desc')
+    ->paginate(9);
+    $categories = Category::withCount(['posts' => function ($query) {
+    $query->where('status', 'published');
+}])->having('posts_count', '>', 0)->get();
 
     return view('public.posts.index', [
         'posts' => $posts,
         'headline' => $posts->first(),
-        'categories' => Category::withCount('posts')->get(),
+        'categories' => $categories,
     ]);
 }
 

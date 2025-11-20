@@ -24,4 +24,15 @@ class Fakultas extends Model
     {
         return $this->hasMany(ProgramStudi::class);
     }
+
+
+    public function currentDean()
+{
+    // Mengambil dekan yang masa jabatannya belum selesai (selesai = NULL)
+    // dan mengambil yang terbaru jika ada data ganda.
+    return $this->hasOne(\App\Models\FakultasDekan::class)
+                ->whereNull('selesai')
+                ->orWhere('selesai', '>=', now()) // Jika masa jabatan berakhir di masa depan
+                ->latest('mulai');
+}
 }

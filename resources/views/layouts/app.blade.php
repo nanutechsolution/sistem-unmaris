@@ -13,8 +13,9 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
+    @vite(['resources/css/app.css', 'resources/js/app.js']) 
+    
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     @trixassets
 </head>
 <body class="font-sans antialiased">
@@ -39,6 +40,7 @@
         'submenu' => [
         ['title' => 'Fakultas', 'route' => 'fakultas.index', 'active_check' => 'manajemen/fakultas*'],
         ['title' => 'Program Studi', 'route' => 'prodi.index', 'active_check' => 'manajemen/prodi*'],
+        ['title' => 'Kurikulum', 'route' => 'kurikulum.index', 'active_check' => 'manajemen/kurikulum*'],
         ['title' => 'Tahun Akademik', 'route' => 'tahun-akademik.index', 'active_check' => 'manajemen/tahun-akademik*'],
         ]
         ],
@@ -135,6 +137,7 @@
             'submenu' => [
             ['title' => 'Fakultas', 'route' => 'fakultas.index', 'active_check' => 'manajemen/fakultas*'],
             ['title' => 'Program Studi', 'route' => 'prodi.index', 'active_check' => 'manajemen/prodi*'],
+            ['title' => 'Kurikulum', 'route' => 'kurikulum.index', 'active_check' => 'manajemen/kurikulum*'],
             ['title' => 'Tahun Akademik', 'route' => 'tahun-akademik.index', 'active_check' => 'manajemen/tahun-akademik*'],
             ]
             ],
@@ -301,6 +304,5 @@
             </main>
         </div>
     </div>
-
 </body>
 </html>

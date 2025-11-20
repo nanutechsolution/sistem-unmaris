@@ -21,6 +21,13 @@ class DatabaseSeeder extends Seeder
             ProgramStudiSeeder::class,
             CategoriesSeeder::class,
             PostsSeeder::class,
+            DosenSeeder::class,
+            ProgramStudiKaprodiSeeder::class,
+            FakultasDekanSeeder::class,
+            QualitySeeder::class,
+             DokumenKategoriSeeder::class,
+    DokumenSeeder::class,
+            MataKuliahSeeder::class,
         ]);
     }
 }

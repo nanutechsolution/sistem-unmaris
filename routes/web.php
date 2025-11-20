@@ -4,7 +4,16 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LpmController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\AkreditasiController;
+use App\Http\Controllers\FakultasController;
+use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\LppmController;
+use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\PmbController;
+use App\Http\Controllers\DokumenController;
+use App\Http\Controllers\KemahasiswaanController;
 use App\Http\Controllers\Public\AkademikController;
 use App\Http\Controllers\PublicAnnouncementController;
 use App\Livewire\Akademik\DosenManager;
@@ -20,6 +29,7 @@ use App\Livewire\Manajemen\CategoryManager;
 use App\Livewire\Manajemen\FakultasManager;
 use App\Livewire\Manajemen\PageManager;
 use App\Livewire\Manajemen\PostManager;
+use App\Livewire\Manajemen\KurikulumManager;
 use App\Livewire\Manajemen\ProdiManager;
 use App\Livewire\Manajemen\SettingsManager;
 use App\Livewire\Manajemen\TahunAkademikManager;
@@ -36,12 +46,24 @@ Route::get('/baca/berita/{slug}', [PostController::class, 'show'])->name('public
 Route::get('/kategori/{slug}', [PostController::class, 'byCategory'])->name('public.posts.category');
 Route::get('/announcements  ', [PublicAnnouncementController::class, 'index'])->name('public.pengumuman.index');
 Route::get('/read/announcements/{slug}', [PublicAnnouncementController::class, 'show'])->name('public.announcements.show');
-Route::get('/lpm', [LpmController::class, 'index'])->name('lpm.index');
+Route::get('/akreditasi/lpm', [LpmController::class, 'index'])->name('lpm.index');
 Route::get('/lpm/document/{slug}', [LpmController::class, 'document'])->name('lpm.document');
-Route::get('/lpm/announcement/{slug}', [LpmController::class, 'announcement'])->name('lpm.announcement');
-Route::get('/lpm/announcements', [LpmController::class, 'announcementsIndex'])->name('lpm.announcements.all');
-Route::get('/lpm/profile', [LpmController::class, 'profile'])->name('lpm.profile');
+Route::get('/akreditasi/lpm/announcement/{slug}', [LpmController::class, 'announcement'])->name('lpm.announcement');
+Route::get('/akreditasi/lpm/announcements', [LpmController::class, 'announcementsIndex'])->name('lpm.announcements.all');
+Route::get('/akreditasi/lpm/profile', [LpmController::class, 'profile'])->name('lpm.profile');
 Route::get('/page/{slug}', [PageController::class, 'show'])->name('pages.show');
+Route::get('/fakultas/{id}', [FakultasController::class, 'show'])->name('fakultas.show');
+Route::get('/fakultas/prodi/{id}',[ProdiController::class, 'show'])->name('prodi.show');
+Route::get('/dokumen', [DokumenController::class, 'index'])->name('dokumen.index');
+Route::get('/dokumen/{dokumen}/download', [DokumenController::class, 'download'])->name('dokumen.download');
+Route::get('/pmb', [PmbController::class , 'index'])->name('public.pmb.index');
+Route::get('/kemahasiswaan', [KemahasiswaanController::class , 'index'])->name('kemahasiswaan.index');
+Route::get('/lppm', [LppmController::class, 'index'])->name('lppm.index');
+Route::get('/fasilitas-kampus', [FasilitasController::class, 'index'])->name('fasilitas.index');
+Route::get('/akreditasi', [AkreditasiController::class, 'institusi'])->name('akreditasi.institusi');
+Route::get('/akreditasi/program-studi', [AkreditasiController::class, 'programStudi'])->name('akreditasi.prodi');
+Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('dashboard', Dashboard::class)->name('dashboard');
@@ -62,7 +84,7 @@ Route::get('manajemen/kategori', CategoryManager::class)->name('categories.index
 Route::get('manajemen/berita', PostManager::class)->name('posts.index');
 Route::get('manajemen/quality-documents', QualityDocuments::class)->name('quality-documents.index');
 Route::get('manajemen/quality-announcements', QualityAnnouncements::class)->name('quality-announcements.index');
-
+Route::get('manajemen/kurikulum', KurikulumManager::class)->name('kurikulum.index');
 Route::view('profile', 'profile')->name('profile');
 });
 

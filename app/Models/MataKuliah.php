@@ -12,11 +12,8 @@ class MataKuliah extends Model
     protected $table = 'mata_kuliahs';
 
     protected $fillable = [
-        'kode_mk',
-        'nama_mk',
-        'program_studi_id',
-        'sks',
-        'semester',
+        'kode_mk', 'nama_mk', 'kurikulum_id', 'program_studi_id', 
+        'sks', 'semester', 'sifat', 'syarat_sks_lulus'
     ];
 
     /**
@@ -31,4 +28,14 @@ class MataKuliah extends Model
     public function kelas() {
     return $this->hasMany(Kelas::class);
 }
+
+public function kurikulum() {
+        return $this->belongsTo(Kurikulum::class);
+    }
+
+    // Relasi Prasyarat (Self-Join)
+    public function prasyarats() {
+        return $this->belongsToMany(MataKuliah::class, 'mk_prasyarats', 'mata_kuliah_id', 'prasyarat_id')
+                    ->withPivot('nilai_min');
+    }
 }

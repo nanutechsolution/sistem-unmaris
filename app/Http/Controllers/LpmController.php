@@ -46,15 +46,26 @@ class LpmController extends Controller
         return view('public.lpm.announcement', compact('ann'));
     }
 
-    /**
+      /**
      * Menampilkan halaman daftar semua pengumuman (Arsip Pengumuman).
-     * Diakses melalui tombol "Lihat Semua Pengumuman".
+     * Mendukung fitur pencarian melalui parameter 'q'.
      */
-    public function announcementsIndex()
+    public function announcementsIndex(Request $request)
     {
-        $announcements = QualityAnnouncement::whereNotNull('published_at')
-            ->orderBy('published_at', 'desc')
-            ->paginate(12); // Menampilkan 12 pengumuman per halaman
+        $query = QualityAnnouncement::whereNotNull('published_at');
+
+        // Filter Pencarian
+        if ($request->has('q')) {
+            $search = $request->q;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $announcements = $query->orderBy('published_at', 'desc')
+                               ->paginate(12)
+                               ->withQueryString();
 
         return view('public.lpm.announcements', compact('announcements'));
     }
