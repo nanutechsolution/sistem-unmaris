@@ -152,8 +152,8 @@
                     <li class="flex items-start space-x-3">
                         <i class="fas fa-map-marker-alt mt-1 text-unmaris-yellow"></i>
                         <span class="text-blue-100">
-                            Jl. R. Suprapto No. 35, Waingapu,<br>
-                            Sumba Timur, Nusa Tenggara Timur,<br>
+                            Jl. Karya Kasih No. 5, Tambolaka,<br>
+                            Sumba Barat Daya, Nusa Tenggara Timur,<br>
                             Indonesia - 87113
                         </span>
                     </li>
