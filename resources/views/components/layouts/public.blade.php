@@ -16,11 +16,9 @@
 
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     
     @trixassets
-{{-- <script src="https://kit.fontawesome.com/58a084ce82.js" crossorigin="anonymous"></script> --}}
 </head>
 
 <body class="font-sans bg-gray-100 antialiased">
@@ -51,11 +49,11 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="font-bold text-2xl leading-none tracking-tight text-white">UNMARIS</span>
-                        <span class="text-[0.65rem] text-unmaris-yellow tracking-[0.2em] uppercase font-medium">Universitas Maritim</span>
+                        <span class="text-[0.65rem] text-unmaris-yellow tracking-[0.2em] uppercase font-medium">Universitas Stella Maris</span>
                     </div>
                 </a>
                 <p class="text-blue-100 text-sm leading-relaxed">
-                    Universitas Stella Maris Sumba (UNMARIS) adalah perguruan tinggi yang berdedikasi mencetak generasi unggul, beriman, dan berdaya saing global dengan fokus pada pengembangan potensi maritim dan teknologi.
+                    Universitas Stella Maris Sumba (UNMARIS) adalah perguruan tinggi yang berdedikasi mencetak generasi unggul, beriman, dan berdaya saing global dengan fokus pada pengembangan potensi dan teknologi.
                 </p>
                 <div class="flex space-x-4">
                     <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
@@ -96,7 +94,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('posts.index') }}" class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
+                        <a href="{{ route('posts.index')}}" class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                             <i class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
                             Berita & Kegiatan
                         </a>

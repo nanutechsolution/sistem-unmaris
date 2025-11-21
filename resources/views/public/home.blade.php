@@ -46,32 +46,32 @@
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[180px]">
 
-               {{-- Card 1: Akreditasi --}}
-<div class="col-span-1 md:col-span-2 md:row-span-2 bg-unmaris-blue rounded-3xl p-6 sm:p-8 text-white flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition duration-500">
-    <!-- Background Circle -->
-    <div class="absolute top-0 right-0 w-64 h-64 sm:w-80 sm:h-80 bg-unmaris-yellow/10 rounded-full blur-3xl -mr-16 -mt-16 sm:-mr-20 sm:-mt-20 transition duration-700 group-hover:scale-110"></div>
+                {{-- Card 1: Akreditasi --}}
+                <div class="col-span-1 md:col-span-2 md:row-span-2 bg-unmaris-blue rounded-3xl p-6 sm:p-8 text-white flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition duration-500">
+                    <!-- Background Circle -->
+                    <div class="absolute top-0 right-0 w-64 h-64 sm:w-80 sm:h-80 bg-unmaris-yellow/10 rounded-full blur-3xl -mr-16 -mt-16 sm:-mr-20 sm:-mt-20 transition duration-700 group-hover:scale-110"></div>
 
-    <!-- Content -->
-    <div class="relative z-10">
-        <div class="bg-white/10 w-fit px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold mb-3 sm:mb-4 backdrop-blur-md border border-white/10">INSTITUSI</div>
-        <h3 class="text-lg sm:text-xl opacity-90">Terakreditasi Nasional</h3>
-        <p class="text-3xl sm:text-5xl md:text-6xl font-extrabold mt-2 tracking-tight">
-            BAIK <br> <span class="text-unmaris-yellow">SEKALI</span>
-        </p>
-    </div>
+                    <!-- Content -->
+                    <div class="relative z-10">
+                        <div class="bg-white/10 w-fit px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold mb-3 sm:mb-4 backdrop-blur-md border border-white/10">INSTITUSI</div>
+                        <h3 class="text-lg sm:text-xl opacity-90">Terakreditasi Nasional</h3>
+                        <p class="text-3xl sm:text-5xl md:text-6xl font-extrabold mt-2 tracking-tight">
+                            BAIK <br> <span class="text-unmaris-yellow">SEKALI</span>
+                        </p>
+                    </div>
 
-    <!-- Footer -->
-    <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-end mt-4 sm:mt-0 gap-3 sm:gap-0">
-        <p class="text-xs sm:text-sm text-blue-200 max-w-full sm:max-w-xs">
-            Diakui oleh BAN-PT sebagai institusi pendidikan berkualitas tinggi.
-        </p>
-        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue transition duration-300 self-end sm:self-auto">
-            <i class="fas fa-arrow-right transform -rotate-45 group-hover:rotate-0 transition duration-300"></i>
-        </div>
-    </div>
-</div>
-
-
+                    <!-- Footer -->
+                    <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-end mt-4 sm:mt-0 gap-3 sm:gap-0">
+                        <p class="text-xs sm:text-sm text-blue-200 max-w-full sm:max-w-xs">
+                            Diakui oleh BAN-PT sebagai institusi pendidikan berkualitas tinggi.
+                        </p>
+                        <a href="{{route('akreditasi.institusi')}}">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue transition duration-300 self-end sm:self-auto">
+                                <i class="fas fa-arrow-right transform -rotate-45 group-hover:rotate-0 transition duration-300"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
                 {{-- Card 2: Jumlah Prodi (DINAMIS) --}}
                 <div class="bg-white border border-gray-100 rounded-3xl p-6 flex flex-col justify-center items-center text-center hover:shadow-xl hover:-translate-y-1 transition duration-300">
                     {{-- Menggunakan variabel $totalProdi --}}
@@ -109,72 +109,72 @@
         </div>
     </section>
 
-   {{-- 3. PROGRAM FINDER (DINAMIS dari Tabel Fakultas & Prodi) --}}
-<section class="py-24 bg-white relative overflow-hidden">
-    <div class="absolute left-0 top-1/4 w-64 h-64 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
-    <div class="absolute right-0 bottom-1/4 w-64 h-64 bg-yellow-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+    {{-- 3. PROGRAM FINDER (DINAMIS dari Tabel Fakultas & Prodi) --}}
+    <section class="py-24 bg-white relative overflow-hidden">
+        <div class="absolute left-0 top-1/4 w-64 h-64 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
+        <div class="absolute right-0 bottom-1/4 w-64 h-64 bg-yellow-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
 
-    <div class="max-w-7xl mx-auto px-6 relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
-                Temukan <span class="text-unmaris-blue">Passion</span>-mu
-            </h2>
-            <p class="text-gray-600 text-lg">
-                Jelajahi {{ $totalProdi }} Program Studi yang tersebar di {{ $totalFakultas }} Fakultas unggulan kami.
-            </p>
-        </div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
+                    Temukan <span class="text-unmaris-blue">Passion</span>-mu
+                </h2>
+                <p class="text-gray-600 text-lg">
+                    Jelajahi {{ $totalProdi }} Program Studi yang tersebar di {{ $totalFakultas }} Fakultas unggulan kami.
+                </p>
+            </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach($faculties as $fakultas)
-            @php
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($faculties as $fakultas)
+                @php
                 $icon = 'fas fa-university';
                 $colorClass = 'text-unmaris-blue bg-blue-100 group-hover:bg-unmaris-blue group-hover:text-white';
-              if (Str::contains($fakultas->nama_fakultas, 'Teknik', true)) {
-    $icon = 'fa-solid fa-laptop-code';
-    $colorClass = 'text-blue-700 bg-blue-100 group-hover:bg-unmaris-blue group-hover:text-white';
-} elseif (Str::contains($fakultas->nama_fakultas, ['Ekonomi', 'Bisnis'], true)) {
-    $icon = 'fa-solid fa-chart-line';
-    $colorClass = 'text-yellow-700 bg-yellow-100 group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue';
-} elseif (Str::contains($fakultas->nama_fakultas, ['Kesehatan'], true)) {
-    $icon = 'fa-solid fa-hospital';
-    $colorClass = 'text-green-700 bg-green-100 group-hover:bg-green-700 group-hover:text-white';
-} elseif (Str::contains($fakultas->nama_fakultas, ['Guru', 'Pendidikan'], true)) {
-    $icon = 'fa-solid fa-graduation-cap';
-    $colorClass = 'text-red-600 bg-red-100 group-hover:bg-red-600 group-hover:text-white';
-}
+                if (Str::contains($fakultas->nama_fakultas, 'Teknik', true)) {
+                $icon = 'fa-solid fa-laptop-code';
+                $colorClass = 'text-blue-700 bg-blue-100 group-hover:bg-unmaris-blue group-hover:text-white';
+                } elseif (Str::contains($fakultas->nama_fakultas, ['Ekonomi', 'Bisnis'], true)) {
+                $icon = 'fa-solid fa-chart-line';
+                $colorClass = 'text-yellow-700 bg-yellow-100 group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue';
+                } elseif (Str::contains($fakultas->nama_fakultas, ['Kesehatan'], true)) {
+                $icon = 'fa-solid fa-hospital';
+                $colorClass = 'text-green-700 bg-green-100 group-hover:bg-green-700 group-hover:text-white';
+                } elseif (Str::contains($fakultas->nama_fakultas, ['Guru', 'Pendidikan'], true)) {
+                $icon = 'fa-solid fa-graduation-cap';
+                $colorClass = 'text-red-600 bg-red-100 group-hover:bg-red-600 group-hover:text-white';
+                }
 
-            @endphp
+                @endphp
 
-            <div class="group relative bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-lg hover:shadow-2xl transition duration-300 flex flex-col h-full">
-                <div class="w-14 h-14 {{ $colorClass }} rounded-xl flex items-center justify-center text-2xl mb-6 transition">
-                    <i class="{{ $icon }}"></i>
-                </div>
+                <div class="group relative bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-lg hover:shadow-2xl transition duration-300 flex flex-col h-full">
+                    <div class="w-14 h-14 {{ $colorClass }} rounded-xl flex items-center justify-center text-2xl mb-6 transition">
+                        <i class="{{ $icon }}"></i>
+                    </div>
 
-                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 group-hover:text-unmaris-blue transition">
-                    {{ $fakultas->nama_fakultas }}
-                </h3>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 group-hover:text-unmaris-blue transition">
+                        {{ $fakultas->nama_fakultas }}
+                    </h3>
 
-                {{-- List Prodi --}}
-                <ul class="space-y-2 mb-6 flex-grow overflow-hidden">
-                    @forelse($fakultas->programStudis as $prodi)
+                    {{-- List Prodi --}}
+                    <ul class="space-y-2 mb-6 flex-grow overflow-hidden">
+                        @forelse($fakultas->programStudis as $prodi)
                         <li class="flex items-start text-sm text-gray-600 line-clamp-2">
                             <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
                             <span><span class="font-bold">{{ $prodi->jenjang }}</span> {{ $prodi->nama_prodi }}</span>
                         </li>
-                    @empty
+                        @empty
                         <li class="text-sm text-gray-400 italic">Belum ada program studi.</li>
-                    @endforelse
-                </ul>
+                        @endforelse
+                    </ul>
 
-                <a href="{{ route('fakultas.show', $fakultas->id) }}"
-                    class="inline-flex items-center text-unmaris-blue font-bold text-sm group-hover:text-unmaris-yellow transition mt-auto">
-                    Lihat Detail Fakultas <i class="fas fa-arrow-right ml-2"></i>
-                </a>
+                    <a href="{{ route('fakultas.show', $fakultas->id) }}"
+                        class="inline-flex items-center text-unmaris-blue font-bold text-sm group-hover:text-unmaris-yellow transition mt-auto">
+                        Lihat Detail Fakultas <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
-    </div>
-</section>
+    </section>
 
 
     {{-- 4. CTA & LATEST NEWS (DINAMIS dari Tabel Posts) --}}

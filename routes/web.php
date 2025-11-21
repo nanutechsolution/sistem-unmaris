@@ -54,11 +54,11 @@ Route::get('/akreditasi/lpm/announcements', [LpmController::class, 'announcement
 Route::get('/akreditasi/lpm/profile', [LpmController::class, 'profile'])->name('lpm.profile');
 Route::get('/page/{slug}', [PageController::class, 'show'])->name('pages.show');
 Route::get('/fakultas/{id}', [FakultasController::class, 'show'])->name('fakultas.show');
-Route::get('/fakultas/prodi/{id}',[ProdiController::class, 'show'])->name('prodi.show');
+Route::get('/fakultas/prodi/{id}', [ProdiController::class, 'show'])->name('prodi.show');
 Route::get('/dokumen', [DokumenController::class, 'index'])->name('dokumen.index');
 Route::get('/dokumen/{dokumen}/download', [DokumenController::class, 'download'])->name('dokumen.download');
-Route::get('/pmb', [PmbController::class , 'index'])->name('public.pmb.index');
-Route::get('/kemahasiswaan', [KemahasiswaanController::class , 'index'])->name('kemahasiswaan.index');
+Route::get('/pmb', [PmbController::class, 'index'])->name('public.pmb.index');
+Route::get('/kemahasiswaan', [KemahasiswaanController::class, 'index'])->name('kemahasiswaan.index');
 Route::get('/lppm', [LppmController::class, 'index'])->name('lppm.index');
 Route::get('/fasilitas-kampus', [FasilitasController::class, 'index'])->name('fasilitas.index');
 Route::get('/akreditasi/institusi', [AkreditasiController::class, 'institusi'])->name('akreditasi.institusi');
@@ -67,29 +67,29 @@ Route::get('/library', [LibraryController::class, 'index'])->name('library.index
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-Route::get('dashboard', Dashboard::class)->name('dashboard');
-Route::get('manajemen/fakultas', FakultasManager::class)->name('fakultas.index');
-Route::get('manajemen/prodi', ProdiManager::class)->name('prodi.index');
-Route::get('manajemen/tahun-akademik', TahunAkademikManager::class)->name('tahun-akademik.index');
-Route::get('akademik/dosen', DosenManager::class)->name('dosen.index');
-Route::get('akademik/mahasiswa', MahasiswaManager::class)->name('mahasiswa.index');
-Route::get('akademik/mata-kuliah', MataKuliahManager::class)->name('matakuliah.index');
-Route::get('perkuliahan/kelas', KelasManager::class)->name('kelas.index');
-Route::get('perkuliahan/krs', PengisianKrs::class)->name('krs.index');
-Route::get('perkuliahan/validasi-krs', ValidasiKrs::class)->name('krs.validasi');
-Route::get('perkuliahan/input-nilai', InputNilai::class)->name('nilai.input');
-Route::get('perkuliahan/khs', KartuHasilStudi::class)->name('khs.index');
-Route::get('manajemen/halaman', PageManager::class)->name('pages.index');
-Route::get('manajemen/pengaturan', SettingsManager::class)->name('settings.index');
-Route::get('manajemen/kategori', CategoryManager::class)->name('categories.index');
-Route::get('manajemen/berita', PostManager::class)->name('posts.index');
-Route::get('manajemen/quality-documents', QualityDocuments::class)->name('quality-documents.index');
-Route::get('manajemen/quality-announcements', QualityAnnouncements::class)->name('quality-announcements.index');
-Route::get('manajemen/kurikulum', KurikulumManager::class)->name('kurikulum.index');
-Route::get('manajemen/slider', App\Livewire\Manajemen\SliderManager::class)->name('sliders.index');
-Route::get('manajemen/pmb-gelombang', PmbGelombangManager::class)->name('pmb-gelombang.index');
-Route::view('profile', 'profile')->name('profile');
+    Route::get('dashboard', Dashboard::class)->name('dashboard');
+    Route::get('manajemen/fakultas', FakultasManager::class)->name('fakultas.index');
+    Route::get('manajemen/prodi', ProdiManager::class)->name('prodi.index');
+    Route::get('manajemen/tahun-akademik', TahunAkademikManager::class)->name('tahun-akademik.index');
+    Route::get('akademik/dosen', DosenManager::class)->name('dosen.index');
+    Route::get('akademik/mahasiswa', MahasiswaManager::class)->name('mahasiswa.index');
+    Route::get('akademik/mata-kuliah', MataKuliahManager::class)->name('matakuliah.index');
+    Route::get('perkuliahan/kelas', KelasManager::class)->name('kelas.index');
+    Route::get('perkuliahan/krs', PengisianKrs::class)->name('krs.index');
+    Route::get('perkuliahan/validasi-krs', ValidasiKrs::class)->name('krs.validasi');
+    Route::get('perkuliahan/input-nilai', InputNilai::class)->name('nilai.input');
+    Route::get('perkuliahan/khs', KartuHasilStudi::class)->name('khs.index');
+    Route::get('manajemen/halaman', PageManager::class)->name('pages.index');
+    Route::get('manajemen/pengaturan', SettingsManager::class)->name('settings.index');
+    Route::get('manajemen/kategori', CategoryManager::class)->name('categories.index');
+    Route::get('manajemen/berita', PostManager::class)->name('posts.index');
+    Route::get('manajemen/quality-documents', QualityDocuments::class)->name('quality-documents.index');
+    Route::get('manajemen/quality-announcements', QualityAnnouncements::class)->name('quality-announcements.index');
+    Route::get('manajemen/kurikulum', KurikulumManager::class)->name('kurikulum.index');
+    Route::get('manajemen/slider', App\Livewire\Manajemen\SliderManager::class)->name('sliders.index');
+    Route::get('manajemen/pmb-gelombang', PmbGelombangManager::class)->name('pmb-gelombang.index');
+    Route::view('profile', 'profile')->name('profile');
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
