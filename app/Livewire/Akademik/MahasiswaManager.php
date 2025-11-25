@@ -10,12 +10,14 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Illuminate\Validation\Rule as ValidationRule;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 #[Layout('layouts.app')]
 #[Title('Manajemen Mahasiswa')]
 class MahasiswaManager extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     public $search = '';
 
@@ -27,7 +29,7 @@ class MahasiswaManager extends Component
     public $nim;
     public $nama_lengkap;
     public $program_studi_id;
-    public $kurikulum_id; // <-- FIELD BARU
+    public $kurikulum_id; 
     public $status_mahasiswa = 'Aktif';
     public $angkatan;
     public $email;
@@ -36,7 +38,9 @@ class MahasiswaManager extends Component
     public $tanggal_lahir;
     public $jenis_kelamin;
     public $alamat;
-    
+    public $foto_profil; 
+    public $old_foto_profil;
+
     // Data Dropdown
     public $programStudis = [];
     public $kurikulums = []; // <-- Dropdown Dinamis
@@ -45,7 +49,9 @@ class MahasiswaManager extends Component
     {
         return [
             'nim' => [
-                'required', 'string', 'max:20',
+                'required',
+                'string',
+                'max:20',
                 $this->isEditing
                     ? ValidationRule::unique('mahasiswas')->ignore($this->editingMahasiswa->id)
                     : ValidationRule::unique('mahasiswas')
@@ -75,9 +81,9 @@ class MahasiswaManager extends Component
         if ($value) {
             // Ambil kurikulum milik prodi tsb
             $this->kurikulums = Kurikulum::where('program_studi_id', $value)
-                                         ->orderBy('tahun_mulai', 'desc')
-                                         ->get();
-            
+                ->orderBy('tahun_mulai', 'desc')
+                ->get();
+
             // Otomatis pilih kurikulum yang 'aktif' jika ada
             $activeKurikulum = $this->kurikulums->where('aktif', true)->first();
             if ($activeKurikulum) {
@@ -92,9 +98,20 @@ class MahasiswaManager extends Component
     public function resetForm()
     {
         $this->reset([
-            'nim', 'nama_lengkap', 'program_studi_id', 'kurikulum_id', 'status_mahasiswa', 'angkatan',
-            'email', 'no_hp', 'tempat_lahir', 'tanggal_lahir', 'jenis_kelamin', 'alamat',
-            'isEditing', 'editingMahasiswa'
+            'nim',
+            'nama_lengkap',
+            'program_studi_id',
+            'kurikulum_id',
+            'status_mahasiswa',
+            'angkatan',
+            'email',
+            'no_hp',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'jenis_kelamin',
+            'alamat',
+            'isEditing',
+            'editingMahasiswa'
         ]);
         $this->status_mahasiswa = 'Aktif';
         $this->kurikulums = [];
@@ -117,7 +134,7 @@ class MahasiswaManager extends Component
         $this->nim = $mahasiswa->nim;
         $this->nama_lengkap = $mahasiswa->nama_lengkap;
         $this->program_studi_id = $mahasiswa->program_studi_id;
-        
+
         // Trigger load kurikulum
         $this->updatedProgramStudiId($this->program_studi_id);
         // Set nilai setelah dropdown terisi
@@ -131,12 +148,16 @@ class MahasiswaManager extends Component
         $this->tanggal_lahir = $mahasiswa->tanggal_lahir ? $mahasiswa->tanggal_lahir->format('Y-m-d') : null;
         $this->jenis_kelamin = $mahasiswa->jenis_kelamin;
         $this->alamat = $mahasiswa->alamat;
-        
+        $this->old_foto_profil = $mahasiswa->foto_profil;
+        $this->foto_profil = null;
+
         $this->showModal = true;
     }
 
     public function closeModal()
     {
+        $this->foto_profil = null;
+    $this->old_foto_profil = null;
         $this->showModal = false;
     }
 
@@ -184,7 +205,7 @@ class MahasiswaManager extends Component
         $mahasiswas = Mahasiswa::with(['programStudi', 'kurikulum'])
             ->when($this->search, function ($query) {
                 $query->where('nama_lengkap', 'like', '%' . $this->search . '%')
-                      ->orWhere('nim', 'like', '%' . $this->search . '%');
+                    ->orWhere('nim', 'like', '%' . $this->search . '%');
             })
             ->orderBy('nama_lengkap', 'asc')
             ->paginate(10);

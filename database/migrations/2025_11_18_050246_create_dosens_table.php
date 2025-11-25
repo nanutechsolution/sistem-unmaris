@@ -6,39 +6,45 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-   public function up(): void
-{
-    Schema::create('dosens', function (Blueprint $table) {
-        $table->id();
-        $table->string('nidn', 20)->unique(); // Nomor Induk Dosen Nasional
-        $table->string('nama_lengkap');
+    public function up(): void
+    {
+        Schema::create('dosens', function (Blueprint $table) {
+            $table->id();
 
-        // Dosen Homebase (terdaftar di prodi mana)
-        $table->foreignId('program_studi_id')
-              ->nullable()
-              ->constrained('program_studis')
-              ->onDelete('set null');
+            // --- IDENTITAS UTAMA ---
+            // NIDN dibuat nullable karena di Excel ada yang kosong
+            $table->string('nidn', 20)->nullable()->unique()->comment('Nomor Induk Dosen Nasional');
+            $table->string('nuptk', 50)->nullable()->comment('Nomor Unik Pendidik dan Tenaga Kependidikan');
+            $table->string('nama_lengkap');
 
-        $table->enum('status_dosen', ['Aktif', 'Tidak Aktif', 'Tugas Belajar'])
-              ->default('Aktif');
+            // --- HOMEBASE (INDUK) ---
+            // Ini adalah Prodi Induk/Homebase Administrasi (Sesuai SK Pengangkatan)
+            // BUKAN tempat mengajar semester ini (itu nanti di tabel penugasan)
+            $table->foreignId('program_studi_id')
+                  ->nullable()
+                  ->constrained('program_studis')
+                  ->nullOnDelete();
 
-        $table->string('email')->unique()->nullable();
-        $table->string('no_hp', 20)->nullable();
-        $table->string('foto_profil')->nullable(); // Path ke file foto
+            // --- DATA PRIBADI (Sesuai Excel) ---
+            $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
+            $table->string('tempat_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('agama')->nullable();
 
-        // Relasi ke tabel user (untuk login dosen)
-        // $table->foreignId('user_id')->nullable()->constrained('users');
+            // --- KONTAK & AKUN ---
+            $table->string('email')->unique()->nullable();
+            $table->string('no_hp', 20)->nullable();
+            $table->string('foto_profil')->nullable();
 
-        $table->timestamps();
-    });
-}
+            // --- STATUS KEPEGAWAIAN GLOBAL ---
+            // Apakah dia masih pegawai di kampus ini?
+            $table->enum('status_kepegawaian', ['Aktif', 'Keluar', 'Pensiun', 'Tugas Belajar'])
+                  ->default('Aktif');
 
-    /**
-     * Reverse the migrations.
-     */
+            $table->timestamps();
+        });
+    }
+
     public function down(): void
     {
         Schema::dropIfExists('dosens');

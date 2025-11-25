@@ -12,19 +12,19 @@ class FakultasDekanSeeder extends Seeder
         DB::table('fakultas_dekan')->insert([
             [
                 'fakultas_id' => 1, // FT
-                'dosen_id' => 1,    // asumsi ID dosen dari tabel dosens
+                'dosen_id' => 55,    // asumsi ID dosen dari tabel dosens
                 'mulai' => '2025-01-01',
                 'selesai' => null
             ],
             [
                 'fakultas_id' => 2, // FKES
-                'dosen_id' => 2,
+                'dosen_id' => 22,
                 'mulai' => '2024-08-01',
                 'selesai' => null
             ],
             [
                 'fakultas_id' => 3, // FKIP
-                'dosen_id' => 3,
+                'dosen_id' => 1,
                 'mulai' => '2025-01-01',
                 'selesai' => null
             ],

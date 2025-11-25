@@ -25,7 +25,11 @@ class HomeController extends Controller
             ->orderBy('published_at', 'desc')
             ->take(3) // Ambil 3 berita terbaru
             ->get();
+            $terbaru = \App\Models\Pengumuman::tayang()
+                ->urutkan()
+                ->take(3)
+                ->get();
 
-        return view('public.home', compact('totalProdi', 'totalFakultas', 'faculties', 'latestPosts'));
+        return view('public.home', compact('totalProdi', 'totalFakultas', 'faculties', 'latestPosts','terbaru'));
     }
 }

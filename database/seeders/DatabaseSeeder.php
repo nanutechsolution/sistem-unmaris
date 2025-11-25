@@ -22,11 +22,13 @@ class DatabaseSeeder extends Seeder
             CategoriesSeeder::class,
             PostsSeeder::class,
             DosenSeeder::class,
+            TahunAkademikSeeder::class,
+            PenugasanDosenSeeder::class,
             ProgramStudiKaprodiSeeder::class,
             FakultasDekanSeeder::class,
             QualitySeeder::class,
-             DokumenKategoriSeeder::class,
-    DokumenSeeder::class,
+            DokumenKategoriSeeder::class,
+            DokumenSeeder::class,
             MataKuliahSeeder::class,
         ]);
     }

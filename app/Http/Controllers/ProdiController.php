@@ -16,10 +16,13 @@ class ProdiController extends Controller
          $prodi = ProgramStudi::with([
             'fakultas',
             'dosens' => function ($query) { 
-                $query->where('status_dosen', 'Aktif')
+                $query->where('status_kepegawaian', 'Aktif')
                       ->orderBy('nama_lengkap', 'asc');
             }
         ])->findOrFail($id);
+        $dosens = \App\Models\Dosen::where('program_studi_id', $id)
+                ->where('status_kepegawaian', 'Aktif') // Hanya yang aktif
+                ->get();
 
         // --- MOCK DATA (Simulasi Data Kurikulum & Dosen) ---
         // Nanti bisa diganti dengan relasi database: $prodi->mataKuliahs
@@ -50,6 +53,6 @@ class ProdiController extends Controller
             'IT Consultant', 'Technopreneur', 'Researcher'
         ];
 
-        return view('public.prodi.show', compact('prodi', 'kurikulum', 'prospekKarir'));
+        return view('public.prodi.show', compact('prodi', 'kurikulum', 'prospekKarir', 'dosens'));
     }
 }

@@ -37,4 +37,15 @@ class ProgramStudi extends Model
     {
         return $this->hasMany(Dosen::class);
     }
+
+   /**
+     * Mengambil Kaprodi yang sedang menjabat saat ini.
+     * Logika: Cari yang kolom 'selesai'-nya masih NULL.
+     */
+    public function kaprodiAktif()
+    {
+        return $this->hasOne(ProgramStudiKaprodi::class)
+                    ->whereNull('selesai')
+                    ->latest('mulai'); // Ambil yang paling baru dilantik (jaga-jaga)
+    }
 }

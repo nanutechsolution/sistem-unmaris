@@ -33,7 +33,9 @@
                             </div>
                             <div>
                                 <p class="font-bold text-sm uppercase tracking-wide opacity-70 mb-1">Alamat Kampus</p>
-                                <p class="font-medium leading-snug">Jl. R. Suprapto No. 35, Waingapu, Sumba Timur, Nusa Tenggara Timur</p>
+                                <p class="font-medium leading-snug">Jl. Karya Kasih No. 5, Tambolaka,<br>
+                            Sumba Barat Daya, Nusa Tenggara Timur,<br>
+                            Indonesia - 87113</p>
                             </div>
                         </div>
 
@@ -70,8 +72,7 @@
 
                 {{-- Map Embed (Sumba Timur Placeholder) --}}
                 <div class="rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-64 lg:h-auto relative group">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3941.568561275984!2d120.2583733147825!3d-9.651944993090942!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2c4b84e333333333%3A0x3333333333333333!2sWaingapu!5e0!3m2!1sen!2sid!4v1625555555555!5m2!1sen!2sid" class="w-full h-full min-h-[300px] border-0 filter grayscale group-hover:grayscale-0 transition duration-700" allowfullscreen="" loading="lazy">
-                    </iframe>
+                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3935.9865431493067!2d119.24565567478572!3d-9.422582390655295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2c4ad03bcbb3fff7%3A0xb201870437c41318!2sUniversitas%20Stella%20Maris%20Sumba!5e0!3m2!1sid!2sid!4v1763947034079!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     <div class="absolute inset-0 bg-unmaris-blue/10 pointer-events-none group-hover:bg-transparent transition"></div>
                 </div>
             </div>

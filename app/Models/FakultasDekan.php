@@ -31,4 +31,10 @@ class FakultasDekan extends Model
         // Asumsi model Dosen ada di App\Models\Dosen
         return $this->belongsTo(\App\Models\Dosen::class, 'dosen_id');
     }
+
+    // Relasi ke Fakultas (Memimpin fakultas mana)
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class, 'fakultas_id');
+    }
 }

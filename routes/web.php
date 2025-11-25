@@ -16,9 +16,13 @@ use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\KemahasiswaanController;
 use App\Http\Controllers\Public\AkademikController;
 use App\Http\Controllers\PublicAnnouncementController;
+use App\Livewire\Admin\KaprodiManager;
+use App\Livewire\Admin\PengumumanManager;
+use App\Livewire\Akademik\DekanManager;
 use App\Livewire\Akademik\DosenManager;
 use App\Livewire\Akademik\MahasiswaManager;
 use App\Livewire\Akademik\MataKuliahManager;
+use App\Livewire\Akademik\PenugasanDosenManager;
 use App\Livewire\Dashboard;
 use App\Livewire\KRS\KartuHasilStudi;
 use App\Livewire\KRS\PengisianKrs;
@@ -36,6 +40,8 @@ use App\Livewire\Manajemen\SettingsManager;
 use App\Livewire\Manajemen\TahunAkademikManager;
 use App\Livewire\Perkuliahan\InputNilai;
 use App\Livewire\Perkuliahan\KelasManager;
+use App\Livewire\Public\PengumumanIndex;
+use App\Livewire\Public\PengumumanShow;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -64,8 +70,8 @@ Route::get('/fasilitas-kampus', [FasilitasController::class, 'index'])->name('fa
 Route::get('/akreditasi/institusi', [AkreditasiController::class, 'institusi'])->name('akreditasi.institusi');
 Route::get('/akreditasi/program-studi', [AkreditasiController::class, 'programStudi'])->name('akreditasi.prodi');
 Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
-
-
+Route::get('/pengumuman', PengumumanIndex::class)->name('pengumuman.index');
+Route::get('/pengumuman/{slug}', PengumumanShow::class)->name('pengumuman.show');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('manajemen/fakultas', FakultasManager::class)->name('fakultas.index');
@@ -89,6 +95,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('manajemen/slider', App\Livewire\Manajemen\SliderManager::class)->name('sliders.index');
     Route::get('manajemen/pmb-gelombang', PmbGelombangManager::class)->name('pmb-gelombang.index');
     Route::view('profile', 'profile')->name('profile');
+    Route::get('/admin/pengumuman', PengumumanManager::class)->name('admin.pengumuman');
+    Route::get('/admin/penugasan-dosen', PenugasanDosenManager::class)->name('admin.penugasan');
+    Route::get('/admin/kaprodi', KaprodiManager::class)->name('admin.kaprodi');
+    Route::get('/admin/dekan', DekanManager::class)->name('admin.dekan');
 });
 
 
