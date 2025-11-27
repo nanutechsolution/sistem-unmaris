@@ -1,7 +1,7 @@
 <x-layouts.public title="Penerimaan Mahasiswa Baru 2025">
 
     {{-- 1. HERO SECTION (High Conversion Focus) --}}
-    <section class="bg-unmaris-blue text-white pt-32 pb-24 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-24 relative overflow-hidden">
         {{-- Background Elements --}}
         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-[800px] h-[800px] rounded-full bg-white/5 blur-3xl"></div>

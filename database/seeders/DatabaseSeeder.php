@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Slider;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -31,6 +32,8 @@ class DatabaseSeeder extends Seeder
             DokumenSeeder::class,
             MataKuliahSeeder::class,
             SettingSeeder::class,
+            RoleSeeder::class,
+            SliderSeeder::class,
         ]);
     }
 }

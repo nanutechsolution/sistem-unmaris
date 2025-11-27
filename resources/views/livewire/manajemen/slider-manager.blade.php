@@ -6,11 +6,26 @@
         {{ session('success') }}
     </div>
     @endif
+    
+    {{-- Pesan Error Authorization --}}
+    @if (session()->has('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+        {{ session('error') }}
+    </div>
+    @endif
 
     <div class="flex justify-between items-center mb-6">
-        <button wire:click="create" class="bg-unmaris-blue text-white font-bold py-2 px-4 rounded hover:bg-blue-800 shadow-md transition">
-            + Tambah Slide Baru
-        </button>
+        {{-- PROTEKSI TOMBOL TAMBAH --}}
+        @can('manage_sliders')
+            <button wire:click="create" class="bg-unmaris-blue text-white font-bold py-2 px-4 rounded hover:bg-blue-800 shadow-md transition">
+                + Tambah Slide Baru
+            </button>
+        @else
+            <button disabled class="bg-gray-300 text-gray-500 font-bold py-2 px-4 rounded cursor-not-allowed" title="Anda tidak memiliki akses">
+                + Tambah Slide Baru (Terkunci)
+            </button>
+        @endcan
+
         <span class="text-sm text-gray-500 italic">*Urutkan tampilan berdasarkan nomor urut (Order).</span>
     </div>
 
@@ -22,25 +37,28 @@
             {{-- Preview Media (List) --}}
             <div class="h-48 bg-gray-100 relative group-hover:z-10">
                 @if($item->type == 'video')
-                    {{-- UPDATE: Tambah 'controls' dan hapus opacity --}}
                     <video class="w-full h-full object-cover bg-black" controls preload="metadata" poster="{{ $item->poster_path ? asset('storage/'.$item->poster_path) : '' }}">
                         <source src="{{ asset('storage/'.$item->file_path) }}" type="video/mp4">
                         Browser tidak support.
                     </video>
-                    {{-- Overlay icon dihapus biar tombol play asli bisa diklik --}}
-                    
                     <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded shadow pointer-events-none">VIDEO</span>
                 @else
                     <img src="{{ asset('storage/'.$item->file_path) }}" class="w-full h-full object-cover">
                     <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded shadow pointer-events-none">IMAGE</span>
                 @endif
 
-                {{-- Status Badge --}}
                 <div class="absolute top-2 left-2 z-20">
-                    <button wire:click="toggleActive({{ $item->id }})" 
-                            class="px-2 py-1 rounded text-xs font-bold shadow transition {{ $item->active ? 'bg-green-500 text-white' : 'bg-gray-400 text-white hover:bg-green-500' }}">
-                        {{ $item->active ? 'AKTIF' : 'NON-AKTIF' }}
-                    </button>
+                    {{-- PROTEKSI TOGGLE ACTIVE --}}
+                    @can('manage_sliders')
+                        <button wire:click="toggleActive({{ $item->id }})" 
+                                class="px-2 py-1 rounded text-xs font-bold shadow transition {{ $item->active ? 'bg-green-500 text-white' : 'bg-gray-400 text-white hover:bg-green-500' }}">
+                            {{ $item->active ? 'AKTIF' : 'NON-AKTIF' }}
+                        </button>
+                    @else
+                        <span class="px-2 py-1 rounded text-xs font-bold shadow cursor-not-allowed {{ $item->active ? 'bg-green-500 text-white' : 'bg-gray-400 text-white' }}">
+                            {{ $item->active ? 'AKTIF' : 'NON-AKTIF' }}
+                        </span>
+                    @endcan
                 </div>
             </div>
 
@@ -48,7 +66,9 @@
             <div class="p-4">
                 <div class="flex justify-between items-start">
                     <div>
-                        <h4 class="font-bold text-gray-800 line-clamp-1" title="{{ $item->title }}">{!! strip_tags($item->title ?? 'Tanpa Judul') !!}</h4>
+                        <h4 class="font-bold text-gray-800 line-clamp-1" title="{{ strip_tags($item->title) }}">
+                            {!! $item->title ?? 'Tanpa Judul' !!}
+                        </h4>
                         <p class="text-xs text-gray-500 mt-1 line-clamp-2">{{ $item->description ?? 'Tanpa Deskripsi' }}</p>
                     </div>
                     <div class="text-center bg-gray-100 px-2 py-1 rounded ml-2">
@@ -67,15 +87,17 @@
                     @endif
 
                     <div class="space-x-2">
-                        <button wire:click="edit({{ $item->id }})" class="text-gray-400 hover:text-unmaris-blue transition"><i class="fas fa-edit"></i></button>
-                        <button wire:click="confirmDelete({{ $item->id }})" class="text-gray-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                        {{-- PROTEKSI TOMBOL EDIT & HAPUS --}}
+                        @can('manage_sliders')
+                            <button wire:click="edit({{ $item->id }})" class="text-gray-400 hover:text-unmaris-blue transition"><i class="fas fa-edit"></i></button>
+                            <button wire:click="confirmDelete({{ $item->id }})" class="text-gray-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                        @endcan
                     </div>
                 </div>
             </div>
         </div>
         @endforeach
     </div>
-
 
     {{-- MODAL FORM --}}
     @if($showModal)
@@ -88,7 +110,7 @@
             
             <form wire:submit="save" class="p-6 space-y-6">
                 
-                {{-- Pilihan Tipe File --}}
+                {{-- Tipe Media --}}
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-2">Tipe Media</label>
                     <div class="flex space-x-4">
@@ -116,7 +138,6 @@
                     x-on:livewire-upload-progress="progress = $event.detail.progress"
                     class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition relative bg-gray-50/50"
                 >
-                    {{-- Progress Bar --}}
                     <div x-show="isUploading" class="absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-20 px-10">
                         <div class="w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
                             <div class="bg-unmaris-blue h-4 rounded-full transition-all duration-300" :style="'width: ' + progress + '%'"></div>
@@ -124,17 +145,10 @@
                         <span class="text-sm font-bold text-unmaris-blue" x-text="'Mengupload... ' + progress + '%'"></span>
                     </div>
 
-                    {{-- Loading Processing --}}
-                    <div wire:loading wire:target="file_upload" class="absolute inset-0 bg-white/80 flex flex-col items-center justify-center z-20">
-                        <svg class="animate-spin h-8 w-8 text-unmaris-blue mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        <span class="text-sm font-bold text-gray-600">Memproses file...</span>
-                    </div>
-
-                    {{-- Preview Area --}}
                     @if ($file_upload)
                         @php $tempUrl = $this->getSafeTemporaryUrl($file_upload); @endphp
                         @if($tempUrl)
-                            <p class="text-green-600 text-sm font-bold mb-2 bg-green-100 inline-block px-2 py-1 rounded"><i class="fas fa-check"></i> File Siap Disimpan</p>
+                            <p class="text-green-600 text-sm font-bold mb-2 bg-green-100 inline-block px-2 py-1 rounded"><i class="fas fa-check"></i> Siap Disimpan</p>
                             @if($type == 'image')
                                 <img src="{{ $tempUrl }}" class="h-48 mx-auto rounded shadow object-cover">
                             @elseif($type == 'video')
@@ -143,18 +157,13 @@
                                 </video>
                             @endif
                         @else
-                            <div class="text-yellow-600 py-4">
-                                <i class="fas fa-file-video text-4xl mb-2"></i>
-                                <p class="font-bold">File terpilih: {{ $file_upload->getClientOriginalName() }}</p>
-                                <p class="text-xs mt-1">Preview tidak tersedia, tapi file bisa disimpan.</p>
-                            </div>
+                            <div class="text-yellow-600 py-4"><p class="font-bold">File terpilih</p></div>
                         @endif
                     @elseif ($old_file_path)
                         <p class="text-gray-500 text-xs mb-2 font-bold uppercase tracking-wider">File Saat Ini:</p>
                         @if($type == 'image')
                             <img src="{{ asset('storage/'.$old_file_path) }}" class="h-48 mx-auto rounded shadow object-cover">
                         @else
-                            {{-- Preview Video Lama --}}
                             <video controls class="h-48 mx-auto rounded shadow bg-black w-full">
                                 <source src="{{ asset('storage/'.$old_file_path) }}" type="video/mp4">
                             </video>
@@ -162,50 +171,41 @@
                     @else
                         <div class="text-gray-400 py-8">
                             <i class="fas fa-cloud-upload-alt text-5xl mb-3 text-gray-300"></i>
-                            <p class="text-sm font-medium text-gray-600">Klik untuk pilih {{ $type == 'video' ? 'Video (MP4/M4V)' : 'Gambar (JPG/PNG)' }}</p>
-                            <p class="text-xs text-gray-400 mt-1">Max: 2GB (Video), 10MB (Gambar)</p>
+                            <p class="text-sm font-medium text-gray-600">Klik untuk pilih {{ $type == 'video' ? 'Video' : 'Gambar' }}</p>
                         </div>
                     @endif
                     
                     <input type="file" wire:model="file_upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                    @error('file_upload') <div class="absolute bottom-2 left-0 right-0 text-center"><span class="text-red-500 text-xs bg-red-100 px-2 py-1 rounded font-bold">{{ $message }}</span></div> @enderror
                 </div>
 
-                {{-- Poster Video --}}
-                @if($type == 'video')
-                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 relative">
-                    <div wire:loading wire:target="poster_upload" class="absolute inset-0 bg-white/50 flex items-center justify-center z-20 rounded-lg"><span class="text-xs font-bold text-yellow-800">Mengupload poster...</span></div>
-                    <label class="block text-sm font-bold text-yellow-800 mb-1">Cover Video (Poster)</label>
-                    <p class="text-xs text-yellow-600 mb-3">Gambar ini muncul sebelum video diputar. (Opsional)</p>
-                    <div class="flex items-start gap-4">
-                        @if ($poster_upload)
-                            @php $posterUrl = $this->getSafeTemporaryUrl($poster_upload); @endphp
-                            @if($posterUrl) <img src="{{ $posterUrl }}" class="h-20 w-32 object-cover rounded border border-yellow-300 shadow-sm"> @endif
-                        @elseif ($old_poster_path)
-                            <img src="{{ asset('storage/'.$old_poster_path) }}" class="h-20 w-32 object-cover rounded border border-yellow-300 shadow-sm">
-                        @else
-                            <div class="h-20 w-32 bg-yellow-100 rounded border border-yellow-200 flex items-center justify-center text-yellow-400"><i class="fas fa-image text-2xl"></i></div>
-                        @endif
-                        <input type="file" wire:model="poster_upload" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-white file:text-yellow-700 hover:file:bg-yellow-100 cursor-pointer">
+                {{-- INPUT JUDUL TERPISAH (User Friendly) --}}
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">Pengaturan Teks Judul</label>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 uppercase">Baris 1 (Teks Putih)</label>
+                            <input type="text" wire:model="title_1" placeholder="Contoh: Masa Depan" class="w-full border-gray-300 rounded-md shadow-sm mt-1 focus:ring-unmaris-blue">
+                            @error('title_1') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+                        
+                        <div>
+                            <label class="text-xs font-bold text-unmaris-yellow uppercase bg-unmaris-blue px-2 py-0.5 rounded inline-block">Baris 2 (Teks Kuning)</label>
+                            <input type="text" wire:model="title_2" placeholder="Contoh: Dimulai Di Sini" class="w-full border-gray-300 rounded-md shadow-sm mt-1 focus:ring-unmaris-yellow focus:border-unmaris-yellow">
+                            <p class="text-[10px] text-gray-400 mt-1">*Teks ini akan otomatis diberi warna kuning.</p>
+                        </div>
                     </div>
                 </div>
-                @endif
 
-                {{-- Judul & Order --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">Judul Utama (HTML Support)</label>
-                        <input type="text" wire:model="title" placeholder="Contoh: Masa Depan <br> Dimulai Disini" class="w-full border-gray-300 rounded-md shadow-sm mt-1 focus:ring-unmaris-blue">
+                        <label class="block text-sm font-bold text-gray-700">Deskripsi Singkat</label>
+                        <textarea wire:model="description" rows="3" class="w-full border-gray-300 rounded-md shadow-sm mt-1 focus:ring-unmaris-blue"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700">Urutan (Order)</label>
                         <input type="number" wire:model="order" class="w-full border-gray-300 rounded-md shadow-sm mt-1 focus:ring-unmaris-blue">
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-bold text-gray-700">Deskripsi Singkat</label>
-                    <textarea wire:model="description" rows="2" class="w-full border-gray-300 rounded-md shadow-sm mt-1 focus:ring-unmaris-blue"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -223,7 +223,7 @@
                     <button type="button" wire:click="$set('showModal', false)" class="bg-gray-200 px-4 py-2 rounded-lg font-bold hover:bg-gray-300">Batal</button>
                     <button type="submit" class="bg-unmaris-blue text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-800 flex items-center shadow-md" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="save">Simpan Slider</span>
-                        <span wire:loading wire:target="save"><svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menyimpan...</span>
+                        <span wire:loading wire:target="save">Menyimpan...</span>
                     </button>
                 </div>
             </form>

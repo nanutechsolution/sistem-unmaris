@@ -6,7 +6,6 @@ use App\Models\Fakultas;
 use App\Models\ProgramStudi;
 use App\Models\Post;
 use App\Models\Slider;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -21,17 +20,17 @@ class HomeController extends Controller
         $faculties = Fakultas::with('programStudis')->get();
 
         // 3. Berita Terbaru (Hanya yang Published)
-        $latestPosts = Post::where('status', 'Published')
+        $berita_terbaru = Post::where('status', 'Published')
             ->whereNotNull('published_at')
             ->orderBy('published_at', 'desc')
             ->take(3) // Ambil 3 berita terbaru
             ->get();
-        $terbaru = \App\Models\Pengumuman::tayang()
+        $pengumuman_terbaru = \App\Models\Pengumuman::tayang()
             ->urutkan()
-            ->take(3)
+            ->take(4)
             ->get();
         $sliders = Slider::active()->get();
 
-        return view('public.home', compact('totalProdi', 'totalFakultas', 'faculties', 'latestPosts', 'terbaru', 'sliders'));
+        return view('public.home', compact('totalProdi', 'totalFakultas', 'faculties', 'berita_terbaru', 'pengumuman_terbaru', 'sliders'));
     }
 }

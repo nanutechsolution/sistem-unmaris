@@ -260,117 +260,251 @@
         </div>
     </section>
 
-    {{-- 3. PROGRAM FINDER (DINAMIS dari Tabel Fakultas & Prodi) --}}
+    {{-- 3. PROGRAM FINDER (IMPROVED UI) --}}
     <section class="py-24 bg-white relative overflow-hidden">
+        {{-- Dekorasi Background Abstrak --}}
         <div
-            class="absolute left-0 top-1/4 w-64 h-64 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70">
+            class="absolute left-0 top-1/4 w-96 h-96 bg-blue-50/50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse">
         </div>
-        <div
-            class="absolute right-0 bottom-1/4 w-64 h-64 bg-yellow-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70">
-        </div>
+        <div class="absolute right-0 bottom-1/4 w-96 h-96 bg-yellow-50/50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse"
+            style="animation-delay: 2s"></div>
 
         <div class="max-w-7xl mx-auto px-6 relative z-10">
+
+            {{-- Header --}}
             <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-unmaris-blue font-bold text-sm tracking-widest uppercase mb-2">Akademik</h2>
                 <h2 class="text-4xl font-extrabold text-gray-900 mb-4">
-                    Temukan <span class="text-unmaris-blue">Passion</span>-mu
+                    Temukan <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-unmaris-blue to-blue-600">Masa
+                        Depanmu</span>
                 </h2>
                 <p class="text-gray-600 text-lg">
-                    Jelajahi {{ $totalProdi }} Program Studi yang tersebar di {{ $totalFakultas }} Fakultas unggulan
-                    kami.
+                    Pilih dari {{ $totalProdi ?? 'berbagai' }} Program Studi unggulan yang tersebar di
+                    {{ $totalFakultas ?? 'beberapa' }} Fakultas kami.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {{-- Grid Fakultas --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($faculties as $fakultas)
                     @php
+                        // Logic Warna & Icon per Fakultas
                         $icon = 'fas fa-university';
-                        $colorClass =
-                            'text-unmaris-blue bg-blue-100 group-hover:bg-unmaris-blue group-hover:text-white';
+                        $themeColor = 'text-unmaris-blue bg-blue-50 border-blue-100 group-hover:border-unmaris-blue';
+                        $iconBg = 'bg-white text-unmaris-blue';
+
                         if (Str::contains($fakultas->nama_fakultas, 'Teknik', true)) {
                             $icon = 'fa-solid fa-laptop-code';
-                            $colorClass = 'text-red-600 bg-red-100 group-hover:bg-red-600 group-hover:text-white';
+                            $themeColor = 'text-red-700 bg-red-50 border-red-100 group-hover:border-red-500';
+                            $iconBg = 'bg-white text-red-600';
                         } elseif (Str::contains($fakultas->nama_fakultas, ['Ekonomi', 'Bisnis'], true)) {
                             $icon = 'fa-solid fa-chart-line';
-                            $colorClass =
-                                'text-yellow-700 bg-yellow-100 group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue';
+                            $themeColor =
+                                'text-yellow-800 bg-yellow-50 border-yellow-100 group-hover:border-unmaris-yellow';
+                            $iconBg = 'bg-white text-yellow-600';
                         } elseif (Str::contains($fakultas->nama_fakultas, ['Kesehatan'], true)) {
                             $icon = 'fa-solid fa-hospital';
-                            $colorClass = 'text-green-700 bg-green-100 group-hover:bg-green-700 group-hover:text-white';
+                            $themeColor = 'text-green-800 bg-green-50 border-green-100 group-hover:border-green-500';
+                            $iconBg = 'bg-white text-green-600';
                         } elseif (Str::contains($fakultas->nama_fakultas, ['Guru', 'Pendidikan'], true)) {
                             $icon = 'fa-solid fa-graduation-cap';
-
-                            $colorClass =
-                                'text-blue-700 bg-blue-100 group-hover:bg-unmaris-blue group-hover:text-white';
+                            $themeColor = 'text-blue-800 bg-blue-50 border-blue-100 group-hover:border-blue-500';
+                            $iconBg = 'bg-white text-blue-600';
                         }
-
                     @endphp
 
                     <div
-                        class="group relative bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-lg hover:shadow-2xl transition duration-300 flex flex-col h-full">
+                        class="group relative flex flex-col bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 h-full overflow-hidden transform hover:-translate-y-2">
+
+                        {{-- Watermark Icon (Background) --}}
                         <div
-                            class="w-14 h-14 {{ $colorClass }} rounded-xl flex items-center justify-center text-2xl mb-6 transition">
-                            <i class="{{ $icon }}"></i>
+                            class="absolute -top-6 -right-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500 transform rotate-12">
+                            <i class="{{ $icon }} text-9xl"></i>
                         </div>
 
-                        <h3
-                            class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 group-hover:text-unmaris-blue transition">
-                            {{ $fakultas->nama_fakultas }}
-                        </h3>
+                        {{-- Card Body --}}
+                        <div class="p-8 flex-1 flex flex-col relative">
 
-                        {{-- List Prodi --}}
-                        <ul class="space-y-2 mb-6 flex-grow overflow-hidden">
-                            @forelse($fakultas->programStudis as $prodi)
-                                <li class="flex items-start text-sm text-gray-600 line-clamp-2">
-                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-0.5"></i>
-                                    <span><span class="font-bold">{{ $prodi->jenjang }}</span>
-                                        {{ $prodi->nama_prodi }}</span>
-                                </li>
-                            @empty
-                                <li class="text-sm text-gray-400 italic">Belum ada program studi.</li>
-                            @endforelse
-                        </ul>
+                            {{-- Icon Header --}}
+                            <div
+                                class="w-16 h-16 {{ $themeColor }} border rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm group-hover:scale-110 transition duration-500">
+                                <i class="{{ $icon }}"></i>
+                            </div>
 
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-unmaris-blue transition">
+                                {{ $fakultas->nama_fakultas }}
+                            </h3>
+
+                            <div
+                                class="w-12 h-1 bg-gray-200 rounded-full mb-6 group-hover:bg-unmaris-yellow transition duration-500">
+                            </div>
+
+                            {{-- List Prodi --}}
+                            <div class="space-y-3 flex-1">
+                                @forelse($fakultas->programStudis as $prodi)
+                                    <a href="{{ route('public.fakultas.prodi.show', $prodi->id) }}"
+                                        class="flex items-center group/item p-2 -mx-2 rounded-lg hover:bg-gray-50 transition cursor-pointer">
+                                        <div
+                                            class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-500 group-hover/item:bg-unmaris-blue group-hover/item:text-white transition mr-3">
+                                            {{ $prodi->jenjang }}
+                                        </div>
+                                        <span
+                                            class="text-sm text-gray-600 font-medium group-hover/item:text-gray-900 group-hover/item:translate-x-1 transition-transform">
+                                            {{ $prodi->nama_prodi }}
+                                        </span>
+                                    </a>
+                                @empty
+                                    <div
+                                        class="text-sm text-gray-400 italic flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <i class="fas fa-info-circle mr-2"></i> Belum ada prodi terdaftar.
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+
+                        {{-- Footer Action --}}
                         <a href="{{ route('public.fakultas.show', $fakultas->id) }}"
-                            class="inline-flex items-center text-unmaris-blue font-bold text-sm group-hover:text-unmaris-yellow transition mt-auto">
-                            Lihat Detail Fakultas <i class="fas fa-arrow-right ml-2"></i>
+                            class="block p-4 bg-gray-50 border-t border-gray-100 text-center text-sm font-bold text-gray-500 hover:bg-unmaris-blue hover:text-white transition duration-300 group/btn">
+                            Jelajahi Fakultas
+                            <i
+                                class="fas fa-arrow-right ml-2 transform group-hover/btn:translate-x-1 transition-transform"></i>
                         </a>
                     </div>
                 @endforeach
             </div>
+
         </div>
     </section>
 
 
-    {{-- 4. CTA & LATEST NEWS (DINAMIS dari Tabel Pengumuman) --}}
-    <section class="py-24 bg-unmaris-blue text-white relative overflow-hidden">
-        <div
-            class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10">
+    {{-- 5. BERITA TERBARU SECTION --}}
+    <section class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6">
+
+            {{-- Header Section --}}
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                <div>
+                    <h2 class="text-unmaris-blue font-bold text-sm tracking-widest uppercase mb-2">Kabar Kampus</h2>
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-gray-900">Berita & Artikel Terbaru</h3>
+                </div>
+                <a href="{{ route('public.posts.index') }}"
+                    class="group inline-flex items-center font-bold text-unmaris-blue hover:text-unmaris-yellow transition">
+                    Lihat Semua Berita
+                    <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            {{-- Grid Berita --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse($berita_terbaru as $post)
+                    <article
+                        class="group flex flex-col h-full bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden hover:-translate-y-1">
+
+                        {{-- Thumbnail --}}
+                        <a href="{{ route('public.posts.show', $post->slug) }}"
+                            class="relative h-48 overflow-hidden block">
+                            @if ($post->featured_image)
+                                <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
+                                    class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                            @else
+                                <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                    <i class="far fa-image text-4xl"></i>
+                                </div>
+                            @endif
+
+                            {{-- Badge Kategori --}}
+                            @if ($post->category)
+                                <span
+                                    class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-bold text-unmaris-blue uppercase shadow-sm">
+                                    {{ $post->category->name }}
+                                </span>
+                            @endif
+                        </a>
+
+                        {{-- Content --}}
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="flex items-center text-xs text-gray-500 mb-3 space-x-3">
+                                <span class="flex items-center"><i
+                                        class="far fa-calendar-alt mr-1.5 text-unmaris-yellow"></i>
+                                    {{ $post->published_at->format('d M Y') }}</span>
+                                @if ($post->author)
+                                    <span class="flex items-center"><i
+                                            class="far fa-user mr-1.5 text-unmaris-yellow"></i>
+                                        {{ $post->author->name }}</span>
+                                @endif
+                            </div>
+
+                            <h3
+                                class="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-unmaris-blue transition line-clamp-2">
+                                <a href="{{ route('public.posts.show', $post->slug) }}">
+                                    {{ $post->title }}
+                                </a>
+                            </h3>
+
+                            <p class="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow leading-relaxed">
+                                {{ Str::limit(strip_tags($post->content), 120) }}
+                            </p>
+
+                            <div class="pt-4 border-t border-gray-50 mt-auto">
+                                <a href="{{ route('public.posts.show', $post->slug) }}"
+                                    class="inline-flex items-center text-sm font-bold text-unmaris-blue hover:text-unmaris-yellow transition">
+                                    Baca Selengkapnya <i class="fas fa-long-arrow-alt-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                @empty
+                    <div
+                        class="col-span-full text-center py-16 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                        <i class="far fa-newspaper text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500">Belum ada berita terbaru.</p>
+                    </div>
+                @endforelse
+            </div>
+
         </div>
+    </section>
+
+
+    {{-- 6. PENGUMUMAN & CTA (INFO PENTING) --}}
+    <section class="py-24 bg-unmaris-blue text-white relative overflow-hidden">
+        {{-- Pattern Background --}}
+        <div class="absolute top-0 left-0 w-full h-full opacity-10"
+            style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
 
         <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
 
-            {{-- Left: CTA Text (Tetap Sama) --}}
+            {{-- KOLOM KIRI: CTA PMB (Ajakan Bertindak) --}}
             <div>
+                <div
+                    class="inline-block px-3 py-1 rounded-full bg-unmaris-yellow/20 border border-unmaris-yellow/30 text-unmaris-yellow text-xs font-bold uppercase tracking-wider mb-4">
+                    Penerimaan Mahasiswa Baru
+                </div>
                 <h2 class="text-4xl font-extrabold mb-6 leading-tight">
-                    Jangan Lewatkan <br> <span class="text-unmaris-yellow">Kesempatan Emas Ini.</span>
+                    Masa Depan Gemilang <br> <span class="text-unmaris-yellow">Dimulai Di Sini.</span>
                 </h2>
                 <p class="text-blue-100 text-lg mb-8 leading-relaxed">
-                    Dapatkan beasiswa prestasi hingga 100% untuk pendaftar gelombang pertama. Konsultasikan minat
-                    bakatmu dengan tim admisi kami sekarang.
+                    Bergabunglah dengan komunitas akademis yang dinamis. Dapatkan beasiswa prestasi hingga 100% untuk
+                    pendaftar gelombang pertama.
                 </p>
                 <div class="flex flex-wrap gap-4">
+                    <a href="/pmb"
+                        class="px-8 py-3 bg-unmaris-yellow text-unmaris-blue font-bold rounded-full hover:bg-white hover:scale-105 transition duration-300 shadow-lg shadow-yellow-500/20 flex items-center gap-2">
+                        <i class="fas fa-user-plus"></i> Daftar Sekarang
+                    </a>
                     <a href="/kontak"
-                        class="px-8 py-3 bg-white text-unmaris-blue font-bold rounded-full hover:bg-gray-100 transition shadow-lg">
+                        class="px-8 py-3 bg-transparent border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition">
                         Hubungi Kami
                     </a>
                 </div>
             </div>
 
-            {{-- Right: Latest News Snippet (UPDATED) --}}
+            {{-- KOLOM KANAN: WIDGET PENGUMUMAN TERBARU --}}
             <div class="relative">
                 {{-- Hiasan Background Miring --}}
                 <div
-                    class="absolute top-4 -right-4 w-full h-full bg-unmaris-yellow rounded-2xl transform rotate-3 opacity-20 pointer-events-none">
+                    class="absolute top-4 -right-4 w-full h-full bg-unmaris-yellow rounded-2xl transform rotate-2 opacity-20 pointer-events-none">
                 </div>
 
                 <div class="bg-white text-gray-800 rounded-2xl p-8 shadow-2xl relative">
@@ -378,7 +512,7 @@
                     {{-- Header Widget --}}
                     <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                         <h3 class="font-bold text-lg text-unmaris-blue flex items-center">
-                            <i class="fas fa-bullhorn mr-2"></i> Kabar Kampus
+                            <i class="fas fa-bullhorn mr-2"></i> Papan Pengumuman
                         </h3>
                         <a href="{{ route('public.pengumuman.index') }}"
                             class="text-xs font-bold text-unmaris-yellow hover:text-unmaris-blue transition">
@@ -386,59 +520,50 @@
                         </a>
                     </div>
 
-                    {{-- List Berita --}}
-                    <div class="space-y-6">
-                        @forelse($terbaru as $item)
-                            {{-- Ganti $latestPosts jadi $terbaru --}}
-                            <a href="{{ route('public.pengumuman.show', $item->slug) }}"
-                                class="flex gap-4 group items-start relative">
+                    {{-- List Pengumuman --}}
+                    {{-- Pastikan controller mengirim variabel $pengumuman_terbaru --}}
+                    <div class="space-y-4">
+                        @if (isset($pengumuman_terbaru) && count($pengumuman_terbaru) > 0)
+                            @foreach ($pengumuman_terbaru as $item)
+                                <a href="{{ route('public.pengumuman.show', $item->slug) }}"
+                                    class="flex gap-4 group items-start relative p-3 rounded-xl hover:bg-gray-50 transition border border-transparent hover:border-gray-100">
 
-                                {{-- Gambar Thumbnail --}}
-                                <div class="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden relative">
-                                    @if ($item->thumbnail)
-                                        <img src="{{ asset('storage/' . $item->thumbnail) }}"
-                                            class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                                    @else
-                                        {{-- Fallback Image --}}
-                                        <div
-                                            class="w-full h-full bg-unmaris-blue/10 flex items-center justify-center text-unmaris-blue">
-                                            <i class="far fa-image text-xl"></i>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                {{-- Info Berita --}}
-                                <div class="flex-1 min-w-0"> {{-- min-w-0 fix text overflow --}}
-                                    <div class="flex justify-between items-start">
+                                    {{-- Tanggal (Kotak Kecil) --}}
+                                    <div
+                                        class="flex-shrink-0 w-16 h-16 bg-blue-50 rounded-lg flex flex-col items-center justify-center text-unmaris-blue border border-blue-100 group-hover:bg-unmaris-blue group-hover:text-white transition duration-300">
                                         <span
-                                            class="text-[10px] font-bold text-unmaris-blue uppercase tracking-wide mb-1 block">
-                                            {{ $item->kategori }}
-                                        </span>
-
-                                        {{-- Ikon Pinned --}}
-                                        @if ($item->is_pinned)
-                                            <i class="fas fa-thumbtack text-red-500 text-xs transform rotate-45"
-                                                title="Disematkan"></i>
-                                        @endif
+                                            class="text-xl font-bold leading-none">{{ $item->published_at->format('d') }}</span>
+                                        <span
+                                            class="text-[10px] uppercase font-bold">{{ $item->published_at->format('M') }}</span>
                                     </div>
 
-                                    <h4
-                                        class="font-bold text-sm group-hover:text-unmaris-blue transition leading-snug line-clamp-2">
-                                        {{ $item->judul }}
-                                    </h4>
+                                    {{-- Info --}}
+                                    <div class="flex-1 min-w-0 pt-1">
+                                        <div class="flex justify-between items-start">
+                                            <span
+                                                class="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-1 block">
+                                                {{ $item->kategori }}
+                                            </span>
 
-                                    <p class="text-xs text-gray-400 mt-2 flex items-center">
-                                        <i class="far fa-clock mr-1"></i>
-                                        {{ $item->published_at ? $item->published_at->diffForHumans() : '-' }}
-                                    </p>
-                                </div>
-                            </a>
-                        @empty
+                                            @if ($item->is_pinned)
+                                                <i class="fas fa-thumbtack text-red-500 text-xs transform rotate-45"
+                                                    title="Penting/Disematkan"></i>
+                                            @endif
+                                        </div>
+
+                                        <h4
+                                            class="font-bold text-sm text-gray-800 group-hover:text-unmaris-blue transition leading-snug line-clamp-2">
+                                            {{ $item->judul }}
+                                        </h4>
+                                    </div>
+                                </a>
+                            @endforeach
+                        @else
                             <div class="text-center py-8">
-                                <i class="far fa-newspaper text-gray-300 text-4xl mb-2 block"></i>
-                                <p class="text-gray-500 text-sm italic">Belum ada pengumuman terbaru.</p>
+                                <i class="far fa-bell-slash text-gray-300 text-4xl mb-2 block"></i>
+                                <p class="text-gray-500 text-sm italic">Belum ada pengumuman baru.</p>
                             </div>
-                        @endforelse
+                        @endif
                     </div>
 
                 </div>

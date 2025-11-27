@@ -1,6 +1,6 @@
 <div>
     {{-- HEADER SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-28 pb-16 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-16 relative overflow-hidden">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
 
