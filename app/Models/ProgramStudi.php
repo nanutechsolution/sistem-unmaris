@@ -28,8 +28,6 @@ class ProgramStudi extends Model
         return $this->belongsTo(Fakultas::class);
     }
 
-
-
     /**
      * Relasi ke Dosen (Prodi ini memiliki banyak dosen).
      */
@@ -38,14 +36,31 @@ class ProgramStudi extends Model
         return $this->hasMany(Dosen::class);
     }
 
-   /**
+    /**
      * Mengambil Kaprodi yang sedang menjabat saat ini.
      * Logika: Cari yang kolom 'selesai'-nya masih NULL.
      */
     public function kaprodiAktif()
     {
         return $this->hasOne(ProgramStudiKaprodi::class)
-                    ->whereNull('selesai')
-                    ->latest('mulai'); // Ambil yang paling baru dilantik (jaga-jaga)
+            ->whereNull('selesai')
+            ->latest('mulai');
+    }
+
+    // Relasi ke Kaprodi (History)
+    public function kaprodiHistories()
+    {
+        return $this->hasMany(ProgramStudiKaprodi::class, 'program_studi_id');
+    }
+
+    public function mahasiswas()
+    {
+        return $this->hasMany(Mahasiswa::class, 'program_studi_id');
+    }
+
+    // Relasi ke Keuangan (Tarif Biaya Kuliah)
+    public function financeRates()
+    {
+        return $this->hasMany(FinanceRate::class, 'program_studi_id');
     }
 }
