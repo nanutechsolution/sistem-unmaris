@@ -1,56 +1,174 @@
 <x-layouts.public title="Beranda — Universitas Stella Maris Sumba">
 
-    {{-- 1. HERO SECTION (Tetap Sama - Visual Hook) --}}
-    <section class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <video autoplay loop muted playsinline
-                poster="https://placehold.co/1920x1080/003366/FFFFFF/png?text=Campus+Life"
-                class="w-full h-full object-cover">
-                <source src="{{ asset('video/video-1.mp4') }}" type="video/mp4">
-            </video>
-            <div class="absolute inset-0 bg-gradient-to-b from-unmaris-blue/80 via-unmaris-blue/60 to-unmaris-blue/90">
+    {{-- 1. HERO SECTION (DYNAMIC SLIDER) --}}
+    <section class="relative h-screen min-h-[600px] overflow-hidden bg-gray-900" x-data="heroSlider({{ $sliders->count() }})"
+        x-init="initSlider()">
+
+        {{-- LOOPING SLIDE --}}
+        @foreach ($sliders as $index => $slide)
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                x-show="active === {{ $index }}" x-transition:enter="transition ease-out duration-1000"
+                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-1000" x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0">
+
+                {{-- A. MEDIA LAYER --}}
+                <div class="absolute inset-0 z-0">
+                    @if ($slide->type === 'video')
+                        <video autoplay loop muted playsinline
+                            poster="{{ $slide->poster_path ? Storage::url($slide->poster_path) : '' }}"
+                            class="w-full h-full object-cover">
+                            <source src="{{ $slide->media_url }}" type="video/mp4">
+                        </video>
+                    @else
+                        <img src="{{ $slide->media_url }}" alt="{{ $slide->title }}" class="w-full h-full object-cover">
+                    @endif
+
+                    {{-- Overlay Gradient (Dipertebal di atas agar Navbar terbaca) --}}
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-unmaris-blue/90 via-unmaris-blue/40 to-unmaris-blue/90">
+                    </div>
+                </div>
+
+                {{-- B. CONTENT LAYER --}}
+                {{-- PERBAIKAN: Tambah pt-20 agar konten turun sedikit, tidak ketabrak Navbar Fixed --}}
+                <div class="relative z-10 flex h-full items-center justify-center text-center px-4 pt-20">
+                    <div class="max-w-5xl mx-auto">
+
+                        {{-- Badge --}}
+                        <div x-show="active === {{ $index }}"
+                            x-transition:enter="transition ease-out duration-700 delay-300"
+                            x-transition:enter-start="opacity-0 -translate-y-4"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-unmaris-yellow text-sm font-bold tracking-wide mb-6">
+                            <span class="relative flex h-3 w-3">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-unmaris-yellow opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-unmaris-yellow"></span>
+                            </span>
+                            UNMARIS UPDATE
+                        </div>
+
+                        {{-- Title --}}
+                        <h1 x-show="active === {{ $index }}"
+                            x-transition:enter="transition ease-out duration-700 delay-500"
+                            x-transition:enter-start="opacity-0 translate-y-8"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            class="text-5xl md:text-7xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                            {!! $slide->title ?? 'Universitas Stella Maris' !!}
+                        </h1>
+
+                        {{-- Description --}}
+                        <p x-show="active === {{ $index }}"
+                            x-transition:enter="transition ease-out duration-700 delay-700"
+                            x-transition:enter-start="opacity-0 translate-y-8"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-10 font-light">
+                            {{ $slide->description }}
+                        </p>
+
+                        {{-- Button --}}
+                        @if ($slide->button_text)
+                            <div x-show="active === {{ $index }}"
+                                x-transition:enter="transition ease-out duration-700 delay-900"
+                                x-transition:enter-start="opacity-0 translate-y-8"
+                                x-transition:enter-end="opacity-100 translate-y-0">
+                                <a href="{{ $slide->button_url ?? '#' }}"
+                                    class="px-8 py-4 bg-unmaris-yellow text-unmaris-blue font-bold text-lg rounded-full hover:bg-yellow-400 hover:scale-105 transition duration-300 shadow-lg shadow-yellow-500/20 inline-block">
+                                    {{ $slide->button_text }}
+                                </a>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
             </div>
-        </div>
+        @endforeach
 
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-16" x-data="{ show: false }"
-            x-init="setTimeout(() => show = true, 200)">
-
-            <div x-show="show" x-transition:enter="transition ease-out duration-700"
-                x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-unmaris-yellow text-sm font-bold tracking-wide mb-6">
-                <span class="relative flex h-3 w-3">
-                    <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-unmaris-yellow opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-unmaris-yellow"></span>
-                </span>
-                PENDAFTARAN MAHASISWA BARU 2026 DIBUKA
+        {{-- NAVIGATION DOTS --}}
+        @if ($sliders->count() > 1)
+            <div class="absolute bottom-10 left-0 right-0 z-20 flex justify-center gap-3">
+                @foreach ($sliders as $index => $slide)
+                    <button @click="goToSlide({{ $index }})"
+                        class="h-3 rounded-full transition-all duration-300"
+                        :class="active === {{ $index }} ? 'bg-unmaris-yellow w-8' : 'bg-white/50 hover:bg-white w-3'">
+                    </button>
+                @endforeach
             </div>
-
-            <h1 x-show="show" x-transition:enter="transition ease-out duration-700 delay-200"
-                x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0"
-                class="text-5xl md:text-7xl font-extrabold text-white tracking-tight leading-tight mb-6">
-                Masa Depan <br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-unmaris-yellow to-yellow-200">Dimulai
-                    Di Sini.</span>
-            </h1>
-
-            <p x-show="show" x-transition:enter="transition ease-out duration-700 delay-400"
-                x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0"
-                class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto mb-10 font-light">
-                Bergabunglah dengan universitas berbasis teknologi dan bisnis yang unggul, beriman, dan berdaya saing
-                global.
-            </p>
-
-            <div x-show="show" x-transition:enter="transition ease-out duration-700 delay-600"
-                x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0"
-                class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/pmb"
-                    class="px-8 py-4 bg-unmaris-yellow text-unmaris-blue font-bold text-lg rounded-full hover:bg-yellow-400 hover:scale-105 transition duration-300 shadow-lg shadow-yellow-500/20">
-                    Daftar Sekarang
-                </a>
-            </div>
-        </div>
+        @endif
     </section>
+
+    {{-- JANGAN LUPA: SCRIPT ALPINE HARUS ADA DI SINI ATAU DI LAYOUT --}}
+    @push('scripts')
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('heroSlider', (totalSlides) => ({
+                    active: 0,
+                    total: totalSlides,
+                    interval: null,
+                    initSlider() {
+                        if (this.total > 1) {
+                            this.startInterval();
+                        }
+                    },
+                    next() {
+                        this.active = (this.active + 1) % this.total;
+                    },
+                    goToSlide(index) {
+                        this.active = index;
+                        this.resetInterval();
+                    },
+                    startInterval() {
+                        this.interval = setInterval(() => {
+                            this.next();
+                        }, 7000);
+                    },
+                    resetInterval() {
+                        clearInterval(this.interval);
+                        this.startInterval();
+                    }
+                }))
+            })
+        </script>
+    @endpush
+
+    {{-- SCRIPT LOGIC SLIDER (Taruh di bawah section atau di stack scripts) --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('heroSlider', (totalSlides) => ({
+                active: 0,
+                total: totalSlides,
+                interval: null,
+
+                initSlider() {
+                    // Hanya auto-play jika slide lebih dari 1
+                    if (this.total > 1) {
+                        this.startInterval();
+                    }
+                },
+
+                next() {
+                    this.active = (this.active + 1) % this.total;
+                },
+
+                goToSlide(index) {
+                    this.active = index;
+                    this.resetInterval(); // Reset timer kalau user klik manual agar tidak bentrok
+                },
+
+                startInterval() {
+                    this.interval = setInterval(() => {
+                        this.next();
+                    }, 7000); // Ganti slide setiap 7 Detik
+                },
+
+                resetInterval() {
+                    clearInterval(this.interval);
+                    this.startInterval();
+                }
+            }))
+        })
+    </script>
 
     {{-- 2. BENTO GRID STATS (Data Dinamis dari Controller) --}}
     <section class="py-24 bg-gray-50 relative">
@@ -87,7 +205,7 @@
                         <p class="text-xs sm:text-sm text-blue-200 max-w-full sm:max-w-xs">
                             Diakui oleh BAN-PT sebagai institusi pendidikan berkualitas tinggi.
                         </p>
-                        <a href="{{ route('akreditasi.institusi') }}">
+                        <a href="{{ route('public.akreditasi.institusi') }}">
                             <div
                                 class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue transition duration-300 self-end sm:self-auto">
                                 <i
@@ -212,7 +330,7 @@
                             @endforelse
                         </ul>
 
-                        <a href="{{ route('fakultas.show', $fakultas->id) }}"
+                        <a href="{{ route('public.fakultas.show', $fakultas->id) }}"
                             class="inline-flex items-center text-unmaris-blue font-bold text-sm group-hover:text-unmaris-yellow transition mt-auto">
                             Lihat Detail Fakultas <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -262,7 +380,7 @@
                         <h3 class="font-bold text-lg text-unmaris-blue flex items-center">
                             <i class="fas fa-bullhorn mr-2"></i> Kabar Kampus
                         </h3>
-                        <a href="{{ route('pengumuman.index') }}"
+                        <a href="{{ route('public.pengumuman.index') }}"
                             class="text-xs font-bold text-unmaris-yellow hover:text-unmaris-blue transition">
                             LIHAT SEMUA
                         </a>
@@ -272,7 +390,7 @@
                     <div class="space-y-6">
                         @forelse($terbaru as $item)
                             {{-- Ganti $latestPosts jadi $terbaru --}}
-                            <a href="{{ route('pengumuman.show', $item->slug) }}"
+                            <a href="{{ route('public.pengumuman.show', $item->slug) }}"
                                 class="flex gap-4 group items-start relative">
 
                                 {{-- Gambar Thumbnail --}}

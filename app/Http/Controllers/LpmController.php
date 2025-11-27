@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\QualityDocument;
 use App\Models\QualityAnnouncement;
+use App\Models\Page; // Import Model Page
 
 class LpmController extends Controller
 {
@@ -46,7 +47,7 @@ class LpmController extends Controller
         return view('public.lpm.announcement', compact('ann'));
     }
 
-      /**
+    /**
      * Menampilkan halaman daftar semua pengumuman (Arsip Pengumuman).
      * Mendukung fitur pencarian melalui parameter 'q'.
      */
@@ -59,35 +60,37 @@ class LpmController extends Controller
             $search = $request->q;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%");
+                ->orWhere('content', 'like', "%{$search}%");
             });
         }
 
         $announcements = $query->orderBy('published_at', 'desc')
-                               ->paginate(12)
-                               ->withQueryString();
+                                ->paginate(12)
+                                ->withQueryString();
 
         return view('public.lpm.announcements', compact('announcements'));
     }
 
     /**
-     * Menampilkan halaman Profil LPM (Visi, Misi, Struktur).
-     * Diakses melalui tombol "Selengkapnya tentang Visi & Misi".
+     * Menampilkan halaman Profil LPM.
+     * Mengambil data dari tabel 'pages' dengan slug 'lpm-visi-misi' (default)
+     * atau halaman LPM lainnya.
      */
-    public function profile()
+    public function profile($slug = 'lpm-visi-misi')
     {
-        $profileData = [
-            'visi' => 'Menjadi pusat unggulan penjaminan mutu internal yang terdepan dalam mewujudkan Budaya Mutu di seluruh Tri Dharma Perguruan Tinggi pada tahun 2030.',
-            'misi' => [
-                'Menetapkan standar mutu yang melampaui Standar Nasional Pendidikan Tinggi (SN Dikti).',
-                'Mengkoordinasikan pelaksanaan, pengendalian, dan evaluasi (AMI) mutu secara konsisten dan objektif.',
-                'Mendorong perbaikan berkelanjutan (Continuous Improvement) berdasarkan hasil audit dan evaluasi kinerja.',
-                'Melakukan sosialisasi dan internalisasi budaya mutu kepada seluruh sivitas akademika UNMARIS.',
-                'Meningkatkan kompetensi auditor mutu internal secara berkala.'
-            ],
-            'struktur_img' => 'https://placehold.co/800x400/003366/FFD700?text=Bagan+Struktur+Organisasi+LPM',
-        ];
+        // 1. Ambil Halaman LPM yang diminta (Default: lpm-visi-misi)
+        $page = Page::where('slug', $slug)
+            ->where('status', 'Published')
+            ->firstOrFail();
 
-        return view('public.lpm.profile', compact('profileData'));
+        // 2. Ambil daftar halaman LPM lain untuk Sidebar Navigasi
+        // Filter: Ambil semua page yang slug-nya diawali 'lpm-'
+        $sidebarPages = Page::where('slug', 'like', 'lpm-%')
+            ->where('status', 'Published')
+            ->where('id', '!=', $page->id) // Kecuali halaman yang sedang dibuka
+            ->orderBy('title', 'asc')
+            ->get();
+
+        return view('public.lpm.profile', compact('page', 'sidebarPages'));
     }
 }

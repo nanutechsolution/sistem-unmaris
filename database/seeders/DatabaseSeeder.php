@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             DokumenKategoriSeeder::class,
             DokumenSeeder::class,
             MataKuliahSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

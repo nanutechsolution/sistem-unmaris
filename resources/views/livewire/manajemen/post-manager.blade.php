@@ -1,6 +1,12 @@
 <div>
     <x-slot:header>Manajemen Berita & Pengumuman</x-slot:header>
 
+    @if (session()->has('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="mb-4">
         <button wire:click="openCreateModal" class="bg-unmaris-yellow text-unmaris-blue font-bold py-2 px-4 rounded hover:bg-yellow-400">
             + Tulis Berita Baru
@@ -92,19 +98,25 @@
                             </div>
                         </div>
 
-                        {{-- TRIX EDITOR --}}
-                        <div wire:ignore>
-                            <label for="content" class="block text-sm font-medium text-gray-700">Konten</label>
-
-                            <input id="content" type="hidden" wire:model="content">
-
-                            <trix-editor input="content" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-white">
-                            </trix-editor>
+                        {{-- TRIX EDITOR (FIXED) --}}
+                        <div 
+                            wire:ignore 
+                            x-data="{ trixContent: @entangle('content').live }"
+                            x-init="$nextTick(() => { if ($refs.trix.editor) { $refs.trix.editor.loadHTML(trixContent); } });"
+                            x-on:refresh-trix.window="$refs.trix.editor.loadHTML($event.detail.content)"
+                            class="space-y-1"
+                        >
+                            <label class="block text-sm font-medium text-gray-700">Konten</label>
+                            <input id="content_input_post" type="hidden" wire:model="content">
+                            <trix-editor 
+                                input="content_input_post" 
+                                x-ref="trix"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-white min-h-[300px] focus:border-unmaris-yellow focus:ring-unmaris-yellow"
+                                x-on:trix-change="trixContent = $event.target.value"
+                            ></trix-editor>
+                            <p class="text-xs text-gray-400 mt-1">*Gunakan toolbar di atas editor untuk memformat teks.</p>
                         </div>
-
-                        @error('content')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
+                        @error('content') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
 
                     </div>
 
@@ -138,18 +150,40 @@
                             @error('category_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
-                        {{-- Featured Image --}}
-                        <div>
+                        {{-- Featured Image with Progress Indicator --}}
+                        <div 
+                            x-data="{ isUploading: false, progress: 0 }"
+                            x-on:livewire-upload-start="isUploading = true"
+                            x-on:livewire-upload-finish="isUploading = false"
+                            x-on:livewire-upload-error="isUploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress"
+                        >
                             <label class="block text-sm font-medium text-gray-700">Gambar Unggulan</label>
+                            
+                            <!-- Progress Bar -->
+                            <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mb-2 mt-2 transition-all duration-300">
+                                <div class="bg-blue-600 h-2.5 rounded-full" :style="'width: ' + progress + '%'"></div>
+                            </div>
+                            <div x-show="isUploading" class="text-xs text-blue-600 font-bold text-center mb-2" x-text="'Mengupload... ' + progress + '%'"></div>
+
+                            <!-- Indikator Processing Server -->
+                            <div wire:loading wire:target="featured_image" class="text-xs text-unmaris-yellow font-bold mb-2">
+                                <i class="fas fa-spinner animate-spin mr-1"></i> Memproses gambar...
+                            </div>
+
                             <input type="file" wire:model="featured_image" class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
                             @error('featured_image') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
 
-                            {{-- PREVIEW --}}
+                            {{-- PREVIEW GAMBAR --}}
                             <div class="mt-2">
                                 @if ($featured_image)
-                                <img src="{{ $featured_image->temporaryUrl() }}" class="w-full h-auto rounded shadow">
+                                    <img src="{{ $featured_image->temporaryUrl() }}" class="w-full h-auto rounded shadow border border-gray-200">
                                 @elseif ($existing_featured_image)
-                                <img src="{{ Storage::url($existing_featured_image) }}" class="w-full h-auto rounded shadow">
+                                    <img src="{{ Storage::url($existing_featured_image) }}" class="w-full h-auto rounded shadow border border-gray-200">
+                                @else
+                                    <div class="w-full h-32 bg-gray-100 rounded border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400">
+                                        <span class="text-xs">Belum ada gambar</span>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -159,37 +193,20 @@
 
                 {{-- FOOTER --}}
                 <div class="p-6 border-t flex justify-end gap-3 bg-gray-50">
-
                     <button type="button" wire:click="closeModal" class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-300">
                         Batal
                     </button>
-
-                    <button type="submit" class="bg-unmaris-blue text-white font-semibold py-2 px-4 rounded hover:bg-unmaris-blue/80">
+                    <button type="submit" class="bg-unmaris-blue text-white font-semibold py-2 px-4 rounded hover:bg-unmaris-blue/80 flex items-center" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="save">Simpan Berita</span>
-                        <span wire:loading wire:target="save">Menyimpan...</span>
+                        <span wire:loading wire:target="save"><i class="fas fa-spinner animate-spin mr-2"></i> Menyimpan...</span>
                     </button>
-
                 </div>
             </form>
         </div>
     </div>
-    {{-- TRIX SYNC --}}
-    <script>
-        document.addEventListener("trix-change", e => {
-            @this.set("content", e.target.value);
-        });
-
-        Livewire.on("loadTrix", content => {
-            document.querySelector("trix-editor").editor.loadHTML(content);
-        });
-
-    </script>
-
 
     <div x-data="{ show: @entangle('showDeleteModal') }" x-show="show" x-on:keydown.escape.window="show = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" x-cloak>
-
         <div @click="show = false" class="absolute inset-0"></div>
-
         <div class="relative w-full max-w-md p-6 bg-white rounded-lg shadow-lg" @click.stop>
             <h3 class="text-2xl font-semibold text-unmaris-blue">Konfirmasi Hapus</h3>
             <div class="mt-4">

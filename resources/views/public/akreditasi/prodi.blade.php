@@ -1,7 +1,7 @@
 <x-layouts.public title="Daftar Akreditasi Program Studi">
 
     {{-- 1. HERO SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-32 pb-24 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         
@@ -25,7 +25,7 @@
                 <span class="text-3xl font-extrabold text-unmaris-blue">{{ $totalProdi }}</span>
             </div>
             <div class="text-center">
-                <a href="{{ route('akreditasi.institusi') }}" class="px-6 py-3 bg-unmaris-yellow text-unmaris-blue font-bold rounded-full text-sm hover:bg-yellow-400 transition">
+                <a href="{{ route('public.akreditasi.institusi') }}" class="px-6 py-3 bg-unmaris-yellow text-unmaris-blue font-bold rounded-full text-sm hover:bg-yellow-400 transition">
                     Lihat Status Institusi &raquo;
                 </a>
             </div>

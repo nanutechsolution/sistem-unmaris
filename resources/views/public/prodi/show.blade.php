@@ -13,7 +13,7 @@
             <nav class="flex items-center text-sm text-unmaris-yellow/80 mb-6 font-medium space-x-2">
                 <a href="/" class="hover:text-white transition">Home</a>
                 <span>/</span>
-                <a href="{{ route('fakultas.show', $prodi->fakultas_id ?? 1) }}"
+                <a href="{{ route('public.fakultas.show', $prodi->fakultas_id ?? 1) }}"
                     class="hover:text-white transition">{{ $prodi->fakultas->nama_fakultas ?? 'Fakultas' }}</a>
                 <span>/</span>
                 <span class="text-white">Program Studi</span>

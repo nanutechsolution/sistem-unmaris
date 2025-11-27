@@ -58,7 +58,7 @@
 
                         <h2
                             class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 group-hover:text-unmaris-yellow transition">
-                            <a href="{{ route('pengumuman.show', $headline->slug) }}">
+                            <a href="{{ route('public.pengumuman.show', $headline->slug) }}">
                                 {{ $headline->judul }}
                             </a>
                         </h2>
@@ -104,7 +104,7 @@
                         <article
                             class="flex flex-col h-full bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300 group">
                             {{-- Thumbnail --}}
-                            <a href="{{ route('pengumuman.show', $item->slug) }}"
+                            <a href="{{ route('public.pengumuman.show', $item->slug) }}"
                                 class="relative h-48 overflow-hidden bg-gray-200">
                                 @if ($item->thumbnail)
                                     <img src="{{ asset('storage/' . $item->thumbnail) }}"
@@ -138,7 +138,7 @@
 
                                 <h4
                                     class="text-lg font-bold text-gray-900 mb-3 leading-snug group-hover:text-unmaris-blue transition line-clamp-2">
-                                    <a href="{{ route('pengumuman.show', $item->slug) }}">
+                                    <a href="{{ route('public.pengumuman.show', $item->slug) }}">
                                         {{ $item->judul }}
                                     </a>
                                 </h4>
@@ -146,7 +146,7 @@
                                 <p class="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
                                     {{ $item->ringkasan }}
                                 </p>
-                                <a href="{{ route('pengumuman.show', $item->slug) }}"
+                                <a href="{{ route('public.pengumuman.show', $item->slug) }}"
                                     class="inline-flex items-center text-sm font-bold text-unmaris-blue hover:text-unmaris-yellow transition mt-auto">
                                     Baca Selengkapnya <i class="fas fa-arrow-right ml-2 text-xs"></i>
                                 </a>

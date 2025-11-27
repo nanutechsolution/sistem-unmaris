@@ -31,7 +31,7 @@ class SliderManager extends Component
     // Uploads
     public $file_upload;      // File Baru (Gambar/Video)
     public $poster_upload;    // Poster Baru (Khusus Video)
-
+    
     // Old Paths (Untuk Preview saat Edit)
     public $old_file_path;
     public $old_poster_path;
@@ -42,22 +42,21 @@ class SliderManager extends Component
     public $showDeleteModal = false;
     public $deletingId = null;
 
-    // --- PESAN ERROR YANG RAMAH USER (BAHASA INDONESIA) ---
+    // --- PESAN ERROR YANG LEBIH JELAS ---
     protected $messages = [
-        'file_upload.required' => 'Mohon pilih file (Gambar/Video) terlebih dahulu untuk diupload.',
-        'file_upload.image' => 'File harus berupa gambar (format JPG, JPEG, atau PNG).',
-        'file_upload.mimes' => 'Format file tidak didukung. Harap upload video (MP4, MOV, AVI) atau gambar (JPG, PNG).',
-        'file_upload.max' => 'Ukuran file terlalu besar. Batas maksimum adalah 20MB untuk video dan 2MB untuk gambar.',
-
+        'file_upload.required' => 'Mohon pilih file terlebih dahulu.',
+        'file_upload.image' => 'File harus berupa gambar (JPG, JPEG, PNG).',
+        'file_upload.mimes' => 'Format video tidak didukung. Coba gunakan MP4, M4V, MOV, atau AVI.',
+        'file_upload.max' => 'Ukuran file terlalu besar (Maksimum 50MB untuk video).',
+        
         'poster_upload.image' => 'Cover video harus berupa gambar (JPG/PNG).',
-        'poster_upload.max' => 'Ukuran cover video terlalu besar (Maksimal 2MB).',
-
-        'title.max' => 'Judul terlalu panjang (maksimal 255 karakter).',
-        'button_text.max' => 'Teks tombol terlalu panjang (maksimal 50 karakter).',
-        'type.required' => 'Silakan pilih jenis media (Gambar atau Video).',
-        'type.in' => 'Jenis media tidak valid.',
+        'poster_upload.max' => 'Ukuran cover video maksimal 2MB.',
+        
+        'title.max' => 'Judul maksimal 255 karakter.',
+        'type.required' => 'Pilih jenis media (Gambar/Video).',
     ];
 
+    // Validasi Dasar (File akan divalidasi ulang di save)
     protected $rules = [
         'title' => 'nullable|string|max:255',
         'description' => 'nullable|string',
@@ -66,12 +65,10 @@ class SliderManager extends Component
         'button_url' => 'nullable|string|max:255',
         'order' => 'integer',
         'active' => 'boolean',
-        // Validasi File dinamis di function save()
     ];
 
     public function render()
     {
-        // Ambil semua slider diurutkan berdasarkan 'order'
         $this->sliders = Slider::orderBy('order', 'asc')->get();
         return view('livewire.manajemen.slider-manager');
     }
@@ -83,19 +80,19 @@ class SliderManager extends Component
         $this->reset();
         $this->type = 'image';
         $this->active = true;
-        $this->order = Slider::max('order') + 1; // Auto increment order
+        $this->order = Slider::max('order') + 1; 
         $this->isEditing = false;
         $this->showModal = true;
-        $this->resetErrorBag(); // Bersihkan error lama saat buka modal
+        $this->resetErrorBag();
     }
 
     public function edit($id)
     {
         $this->reset();
         $this->resetErrorBag();
-
+        
         $s = Slider::findOrFail($id);
-
+        
         $this->slider_id = $s->id;
         $this->title = $s->title;
         $this->description = $s->description;
@@ -104,7 +101,7 @@ class SliderManager extends Component
         $this->button_url = $s->button_url;
         $this->order = $s->order;
         $this->active = (bool) $s->active;
-
+        
         $this->old_file_path = $s->file_path;
         $this->old_poster_path = $s->poster_path;
 
@@ -114,41 +111,45 @@ class SliderManager extends Component
 
     public function save()
     {
-        // Validasi File Khusus
+        // --- KONFIGURASI VALIDASI VIDEO YANG LEBIH LUAS ---
+        // Menambahkan m4v, webm, dan menaikkan limit ke 50MB (51200 KB)
+        $videoRules = 'mimes:mp4,mov,avi,m4v,webm,qt|max:51200'; 
+        $imageRules = 'image|max:5120'; // Max 5MB untuk gambar
+
         $fileRules = 'nullable';
         if (!$this->isEditing) {
-            // Kalau create baru, file wajib ada
-            // Pesan error khusus ditangani via $messages
-            $fileRules = $this->type == 'video' ? 'required|mimes:mp4,mov,avi|max:20480' : 'required|image|max:2048';
+            // Create Baru: Wajib ada file
+            $fileRules = $this->type == 'video' ? "required|$videoRules" : "required|$imageRules";
         } else {
-            // Kalau edit, boleh kosong (pakai file lama)
-            $fileRules = $this->type == 'video' ? 'nullable|mimes:mp4,mov,avi|max:20480' : 'nullable|image|max:2048';
+            // Edit: Boleh kosong (pakai file lama), tapi kalau ada upload harus divalidasi
+            $fileRules = $this->type == 'video' ? "nullable|$videoRules" : "nullable|$imageRules";
         }
 
-        // Validasi dengan pesan custom
+        // Lakukan Validasi
         $this->validate([
             'file_upload' => $fileRules,
-            'poster_upload' => 'nullable|image|max:2048', // Cover video
+            'poster_upload' => 'nullable|image|max:2048',
             'title' => 'nullable|string|max:255',
             'type' => 'required|in:image,video',
-        ], $this->messages); // Inject custom messages here if not picked up automatically
+        ], $this->messages);
 
-        // 1. Handle File Utama (Gambar/Video)
+        // 1. Handle File Utama
         $filePath = $this->old_file_path;
         if ($this->file_upload) {
             if ($this->old_file_path) Storage::disk('public')->delete($this->old_file_path);
+            
             $folder = $this->type == 'video' ? 'sliders/videos' : 'sliders/images';
             $filePath = $this->file_upload->store($folder, 'public');
         }
 
-        // 2. Handle Poster (Khusus Video)
+        // 2. Handle Poster
         $posterPath = $this->old_poster_path;
         if ($this->poster_upload && $this->type == 'video') {
             if ($this->old_poster_path) Storage::disk('public')->delete($this->old_poster_path);
             $posterPath = $this->poster_upload->store('sliders/posters', 'public');
         }
 
-        // 3. Simpan Database
+        // 3. Simpan ke Database
         Slider::updateOrCreate(
             ['id' => $this->slider_id],
             [
@@ -165,10 +166,10 @@ class SliderManager extends Component
         );
 
         $this->showModal = false;
-        session()->flash('success', 'Slider berhasil disimpan dan akan tampil di halaman depan.');
+        session()->flash('success', 'Slider berhasil disimpan.');
     }
 
-    // --- DELETE ---
+    // --- DELETE & TOGGLE ---
     public function confirmDelete($id)
     {
         $this->deletingId = $id;
@@ -184,14 +185,24 @@ class SliderManager extends Component
             $s->delete();
         }
         $this->showDeleteModal = false;
-        session()->flash('success', 'Slider berhasil dihapus.');
+        session()->flash('success', 'Slider dihapus.');
     }
 
-    // --- FITUR TOGGLE AKTIF ---
     public function toggleActive($id)
     {
         $s = Slider::find($id);
         $s->active = !$s->active;
         $s->save();
+    }
+
+    // Helper untuk preview aman (mencegah error m4v)
+    public function getSafeTemporaryUrl($temporaryFile)
+    {
+        if (!$temporaryFile) return null;
+        try {
+            return $temporaryFile->temporaryUrl();
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

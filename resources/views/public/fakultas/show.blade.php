@@ -107,14 +107,18 @@
                         <i class="fas fa-tools {{ $textTheme }} mr-2"></i> Fasilitas Unggulan
                     </h4>
                     <ul class="space-y-3 text-sm text-gray-600">
-                        <li class="flex items-center"><i class="fas fa-wifi w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
+                        <li class="flex items-center"><i
+                                class="fas fa-wifi w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
                             Free Wi-Fi Area</li>
-                        <li class="flex items-center"><i class="fas fa-desktop w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
+                        <li class="flex items-center"><i
+                                class="fas fa-desktop w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
                             Laboratorium Komputer</li>
-                        <li class="flex items-center"><i class="fas fa-book w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
+                        <li class="flex items-center"><i
+                                class="fas fa-book w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
                             Ruang Baca Digital</li>
                         <li class="flex items-center"><i
-                                class="fas fa-chalkboard-teacher w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i> Ruang Kelas AC
+                                class="fas fa-chalkboard-teacher w-6 text-center text-gray-400 mr-2  {{ $textTheme }}"></i>
+                            Ruang Kelas AC
                         </li>
                     </ul>
                 </div>
@@ -176,7 +180,7 @@
                                     </p>
                                 </div>
 
-                                <a href="{{ route('prodi.show', $prodi->id) }}"
+                                <a href="{{ route('public.fakultas.prodi.show', $prodi->id) }}"
                                     class="inline-flex items-center text-sm font-bold text-unmaris-blue hover:text-unmaris-yellow transition">
                                     Kurikulum & Profil <i class="fas fa-arrow-right ml-2 text-xs"></i>
                                 </a>

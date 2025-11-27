@@ -4,7 +4,7 @@
     <div class="fixed top-0 left-0 h-1 bg-unmaris-yellow z-[60]" id="progressBar" style="width: 0%"></div>
 
     {{-- HEADER SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-32 pb-32 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-32 relative overflow-hidden">
         {{-- Dekorasi Background --}}
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
@@ -14,10 +14,10 @@
             <nav class="flex justify-center items-center text-sm text-unmaris-yellow/80 mb-6 font-medium space-x-2">
                 <a href="/" class="hover:text-white transition">Home</a>
                 <span>/</span>
-                <a href="{{ route('posts.index') }}" class="hover:text-white transition">Kabar Kampus</a>
+                <a href="{{ route('public.posts.index') }}" class="hover:text-white transition">Kabar Kampus</a>
                 <span>/</span>
                 @if ($post->category)
-                    <a href="{{ route('posts.index', ['category' => $post->category->slug]) }}"
+                    <a href="{{ route('public.posts.index', ['category' => $post->category->slug]) }}"
                         class="hover:text-white transition">{{ $post->category->name }}</a>
                 @else
                     <span>Detail</span>
@@ -87,7 +87,7 @@
                 }">
 
                 @if ($post->category)
-                    <a href="{{ route('posts.index', ['category' => $post->category->slug]) }}"
+                    <a href="{{ route('public.posts.index', ['category' => $post->category->slug]) }}"
                         class="px-4 py-1.5 rounded-full bg-blue-50 text-unmaris-blue font-bold uppercase text-xs tracking-wide hover:bg-unmaris-blue hover:text-white transition">
                         {{ $post->category->name }}
                     </a>
@@ -165,7 +165,7 @@
                         <h3 class="text-3xl font-extrabold text-gray-900">Artikel Terkait</h3>
                         <p class="text-gray-500 mt-1">Baca berita lain dalam kategori yang sama.</p>
                     </div>
-                    <a href="{{ route('posts.index') }}"
+                    <a href="{{ route('public.posts.index') }}"
                         class="inline-flex items-center font-bold text-unmaris-blue hover:text-unmaris-yellow transition">
                         Lihat Semua Berita <i class="fas fa-arrow-right ml-2"></i>
                     </a>

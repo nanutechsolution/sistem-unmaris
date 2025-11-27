@@ -23,37 +23,34 @@
 </head>
 
 <body class="font-sans bg-gray-100 antialiased">
-   {{-- WRAPPER STICKY: Membungkus Pengumuman & Navbar agar menempel bersamaan --}}
+    {{-- WRAPPER STICKY: Membungkus Pengumuman & Navbar agar menempel bersamaan --}}
     <div class="sticky top-0 z-[100] w-full">
-        
         {{-- LOGIC PENGUMUMAN URGENT --}}
         @php
-            $urgent = \App\Models\Pengumuman::where('is_pinned', true)
-                        ->where('status', 'Published')
-                        ->latest()
-                        ->first();
+            $urgent = \App\Models\Pengumuman::where('is_pinned', true)->where('status', 'Published')->latest()->first();
         @endphp
-
         @if ($urgent)
-            <div x-data="{ open: true }" 
-                 x-show="open" 
-                 x-transition:leave="transition-all ease-in-out duration-300"
-                 x-transition:leave-start="opacity-100 max-h-20"
-                 x-transition:leave-end="opacity-0 max-h-0"
-                 class="bg-red-600 text-white relative shadow-md overflow-hidden"> {{-- overflow-hidden penting untuk animasi --}}
-                
+            <div x-data="{ open: true }" x-show="open" x-transition:leave="transition-all ease-in-out duration-300"
+                x-transition:leave-start="opacity-100 max-h-20" x-transition:leave-end="opacity-0 max-h-0"
+                class="bg-red-600 text-white relative shadow-md overflow-hidden"> {{-- overflow-hidden penting untuk animasi --}}
+
                 <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                     <div class="flex items-center gap-3 text-sm font-medium truncate pr-4">
-                        <span class="bg-white text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 animate-pulse">
+                        <span
+                            class="bg-white text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 animate-pulse">
                             PENTING
                         </span>
-                        <a href="{{ route('pengumuman.show', $urgent->slug) }}" class="hover:underline truncate">
+                        <a href="{{ route('public.pengumuman.show', $urgent->slug) }}" class="hover:underline truncate">
                             {{ $urgent->judul }}
                         </a>
                     </div>
-                    
-                    <button @click="open = false" class="text-white/80 hover:text-white hover:bg-red-700 rounded-full p-1 transition focus:outline-none shrink-0">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+
+                    <button @click="open = false"
+                        class="text-white/80 hover:text-white hover:bg-red-700 rounded-full p-1 transition focus:outline-none shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -89,37 +86,59 @@
                             <div
                                 class="absolute -inset-1 bg-unmaris-yellow rounded-full blur opacity-20 group-hover:opacity-40 transition duration-500">
                             </div>
-                            <img src="{{ asset('logo.png') }}" alt="Logo UNMARIS" class="h-12 w-auto relative">
+                            @if (\App\Models\Setting::get('site_logo'))
+                                <img src="{{ \App\Models\Setting::get('site_logo') }}" alt="Logo Kampus"
+                                    class="h-12 w-auto relative">
+                            @else
+                                <img src="{{ asset('logo.png') }}" alt="Logo Default" class="h-12 w-auto relative">
+                            @endif
                         </div>
                         <div class="flex flex-col">
-                            <span class="font-bold text-2xl leading-none tracking-tight text-white">UNMARIS</span>
                             <span
-                                class="text-[0.65rem] text-unmaris-yellow tracking-[0.2em] uppercase font-medium">Universitas
-                                Stella Maris</span>
+                                class="font-bold text-2xl leading-none tracking-tight text-white">{{ \App\Models\Setting::get('site_short_name', 'UNMARIS') }}</span>
+                            {{-- <span
+                                class="text-[0.65rem] text-unmaris-yellow tracking-[0.2em] uppercase font-medium">{{ \App\Models\Setting::get('site_slogan', 'UNMARIS') }}</span> --}}
                         </div>
                     </a>
                     <p class="text-blue-100 text-sm leading-relaxed">
-                        Universitas Stella Maris Sumba (UNMARIS) adalah perguruan tinggi yang berdedikasi mencetak
-                        generasi unggul, beriman, dan berdaya saing global dengan fokus pada pengembangan potensi dan
-                        teknologi.
+                        {{ \App\Models\Setting::get('site_description', 'Deskripsi kampus belum diatur. Silakan atur di halaman admin.') }}
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="#"
-                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
+
+                        @if (\App\Models\Setting::get('social_facebook'))
+                            <a href="{{ \App\Models\Setting::get('social_facebook') }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        @endif
+
+                        @if (\App\Models\Setting::get('social_instagram'))
+                            <a href="{{ \App\Models\Setting::get('social_instagram') }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        @endif
+
+                        @if (\App\Models\Setting::get('social_youtube'))
+                            <a href="{{ \App\Models\Setting::get('social_youtube') }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        @endif
+
+                        @if (\App\Models\Setting::get('social_linkedin'))
+                            <a href="{{ \App\Models\Setting::get('social_linkedin') }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        @endif
+                        @if (\App\Models\Setting::get('social_tiktok'))
+                            <a href="{{ \App\Models\Setting::get('social_tiktok') }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        @endif
+
                     </div>
                 </div>
 
@@ -129,7 +148,7 @@
                     </h3>
                     <ul class="space-y-3 text-sm">
                         <li>
-                            <a href="/profil"
+                            <a href="/page/profil"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
@@ -145,7 +164,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('kemahasiswaan.index') }}"
+                            <a href="{{ route('public.kemahasiswaan.index') }}"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
@@ -153,7 +172,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('posts.index') }}"
+                            <a href="{{ route('public.posts.index') }}"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
@@ -161,7 +180,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('dokumen.index') }}"
+                            <a href="{{ route('public.dokumen.index') }}"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
@@ -177,7 +196,7 @@
                     </h3>
                     <ul class="space-y-3 text-sm">
                         <li>
-                            <a href="{{ route('lpm.index') }}"
+                            <a href="{{ route('public.lpm.index') }}"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
@@ -185,7 +204,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('lppm.index') }}"
+                            <a href="{{ route('public.lppm.index') }}"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
@@ -221,30 +240,39 @@
 
                 {{-- Column 4: Contact --}}
                 <div>
-                    <h3 class="text-lg font-bold text-white mb-6 border-l-4 border-unmaris-yellow pl-3">Hubungi Kami
+                    <h3 class="text-lg font-bold text-white mb-6 border-l-4 border-unmaris-yellow pl-3">
+                        Hubungi Kami
                     </h3>
                     <ul class="space-y-4 text-sm">
+                        {{-- ALAMAT --}}
                         <li class="flex items-start space-x-3">
                             <i class="fas fa-map-marker-alt mt-1 text-unmaris-yellow"></i>
                             <span class="text-blue-100">
-                                Jl. Karya Kasih No. 5, Tambolaka,<br>
-                                Sumba Barat Daya, Nusa Tenggara Timur,<br>
-                                Indonesia - 87113
+                                {!! nl2br(e(\App\Models\Setting::get('contact_address', 'Alamat kampus belum diatur.'))) !!}
                             </span>
                         </li>
+
+                        {{-- TELEPON --}}
                         <li class="flex items-center space-x-3">
                             <i class="fas fa-phone-alt text-unmaris-yellow"></i>
-                            <span class="text-blue-100">+62 812-3456-7890</span>
+                            <span class="text-blue-100">
+                                {{ \App\Models\Setting::get('contact_phone', '+62...') }}
+                            </span>
                         </li>
+
+                        {{-- EMAIL --}}
                         <li class="flex items-center space-x-3">
                             <i class="fas fa-envelope text-unmaris-yellow"></i>
-                            <span class="text-blue-100">info@unmaris.ac.id</span>
+                            <span class="text-blue-100">
+                                {{ \App\Models\Setting::get('contact_email', 'info@unmaris.ac.id') }}
+                            </span>
                         </li>
                     </ul>
 
                     {{-- CTA Button Small --}}
                     <div class="mt-6">
-                        <a href="{{ route('public.contact') }}"
+                        {{-- Link bisa diarahkan ke halaman kontak atau WA --}}
+                        <a href="/kontak"
                             class="inline-block px-6 py-2 border border-unmaris-yellow text-unmaris-yellow text-sm font-bold rounded-full hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
                             Pusat Bantuan
                         </a>
@@ -275,7 +303,7 @@
             once: true
         });
     </script>
-
+    @stack('scripts')
 </body>
 
 </html>

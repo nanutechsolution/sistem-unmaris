@@ -2,109 +2,105 @@
 
 namespace App\Livewire\Manajemen;
 
-use App\Models\Page;
+use App\Models\Page; // Pastikan model Page sudah ada
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 #[Layout('layouts.app')]
-#[Title('Manajemen Halaman')]
+#[Title('Manajemen Halaman Statis')]
 class PageManager extends Component
 {
     use WithPagination;
 
-    public $showModal = false;
-    public $isEditing = false;
-    public ?Page $editingPage = null;
-
-    // --- Form Properties ---
+    // Properties
+    public $page_id;
     public $title;
     public $slug;
     public $content;
     public $status = 'Published';
-    // ----------------------
 
-    protected function rules()
+    // UI State
+    public $showModal = false;
+    public $isEditing = false;
+    public $search = '';
+
+    protected $rules = [
+        'title' => 'required|string|max:255',
+        'slug' => 'required|string|max:255', // Validasi unique ditangani di save
+        'content' => 'required|string',
+        'status' => 'required|in:Published,Draft',
+    ];
+
+    public function render()
     {
-        return [
-            'title' => [
-                'required', 'string', 'max:255',
-                $this->isEditing
-                    ? Rule::unique('pages')->ignore($this->editingPage->id)
-                    : Rule::unique('pages')
-            ],
-            'content' => 'required|string',
-            'status' => 'required|in:Published,Draft',
-        ];
+        $pages = Page::where('title', 'like', '%'.$this->search.'%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('livewire.manajemen.page-manager', [
+            'pages' => $pages
+        ]);
     }
 
-    // Fungsi ini dipanggil setiap 'title' berubah
+    // --- Auto Generate Slug ---
     public function updatedTitle($value)
     {
-        // Otomatis buat slug dari title
-        $this->slug = Str::slug($value);
+        if (!$this->isEditing) { 
+            $this->slug = Str::slug($value);
+        }
     }
 
-    public function resetForm()
-    {
-        $this->reset(['title', 'slug', 'content', 'status', 'isEditing', 'editingPage']);
-        $this->status = 'Published';
-    }
+    // --- CRUD ---
 
     public function openCreateModal()
     {
-        $this->resetForm();
+        $this->reset();
         $this->isEditing = false;
         $this->showModal = true;
+        
+        // PENTING: Kirim sinyal kosongkan editor
+        $this->dispatch('refresh-trix', content: ''); 
     }
 
-    public function openEditModal(Page $page)
+    public function openEditModal($id)
     {
-        $this->resetForm();
-        $this->isEditing = true;
-        $this->editingPage = $page;
+        $p = Page::findOrFail($id);
+        $this->page_id = $p->id;
+        $this->title = $p->title;
+        $this->slug = $p->slug;
+        $this->content = $p->content;
+        $this->status = $p->status;
 
-        $this->title = $page->title;
-        $this->slug = $page->slug;
-        $this->content = $page->content;
-        $this->status = $page->status;
+        $this->isEditing = true;
         $this->showModal = true;
+
+        // PENTING: Kirim sinyal isi editor dengan konten lama
+        $this->dispatch('refresh-trix', content: $this->content);
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        Page::updateOrCreate(
+            ['id' => $this->page_id],
+            [
+                'title' => $this->title,
+                'slug' => Str::slug($this->slug),
+                'content' => $this->content,
+                'status' => $this->status,
+            ]
+        );
+
+        $this->showModal = false;
+        session()->flash('success', 'Halaman berhasil disimpan.');
     }
 
     public function closeModal()
     {
         $this->showModal = false;
-    }
-
-    public function save()
-    {
-        $validatedData = $this->validate();
-        // Tambahkan slug ke data yang divalidasi
-        $validatedData['slug'] = Str::slug($this->title);
-
-        if ($this->isEditing) {
-            $this->editingPage->update($validatedData);
-        } else {
-            Page::create($validatedData);
-        }
-
-        $this->closeModal();
-        $this->resetPage();
-    }
-
-    public function archive(Page $page)
-    {
-        $page->update(['status' => 'Draft']);
-    }
-
-    public function render()
-    {
-        $pages = Page::orderBy('title', 'asc')->paginate(10);
-        return view('livewire.manajemen.page-manager', [
-            'pages' => $pages,
-        ]);
     }
 }

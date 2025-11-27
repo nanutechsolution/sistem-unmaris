@@ -1,102 +1,110 @@
-<x-layouts.public title="Profil Lembaga Penjaminan Mutu">
+<x-layouts.public :title="$page->title . ' - LPM UNMARIS'">
 
-    {{-- HEADER SECTION (Konsisten dengan Index & Document) --}}
-    <section class="bg-unmaris-blue text-white pt-28 pb-24 relative overflow-hidden">
-        {{-- Dekorasi Background --}}
+    {{-- HEADER SECTION --}}
+    <section class="bg-unmaris-blue text-white pt-48 pb-20 relative overflow-hidden">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
 
         <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
             <nav class="flex justify-center text-sm text-unmaris-yellow/80 mb-4 font-medium">
-                <a href="{{ route('lpm.index') }}" class="hover:text-white transition">LPM</a>
+                <a href="{{ route('public.lpm.index') }}" class="hover:text-white transition">LPM</a>
                 <span class="mx-2">/</span>
-                <span class="text-white">Profil & Visi Misi</span>
+                <span class="text-white">{{ $page->title }}</span>
             </nav>
 
             <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
-                Profil LPM UNMARIS
+                {{ $page->title }}
             </h1>
 
             <p class="text-blue-100 font-medium max-w-2xl mx-auto text-lg leading-relaxed">
-                Fondasi, arah, dan komitmen kami dalam membangun budaya mutu yang berkelanjutan di lingkungan universitas.
+                Lembaga Penjaminan Mutu Universitas Stella Maris Sumba
             </p>
         </div>
     </section>
 
-    {{-- MAIN CONTENT GRID (Overlapping Effect) --}}
-    <div class="max-w-7xl mx-auto px-6 pb-16 grid lg:grid-cols-3 gap-10 -mt-12 relative z-20">
+    {{-- MAIN CONTENT GRID --}}
+    <div class="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-12 -mt-12 relative z-20">
 
-        {{-- LEFT & CENTER COLUMN: Visi dan Misi --}}
-        <div class="lg:col-span-2 space-y-8">
+        {{-- LEFT COLUMN: Sidebar Navigasi --}}
+        <aside class="lg:col-span-4 space-y-8 order-2 lg:order-1">
 
-            {{-- Visi Card --}}
-            <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-unmaris-yellow">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 rounded-full bg-unmaris-yellow/10 flex items-center justify-center mr-4">
-                        <i class="fas fa-eye text-unmaris-yellow text-xl"></i>
-                    </div>
-                    <h2 class="text-3xl font-extrabold text-unmaris-blue">Visi</h2>
+            {{-- Widget: Menu LPM --}}
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden sticky top-24">
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                    <h4 class="text-sm font-bold text-unmaris-blue uppercase tracking-wider">
+                        <i class="fas fa-bars mr-2"></i> Menu LPM
+                    </h4>
                 </div>
 
-                <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-100">
-                    <p class="text-xl text-gray-800 leading-relaxed font-bold text-center font-serif italic">
-                        "{{ $profileData['visi'] }}"
-                    </p>
-                </div>
+                <nav class="flex flex-col p-2">
+                    {{-- Link ke Halaman LPM Lainnya (Dinamis dari Controller) --}}
+                    @foreach ($sidebarPages as $item)
+                        <a href="{{ route('public.lpm.profile', $item->slug) }}"
+                            class="group flex items-center justify-between px-4 py-3 rounded-xl transition duration-200 {{ $page->id == $item->id ? 'bg-unmaris-blue text-white font-bold shadow-md' : 'text-gray-600 hover:bg-blue-50 hover:text-unmaris-blue' }}">
+                            <span>{{ $item->title }}</span>
+                            @if ($page->id == $item->id)
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            @endif
+                        </a>
+                    @endforeach
+
+                    {{-- Link Balik ke Dashboard LPM --}}
+                    <a href="{{ route('public.lpm.index') }}"
+                        class="flex items-center px-4 py-3 text-gray-500 hover:text-unmaris-blue hover:bg-gray-50 rounded-xl transition mt-2 border-t border-gray-100">
+                        <i class="fas fa-arrow-left mr-2 text-xs"></i> Kembali ke Beranda LPM
+                    </a>
+                </nav>
             </div>
 
-            {{-- Misi Card --}}
-            <div class="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-unmaris-blue">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 rounded-full bg-unmaris-blue/10 flex items-center justify-center mr-4">
-                        <i class="fas fa-rocket text-unmaris-blue text-xl"></i>
+            {{-- Widget: Download (Opsional, Pemanis) --}}
+            <div class="bg-unmaris-yellow/10 rounded-2xl p-6 border border-unmaris-yellow/20">
+                <h4 class="font-bold text-unmaris-blue mb-2">Butuh Dokumen Mutu?</h4>
+                <p class="text-sm text-gray-600 mb-4">Unduh standar dan manual mutu terbaru.</p>
+                <a href="{{ route('public.lpm.index') }}"
+                    class="inline-block w-full text-center py-2 bg-unmaris-blue text-white rounded-lg font-bold text-sm hover:bg-blue-800 transition">
+                    Ke Arsip Dokumen
+                </a>
+            </div>
+
+        </aside>
+
+        {{-- RIGHT COLUMN: Konten Halaman --}}
+        <div class="lg:col-span-8 order-1 lg:order-2">
+            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-xl border-t-4 border-unmaris-yellow">
+
+                {{-- Judul di dalam konten --}}
+                <div class="flex items-center mb-8 pb-6 border-b border-gray-100">
+                    <div
+                        class="w-12 h-12 rounded-full bg-unmaris-blue/10 flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-book-open text-unmaris-blue text-xl"></i>
                     </div>
-                    <h2 class="text-3xl font-extrabold text-unmaris-blue">Misi</h2>
+                    <h2 class="text-3xl font-extrabold text-gray-800">{{ $page->title }}</h2>
                 </div>
 
-                <ul class="space-y-4">
-                    @foreach($profileData['misi'] as $index => $misi)
-                        <li class="flex items-start group p-3 rounded-lg hover:bg-gray-50 transition duration-200">
-                            <span class="flex-shrink-0 w-8 h-8 bg-unmaris-blue text-white text-sm font-bold rounded-full flex items-center justify-center mt-0.5 mr-4 shadow-md group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue transition">
-                                {{ $index + 1 }}
-                            </span>
-                            <span class="text-lg text-gray-700 font-medium">{{ $misi }}</span>
-                        </li>
-                    @endforeach
-                </ul>
+                {{-- RENDER KONTEN HTML DARI DATABASE --}}
+                {{-- Class 'prose' dari Tailwind Typography Plugin sangat penting disini --}}
+                <article class="prose prose-lg prose-blue max-w-none text-gray-600 leading-relaxed">
+                    {!! $page->content !!}
+                </article>
+
+                {{-- Footer Konten --}}
+                <div
+                    class="mt-10 pt-6 border-t border-gray-100 flex items-center justify-between text-sm text-gray-400">
+                    <span>Terakhir diperbarui: {{ $page->updated_at->format('d F Y') }}</span>
+                    <div class="flex gap-3">
+                        <button onclick="window.print()" class="hover:text-unmaris-blue transition"
+                            title="Cetak Halaman">
+                            <i class="fas fa-print"></i>
+                        </button>
+                        <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link disalin!')"
+                            class="hover:text-unmaris-blue transition" title="Salin Link">
+                            <i class="fas fa-link"></i>
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        {{-- RIGHT COLUMN: Struktur Organisasi --}}
-        <aside class="lg:col-span-1">
-            <div class="bg-white p-6 rounded-2xl shadow-xl lg:sticky lg:top-24 border-t-4 border-gray-800">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="fas fa-sitemap text-gray-400 mr-2"></i> Struktur Organisasi
-                </h3>
-
-                <div class="group relative cursor-pointer overflow-hidden rounded-lg border border-gray-200">
-                    <img src="{{ $profileData['struktur_img'] }}" alt="Struktur Organisasi LPM" class="w-full h-auto transform transition duration-500 group-hover:scale-105">
-
-                    {{-- Overlay Hover --}}
-                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                        <span class="text-white font-bold text-sm px-4 py-2 border border-white rounded-full">
-                            <i class="fas fa-search-plus mr-1"></i> Perbesar
-                        </span>
-                    </div>
-                </div>
-
-                <p class="text-xs text-gray-500 mt-3 text-center">
-                    Klik gambar untuk tampilan penuh.
-                </p>
-
-                {{-- Download Button --}}
-                <div class="mt-6 pt-4 border-t border-gray-100">
-                    <a href="#" class="flex items-center justify-center w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-lg font-bold text-sm hover:bg-unmaris-blue hover:text-white transition duration-300">
-                        <i class="fas fa-download mr-2"></i> Unduh Bagan (PDF)
-                    </a>
-                </div>
-            </div>
-        </aside>
 
     </div>
 </x-layouts.public>

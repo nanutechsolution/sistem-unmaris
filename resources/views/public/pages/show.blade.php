@@ -1,6 +1,9 @@
 <x-layouts.public :title="$page->title">
 
-    <section class="bg-unmaris-blue text-white pt-28 pb-24 relative overflow-hidden">
+    {{-- 1. HERO SECTION --}}
+    {{-- PERBAIKAN: Ubah pt-28 menjadi pt-48 agar konten turun dan tidak tertutup Navbar Fixed --}}
+    <section class="bg-unmaris-blue text-white pt-48 pb-24 relative overflow-hidden">
+        
         {{-- Dekorasi Background --}}
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
@@ -26,7 +29,8 @@
 
         {{-- LEFT SIDEBAR (AKSES CEPAT) --}}
         <aside class="lg:col-span-1 order-2 lg:order-1">
-            <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-unmaris-yellow lg:sticky lg:top-24">
+            {{-- Sticky sidebar agar ikut turun saat discroll --}}
+            <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-unmaris-yellow lg:sticky lg:top-32">
 
                 <h3 class="text-lg font-bold text-unmaris-blue mb-5 border-b border-gray-100 pb-3 flex items-center">
                     <i class="fas fa-compass text-unmaris-yellow mr-3"></i> Akses Cepat
@@ -75,6 +79,7 @@
                 <article class="prose prose-lg prose-blue max-w-none text-gray-700 leading-relaxed relative z-10">
                     {!! $page->content !!}
                 </article>
+                
                 <div class="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 relative z-10">
                     <div class="mb-4 md:mb-0 flex items-center bg-gray-50 px-4 py-2 rounded-full">
                         <i class="far fa-clock mr-2 text-unmaris-blue"></i>
@@ -84,7 +89,7 @@
                         <button class="flex items-center px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 hover:text-unmaris-blue transition text-xs font-bold uppercase tracking-wide" onclick="window.print()">
                             <i class="fas fa-print mr-2"></i> Cetak
                         </button>
-                        <button class="flex items-center px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 hover:text-unmaris-blue transition text-xs font-bold uppercase tracking-wide">
+                        <button class="flex items-center px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 hover:text-unmaris-blue transition text-xs font-bold uppercase tracking-wide" onclick="navigator.clipboard.writeText(window.location.href); alert('Link tersalin!')">
                             <i class="fas fa-share-alt mr-2"></i> Share
                         </button>
                     </div>

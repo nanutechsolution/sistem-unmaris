@@ -9,9 +9,9 @@
         <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
             {{-- Breadcrumb --}}
             <nav class="flex justify-center text-sm text-unmaris-yellow/80 mb-4 font-medium">
-                <a href="{{ route('lpm.index') }}" class="hover:text-white transition">LPM</a>
+                <a href="{{ route('public.lpm.index') }}" class="hover:text-white transition">LPM</a>
                 <span class="mx-2">/</span>
-                <a href="{{ route('lpm.announcements.all') }}" class="hover:text-white transition">Pengumuman</a>
+                <a href="{{ route('public.lpm.announcements.index') }}" class="hover:text-white transition">Pengumuman</a>
                 <span class="mx-2">/</span>
                 <span class="text-white">Detail</span>
             </nav>
@@ -54,7 +54,7 @@
                 </ul>
 
                 {{-- Back Button --}}
-                <a href="{{ route('lpm.announcements.all') }}"
+                <a href="{{ route('public.lpm.announcements.index') }}"
                    class="block w-full text-center py-3 px-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-unmaris-blue hover:text-white transition shadow-sm">
                     <i class="fas fa-arrow-left mr-2"></i> Kembali ke Arsip
                 </a>

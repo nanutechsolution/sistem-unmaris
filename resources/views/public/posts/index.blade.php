@@ -1,7 +1,7 @@
 <x-layouts.public title="Kabar Kampus & Artikel">
 
     {{-- HEADER SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-28 pb-16 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-16 relative overflow-hidden">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
 
@@ -13,7 +13,7 @@
 
             {{-- Search Bar --}}
             <div class="mt-8 max-w-md mx-auto relative">
-                <form action="{{ route('posts.index') }}" method="GET">
+                <form action="{{ route('public.posts.index') }}" method="GET">
                     <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari berita atau artikel..." class="w-full py-3 pl-5 pr-12 rounded-full bg-white/10 border border-white/20 text-white placeholder-blue-200 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-unmaris-yellow transition">
                     <button type="submit" class="absolute right-2 top-1.5 p-1.5 bg-unmaris-yellow text-unmaris-blue rounded-full w-9 h-9 flex items-center justify-center hover:bg-white transition">
                         <i class="fas fa-search"></i>

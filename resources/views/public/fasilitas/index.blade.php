@@ -1,7 +1,7 @@
 <x-layouts.public title="Fasilitas Kampus">
 
     {{-- 1. HERO SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-32 pb-24 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-24 relative overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-t from-unmaris-blue to-transparent"></div>
         

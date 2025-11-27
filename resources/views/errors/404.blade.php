@@ -54,7 +54,7 @@
             {{-- Search Box --}}
             <div class="max-w-md mx-auto border-t border-gray-100 pt-8">
                 <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-4">Atau cari informasi di sini</p>
-                <form action="{{ route('posts.index') }}" method="GET" class="relative group">
+                <form action="{{ route('public.posts.index') }}" method="GET" class="relative group">
                     <input type="text" name="q" placeholder="Cari berita, pengumuman, atau prodi..." 
                            class="w-full pl-6 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-unmaris-blue/20 focus:border-unmaris-blue transition text-sm group-hover:bg-white">
                     <button type="submit" class="absolute right-2 top-1.5 w-9 h-9 bg-white rounded-full shadow-sm flex items-center justify-center text-gray-400 hover:text-unmaris-blue transition border border-gray-100">

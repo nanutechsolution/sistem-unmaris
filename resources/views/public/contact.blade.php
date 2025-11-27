@@ -1,7 +1,7 @@
 <x-layouts.public title="Hubungi Kami">
 
     {{-- HEADER SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-28 pb-24 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-24 relative overflow-hidden">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-white/10 blur-3xl"></div>
 
@@ -27,53 +27,89 @@
                     <h3 class="text-2xl font-extrabold mb-6">Informasi Kontak</h3>
 
                     <div class="space-y-6">
+
+                        {{-- ALAMAT DINAMIS --}}
                         <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 text-unmaris-blue">
+                            <div
+                                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 text-unmaris-blue">
                                 <i class="fas fa-map-marker-alt text-lg"></i>
                             </div>
                             <div>
                                 <p class="font-bold text-sm uppercase tracking-wide opacity-70 mb-1">Alamat Kampus</p>
-                                <p class="font-medium leading-snug">Jl. Karya Kasih No. 5, Tambolaka,<br>
-                            Sumba Barat Daya, Nusa Tenggara Timur,<br>
-                            Indonesia - 87113</p>
+                                <p class="font-medium leading-snug">
+                                    {!! nl2br(e(\App\Models\Setting::get('contact_address', 'Alamat belum diatur'))) !!}
+                                </p>
                             </div>
                         </div>
 
+                        {{-- EMAIL DINAMIS (Support Multi-line) --}}
                         <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 text-unmaris-blue">
+                            <div
+                                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 text-unmaris-blue">
                                 <i class="fas fa-envelope text-lg"></i>
                             </div>
                             <div>
                                 <p class="font-bold text-sm uppercase tracking-wide opacity-70 mb-1">Email Resmi</p>
-                                <p class="font-medium">info@unmaris.ac.id</p>
-                                <p class="font-medium">pmb@unmaris.ac.id</p>
+                                <div class="font-medium leading-snug">
+                                    {{-- Gunakan nl2br agar bisa enter --}}
+                                    {!! nl2br(e(\App\Models\Setting::get('contact_email', 'info@unmaris.ac.id'))) !!}
+                                </div>
                             </div>
                         </div>
 
+                        {{-- TELEPON DINAMIS (Support Multi-line) --}}
                         <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 text-unmaris-blue">
+                            <div
+                                class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 text-unmaris-blue">
                                 <i class="fas fa-phone-alt text-lg"></i>
                             </div>
                             <div>
                                 <p class="font-bold text-sm uppercase tracking-wide opacity-70 mb-1">Telepon / WA</p>
-                                <p class="font-medium">+62 812-3456-7890</p>
+                                <div class="font-medium leading-snug">
+                                    {{-- Gunakan nl2br agar bisa enter untuk banyak nomor --}}
+                                    {!! nl2br(e(\App\Models\Setting::get('contact_phone', '-'))) !!}
+                                </div>
                                 <p class="text-sm opacity-80 mt-1">(Senin - Jumat, 08:00 - 16:00 WITA)</p>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Social Media Links --}}
+                    {{-- Social Media Links (Ambil dari Setting) --}}
                     <div class="mt-10 pt-6 border-t border-unmaris-blue/10 flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white hover:text-unmaris-blue transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white hover:text-unmaris-blue transition"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white hover:text-unmaris-blue transition"><i class="fab fa-youtube"></i></a>
+                        @if ($fb = \App\Models\Setting::get('social_facebook'))
+                            <a href="{{ $fb }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white hover:text-unmaris-blue transition"><i
+                                    class="fab fa-facebook-f"></i></a>
+                        @endif
+                        @if ($ig = \App\Models\Setting::get('social_instagram'))
+                            <a href="{{ $ig }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white hover:text-unmaris-blue transition"><i
+                                    class="fab fa-instagram"></i></a>
+                        @endif
+                        @if ($yt = \App\Models\Setting::get('social_youtube'))
+                            <a href="{{ $yt }}" target="_blank"
+                                class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center hover:bg-white hover:text-unmaris-blue transition"><i
+                                    class="fab fa-youtube"></i></a>
+                        @endif
                     </div>
                 </div>
 
-                {{-- Map Embed (Sumba Timur Placeholder) --}}
-                <div class="rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-64 lg:h-auto relative group">
-                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3935.9865431493067!2d119.24565567478572!3d-9.422582390655295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2c4ad03bcbb3fff7%3A0xb201870437c41318!2sUniversitas%20Stella%20Maris%20Sumba!5e0!3m2!1sid!2sid!4v1763947034079!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    <div class="absolute inset-0 bg-unmaris-blue/10 pointer-events-none group-hover:bg-transparent transition"></div>
+                {{-- Map Embed (DINAMIS) --}}
+                <div
+                    class="rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-64 lg:h-80 relative group bg-gray-100">
+                    @if ($map = \App\Models\Setting::get('contact_google_map'))
+                        <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full">
+                            {!! $map !!}
+                        </div>
+                    @else
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
+                            Peta belum diatur di Admin Panel.
+                        </div>
+                    @endif
+                    {{-- Overlay interaksi --}}
+                    <div
+                        class="absolute inset-0 bg-unmaris-blue/10 pointer-events-none group-hover:bg-transparent transition">
+                    </div>
                 </div>
             </div>
 
@@ -82,11 +118,12 @@
                 <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Kirim Pesan</h2>
 
-                    @if(session('success'))
-                    <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200 flex items-center">
-                        <i class="fas fa-check-circle mr-2 text-xl"></i>
-                        {{ session('success') }}
-                    </div>
+                    @if (session('success'))
+                        <div
+                            class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200 flex items-center">
+                            <i class="fas fa-check-circle mr-2 text-xl"></i>
+                            {{ session('success') }}
+                        </div>
                     @endif
 
                     <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
@@ -94,17 +131,22 @@
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap</label>
-                                <input type="text" name="name" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition" placeholder="Masukkan nama Anda" required>
+                                <input type="text" name="name"
+                                    class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition"
+                                    placeholder="Masukkan nama Anda" required>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Alamat Email</label>
-                                <input type="email" name="email" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition" placeholder="contoh@email.com" required>
+                                <input type="email" name="email"
+                                    class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition"
+                                    placeholder="contoh@email.com" required>
                             </div>
                         </div>
 
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Subjek</label>
-                            <select name="subject" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition">
+                            <select name="subject"
+                                class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition">
                                 <option value="Informasi PMB">Informasi Pendaftaran Mahasiswa Baru (PMB)</option>
                                 <option value="Akademik">Layanan Akademik</option>
                                 <option value="Kerjasama">Kerjasama & Kemitraan</option>
@@ -114,11 +156,14 @@
 
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Pesan</label>
-                            <textarea name="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition" placeholder="Tuliskan pesan atau pertanyaan Anda di sini..." required></textarea>
+                            <textarea name="message" rows="5"
+                                class="w-full px-4 py-3 rounded-lg bg-gray-50 border border-gray-200 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20 outline-none transition"
+                                placeholder="Tuliskan pesan atau pertanyaan Anda di sini..." required></textarea>
                         </div>
 
                         <div class="text-right">
-                            <button type="submit" class="inline-flex items-center justify-center px-8 py-3 bg-unmaris-blue text-white font-bold rounded-lg hover:bg-unmaris-yellow hover:text-unmaris-blue transition transform hover:-translate-y-1 shadow-lg">
+                            <button type="submit"
+                                class="inline-flex items-center justify-center px-8 py-3 bg-unmaris-blue text-white font-bold rounded-lg hover:bg-unmaris-yellow hover:text-unmaris-blue transition transform hover:-translate-y-1 shadow-lg">
                                 <span>Kirim Pesan</span>
                                 <i class="fas fa-paper-plane ml-2"></i>
                             </button>
@@ -139,34 +184,43 @@
             <div class="space-y-4" x-data="{ active: null }">
                 {{-- FAQ Item 1 --}}
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                    <button @click="active === 1 ? active = null : active = 1" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition">
+                    <button @click="active === 1 ? active = null : active = 1"
+                        class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition">
                         <span class="font-bold text-gray-800">Kapan pendaftaran mahasiswa baru dibuka?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300" :class="active === 1 ? 'rotate-180' : ''"></i>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"
+                            :class="active === 1 ? 'rotate-180' : ''"></i>
                     </button>
                     <div x-show="active === 1" x-collapse class="px-6 pb-4 pt-0 text-gray-600">
-                        <p>Pendaftaran mahasiswa baru Gelombang 1 dibuka mulai bulan Januari hingga April. Silakan cek menu PMB untuk jadwal lengkap.</p>
+                        <p>Pendaftaran mahasiswa baru Gelombang 1 dibuka mulai bulan Januari hingga April. Silakan cek
+                            menu PMB untuk jadwal lengkap.</p>
                     </div>
                 </div>
 
                 {{-- FAQ Item 2 --}}
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                    <button @click="active === 2 ? active = null : active = 2" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition">
+                    <button @click="active === 2 ? active = null : active = 2"
+                        class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition">
                         <span class="font-bold text-gray-800">Apakah tersedia program beasiswa?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300" :class="active === 2 ? 'rotate-180' : ''"></i>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"
+                            :class="active === 2 ? 'rotate-180' : ''"></i>
                     </button>
                     <div x-show="active === 2" x-collapse class="px-6 pb-4 pt-0 text-gray-600">
-                        <p>Ya, UNMARIS menyediakan berbagai beasiswa, termasuk KIP-Kuliah, Beasiswa Yayasan, dan Beasiswa Prestasi. Info lebih lanjut hubungi Bagian Kemahasiswaan.</p>
+                        <p>Ya, UNMARIS menyediakan berbagai beasiswa, termasuk KIP-Kuliah, Beasiswa Yayasan, dan
+                            Beasiswa Prestasi. Info lebih lanjut hubungi Bagian Kemahasiswaan.</p>
                     </div>
                 </div>
 
                 {{-- FAQ Item 3 --}}
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                    <button @click="active === 3 ? active = null : active = 3" class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition">
+                    <button @click="active === 3 ? active = null : active = 3"
+                        class="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50 transition">
                         <span class="font-bold text-gray-800">Dimana saya bisa melihat biaya kuliah?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300" :class="active === 3 ? 'rotate-180' : ''"></i>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-300"
+                            :class="active === 3 ? 'rotate-180' : ''"></i>
                     </button>
                     <div x-show="active === 3" x-collapse class="px-6 pb-4 pt-0 text-gray-600">
-                        <p>Rincian biaya kuliah dapat diunduh pada brosur PMB di halaman Beranda atau menghubungi admin keuangan kami.</p>
+                        <p>Rincian biaya kuliah dapat diunduh pada brosur PMB di halaman Beranda atau menghubungi admin
+                            keuangan kami.</p>
                     </div>
                 </div>
             </div>

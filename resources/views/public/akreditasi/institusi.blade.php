@@ -1,7 +1,7 @@
 <x-layouts.public title="Akreditasi Institusi">
 
     {{-- 1. HERO SECTION --}}
-    <section class="bg-unmaris-blue text-white pt-32 pb-24 relative overflow-hidden">
+    <section class="bg-unmaris-blue text-white pt-48 pb-24 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-unmaris-yellow/10 blur-3xl"></div>
         
@@ -51,7 +51,7 @@
                 {{-- Link ke Daftar Prodi --}}
                 <div class="p-6 bg-yellow-50 rounded-2xl border border-yellow-100 flex justify-between items-center shadow-md">
                     <h3 class="text-xl font-bold text-gray-800">Lihat Akreditasi Program Studi</h3>
-                    <a href="{{ route('akreditasi.prodi') }}" class="px-5 py-2 bg-unmaris-blue text-white rounded-full font-bold text-sm hover:bg-unmaris-yellow hover:text-unmaris-blue transition">
+                    <a href="{{ route('public.akreditasi.prodi') }}" class="px-5 py-2 bg-unmaris-blue text-white rounded-full font-bold text-sm hover:bg-unmaris-yellow hover:text-unmaris-blue transition">
                         Detail Prodi
                     </a>
                 </div>

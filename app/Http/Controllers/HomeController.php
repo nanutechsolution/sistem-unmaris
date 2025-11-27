@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fakultas;
 use App\Models\ProgramStudi;
 use App\Models\Post;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,11 +26,12 @@ class HomeController extends Controller
             ->orderBy('published_at', 'desc')
             ->take(3) // Ambil 3 berita terbaru
             ->get();
-            $terbaru = \App\Models\Pengumuman::tayang()
-                ->urutkan()
-                ->take(3)
-                ->get();
+        $terbaru = \App\Models\Pengumuman::tayang()
+            ->urutkan()
+            ->take(3)
+            ->get();
+        $sliders = Slider::active()->get();
 
-        return view('public.home', compact('totalProdi', 'totalFakultas', 'faculties', 'latestPosts','terbaru'));
+        return view('public.home', compact('totalProdi', 'totalFakultas', 'faculties', 'latestPosts', 'terbaru', 'sliders'));
     }
 }
