@@ -28,8 +28,10 @@ class DosenManager extends Component
 
     // --- Properti Form (Sesuai Tabel Baru) ---
     public $nidn;
-    public $nuptk; // Baru
+    public $gelar_depan;
+    public $nuptk;
     public $nama_lengkap;
+    public $gelar_belakang;
     public $program_studi_id;
     public $status_kepegawaian = 'Aktif';
     public $email;
@@ -102,8 +104,10 @@ class DosenManager extends Component
     {
         $this->reset([
             'nidn',
+            'gelar_depan',
             'nuptk',
             'nama_lengkap',
+            'gelar_belakang',
             'program_studi_id',
             'status_kepegawaian',
             'email',
@@ -136,8 +140,10 @@ class DosenManager extends Component
 
         // Populate Data
         $this->nidn = $dosen->nidn;
+        $this->gelar_depan = $dosen->gelar_depan;
         $this->nuptk = $dosen->nuptk;
         $this->nama_lengkap = $dosen->nama_lengkap;
+        $this->gelar_belakang = $dosen->gelar_belakang;
         $this->program_studi_id = $dosen->program_studi_id;
         $this->status_kepegawaian = $dosen->status_kepegawaian;
         $this->email = $dosen->email;

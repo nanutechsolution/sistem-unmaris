@@ -29,20 +29,20 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($ukms as $ukm)
+                    @forelse($ukms as $ukm)
                         <div class="group relative bg-white border border-gray-100 p-6 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition duration-300 overflow-hidden">
-                            {{-- Accent Bar --}}
-                            <div class="absolute top-0 left-0 w-full h-1 {{ $ukm['color'] }}"></div>
+                            {{-- Accent Bar (Gunakan kolom 'warna' dari database) --}}
+                            <div class="absolute top-0 left-0 w-full h-1 {{ $ukm->warna }}"></div>
                             
                             <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 rounded-xl {{ $ukm['color'] }} text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 transition">
-                                    <i class="{{ $ukm['icon'] }}"></i>
+                                <div class="w-12 h-12 rounded-xl {{ $ukm->warna }} text-white flex items-center justify-center text-xl shadow-md group-hover:scale-110 transition">
+                                    <i class="{{ $ukm->icon }}"></i>
                                 </div>
                                 <div>
-                                    <span class="text-[10px] font-bold uppercase tracking-wide text-gray-400">{{ $ukm['kategori'] }}</span>
-                                    <h3 class="text-lg font-bold text-gray-800 mb-1 group-hover:text-unmaris-blue transition">{{ $ukm['nama'] }}</h3>
-                                    <p class="text-sm text-gray-500 leading-relaxed">
-                                        {{ $ukm['deskripsi'] }}
+                                    <span class="text-[10px] font-bold uppercase tracking-wide text-gray-400">{{ $ukm->kategori }}</span>
+                                    <h3 class="text-lg font-bold text-gray-800 mb-1 group-hover:text-unmaris-blue transition">{{ $ukm->nama }}</h3>
+                                    <p class="text-sm text-gray-500 leading-relaxed line-clamp-2">
+                                        {{ $ukm->deskripsi }}
                                     </p>
                                 </div>
                             </div>
@@ -53,7 +53,12 @@
                                 </a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-span-full text-center py-10 text-gray-400">
+                            <i class="fas fa-users-slash text-4xl mb-2"></i>
+                            <p>Belum ada data UKM.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -65,27 +70,43 @@
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
                 <div>
                     <h2 class="text-3xl font-extrabold text-unmaris-blue mb-2">Wall of Fame</h2>
-                    <p class="text-gray-500">Hall of Fame mahasiswa berprestasi tahun ini.</p>
+                    <p class="text-gray-500">Hall of Fame mahasiswa berprestasi terbaru.</p>
                 </div>
-                <a href="#" class="px-6 py-2 border border-gray-300 rounded-full text-sm font-bold text-gray-600 hover:bg-unmaris-blue hover:text-white hover:border-unmaris-blue transition">
+                <a href="{{ route('public.prestasi.index') }}" class="px-6 py-2 border border-gray-300 rounded-full text-sm font-bold text-gray-600 hover:bg-unmaris-blue hover:text-white hover:border-unmaris-blue transition">
                     Lihat Arsip Prestasi
                 </a>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                @foreach($prestasi as $p)
-                    <div class="group relative rounded-2xl overflow-hidden cursor-pointer">
-                        <img src="{{ $p['img'] }}" class="w-full h-64 object-cover transition duration-700 group-hover:scale-110">
+                @forelse($prestasi as $p)
+                    {{-- Gunakan Link ke Detail Prestasi --}}
+                    <a href="{{ route('public.prestasi.show', $p->id) }}" class="group relative rounded-2xl overflow-hidden cursor-pointer block h-64">
+                        {{-- Gambar (Gunakan Accessor Model Achievement) --}}
+                        <img src="{{ $p->image_url }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                         
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition"></div>
                         
-                        <div class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition duration-300">
-                            <div class="bg-unmaris-yellow text-unmaris-blue text-[10px] font-bold px-2 py-1 rounded w-fit mb-2">JUARA</div>
-                            <h3 class="text-xl font-bold leading-tight mb-1">{{ $p['judul'] }}</h3>
-                            <p class="text-sm text-gray-300">{{ $p['mhs'] }}</p>
+                        <div class="absolute bottom-0 left-0 p-6 text-white translate-y-2 group-hover:translate-y-0 transition duration-300 w-full">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="bg-unmaris-yellow text-unmaris-blue text-[10px] font-bold px-2 py-1 rounded w-fit uppercase">
+                                    {{ $p->medal == 'Participant' ? 'Sertifikat' : 'Juara' }}
+                                </div>
+                                <span class="text-[10px] bg-white/20 px-2 py-1 rounded backdrop-blur-sm">{{ $p->category }}</span>
+                            </div>
+                            
+                            {{-- Judul Prestasi --}}
+                            <h3 class="text-lg font-bold leading-tight mb-1 line-clamp-2 group-hover:text-unmaris-yellow transition">
+                                {{ $p->title }}
+                            </h3>
+                            {{-- Nama Pemenang --}}
+                            <p class="text-sm text-gray-300 truncate">{{ $p->winner_name }}</p>
                         </div>
+                    </a>
+                @empty
+                    <div class="col-span-full text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                        <p class="text-gray-400">Belum ada data prestasi terbaru.</p>
                     </div>
-                @endforeach
+                @endforelse
             </div>
         </div>
     </section>
@@ -100,12 +121,12 @@
             <p class="text-blue-100 text-lg mb-8">
                 Bantu kami meningkatkan kualitas pendidikan dengan mengisi Tracer Study. Kontribusi Anda sangat berarti bagi pengembangan kampus tercinta.
             </p>
-            <div class="flex justify-center gap-4">
+            <div class="flex flex-wrap justify-center gap-4">
                 <a href="#" class="px-8 py-3 bg-unmaris-yellow text-unmaris-blue font-bold rounded-full hover:bg-white transition shadow-lg">
                     Isi Tracer Study
                 </a>
                 <a href="#" class="px-8 py-3 border border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition">
-                    Info Karir
+                    Info Karir & Loker
                 </a>
             </div>
         </div>

@@ -14,16 +14,17 @@ return new class extends Migration
             // --- IDENTITAS UTAMA ---
             // NIDN dibuat nullable karena di Excel ada yang kosong
             $table->string('nidn', 20)->nullable()->unique()->comment('Nomor Induk Dosen Nasional');
+            $table->string('gelar_depan')->nullable();
             $table->string('nuptk', 50)->nullable()->comment('Nomor Unik Pendidik dan Tenaga Kependidikan');
             $table->string('nama_lengkap');
-
+            $table->string('gelar_belakang')->nullable();
             // --- HOMEBASE (INDUK) ---
             // Ini adalah Prodi Induk/Homebase Administrasi (Sesuai SK Pengangkatan)
             // BUKAN tempat mengajar semester ini (itu nanti di tabel penugasan)
             $table->foreignId('program_studi_id')
-                  ->nullable()
-                  ->constrained('program_studis')
-                  ->nullOnDelete();
+                ->nullable()
+                ->constrained('program_studis')
+                ->nullOnDelete();
 
             // --- DATA PRIBADI (Sesuai Excel) ---
             $table->enum('jenis_kelamin', ['L', 'P'])->nullable();
@@ -39,7 +40,7 @@ return new class extends Migration
             // --- STATUS KEPEGAWAIAN GLOBAL ---
             // Apakah dia masih pegawai di kampus ini?
             $table->enum('status_kepegawaian', ['Aktif', 'Keluar', 'Pensiun', 'Tugas Belajar'])
-                  ->default('Aktif');
+                ->default('Aktif');
 
             $table->timestamps();
         });

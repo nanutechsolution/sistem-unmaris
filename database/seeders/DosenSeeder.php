@@ -72,7 +72,7 @@ class DosenSeeder extends Seeder
             ['1518039001','1650768669130300','SAMUEL BORA LERO','S1 Administrasi Rumah Sakit','L','Kalembutadei, 18 March 1990','Kristen'],
             ['1502019501','6434773674130270','SIHANG GREGORIUS BALIMEMA','S1 Administrasi Rumah Sakit','L','Waingapu, 2 January 1995','Katolik'],
             [null,'3137770671130340','SOLEMAN RENDA BILI','S1 Keselamatan dan Kesehatan Kerja','L','Puu Timu, 5 August 1992','Katolik'],
-            ['1508099601','3240774675130210','STEFANUS DWI ISTIAVAN MAU, M.KOM','S1 Teknik Informatika','L','Salatiga, 8 September 1996','Katolik'],
+            ['1508099601','3240774675130210','STEFANUS DWI ISTIAVAN MAU','S1 Teknik Informatika','L','Salatiga, 8 September 1996','Katolik'],
             ['1516088901',null,'STEFANUS HIDE AMUNTODA','S1 Keselamatan dan Kesehatan Kerja','L','Kupang, 16 August 1989','Katolik'],
             ['1509039701','6641775676130140','TITUS KURRA','S1 Pendidikan Teknologi Informasi','L','Puu Niu, 9 March 1997','Katolik'],
             ['824079301','4056771672130250','TRISNO','S1 Teknik Informatika','L','Pemana, 24 July 1993','Islam'],

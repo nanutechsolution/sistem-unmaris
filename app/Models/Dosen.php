@@ -14,8 +14,10 @@ class Dosen extends Model
     // 1. Update Fillable sesuai struktur tabel baru
     protected $fillable = [
         'nidn',
+        'gelar_depan',
         'nuptk',            // Baru
         'nama_lengkap',
+        'gelar_belakang',
         'program_studi_id', // Homebase
         'jenis_kelamin',    // Baru
         'tempat_lahir',     // Baru
@@ -39,7 +41,6 @@ class Dosen extends Model
     {
         return $this->belongsTo(ProgramStudi::class, 'program_studi_id');
     }
-
     /**
      * Relasi ke Riwayat Penugasan Mengajar (Tabel Scalable yang kita buat).
      * Ini mencatat sejarah dosen mengajar di prodi mana saja per semester.
@@ -49,6 +50,27 @@ class Dosen extends Model
     //     return $this->hasMany(PenugasanDosen::class, 'dosen_id');
     // }
 
+    //  ACCESSOR MAGIC
+    // Ini menggabungkan gelar secara otomatis saat dipanggil
+    public function getNamaLengkapAttribute($value)
+    {
+        // Jika kolom nama_lengkap di DB murni nama asli, kita gabung disini
+        // Tapi kalau Bapak belum sempat migrasi data, kembalikan $value apa adanya dulu
+
+        $nama = $value;
+
+        // Jika ada gelar depan
+        if ($this->gelar_depan) {
+            $nama = $this->gelar_depan . ' ' . $nama;
+        }
+
+        // Jika ada gelar belakang
+        if ($this->gelar_belakang) {
+            $nama = $nama . ', ' . $this->gelar_belakang;
+        }
+
+        return $nama;
+    }
     /**
      * (Opsional) Relasi jika masih pakai tabel Kelas lama
      */

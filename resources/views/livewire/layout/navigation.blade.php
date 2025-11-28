@@ -108,6 +108,11 @@ new class extends Component {
                                     <i class="fas fa-map-marker-alt text-xs mr-2 text-unmaris-yellow"></i> Lokasi &
                                     Kontak
                                 </a>
+                                <a href="/struktur-organisasi"
+                                    class="flex items-center p-2 rounded-lg hover:bg-blue-50 text-gray-600 hover:text-unmaris-blue transition">
+                                    <i class="fas fa-map-marker-alt text-xs mr-2 text-unmaris-yellow"></i> 
+                                    Struktur Organisasi
+                                </a>
                             </div>
                         </x-slot:content>
                     </x-nav-dropdown>

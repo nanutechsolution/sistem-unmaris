@@ -16,10 +16,8 @@ use App\Http\Controllers\AkreditasiController;
 use App\Http\Controllers\LpmController;
 use App\Http\Controllers\LppmController;
 use App\Http\Controllers\PmbController;
-use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\KemahasiswaanController;
 use App\Http\Controllers\LibraryController;
-use App\Http\Controllers\PublicAnnouncementController;
 use App\Http\Controllers\Public\AkademikController;
 use App\Http\Controllers\TrixImageController;
 
@@ -122,7 +120,7 @@ Route::get('/fasilitas', FasilitasIndex::class)->name('public.fasilitas.index');
 Route::get('/library', [LibraryController::class, 'index'])->name('public.library.index');
 Route::get('/prestasi', \App\Livewire\Public\PrestasiIndex::class)->name('public.prestasi.index');
 Route::get('/prestasi/{id}', \App\Livewire\Public\PrestasiShow::class)->name('public.prestasi.show');
-
+Route::get('/struktur-organisasi', \App\Livewire\Public\StrukturOrganisasi::class)->name('public.struktur');
 /*
 |--------------------------------------------------------------------------
 | ADMIN ROUTES (SIAKAD & CMS - Wajib Login)
@@ -160,6 +158,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             Route::get('/dekan', DekanManager::class)->name('dekan.index');
             Route::get('/kaprodi', KaprodiManager::class)->name('kaprodi.index');
             Route::get('/penugasan-dosen', PenugasanDosenManager::class)->name('penugasan-dosen.index');
+            Route::get('/pimpinan', \App\Livewire\Civitas\StructuralManager::class)->name('structural.index');
         });
 
         // Manajemen Mata Kuliah & Jadwal
@@ -209,6 +208,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::get('/pmb-gelombang', PmbGelombangManager::class)->name('pmb-gelombang.index');
         Route::get('/pengaturan', SettingsManager::class)->name('settings.index');
         Route::get('/prestasi', AchievementManager::class)->name('achievements.index');
+        Route::get('/ukm', \App\Livewire\Cms\StudentOrganizationManager::class)->name('ukm.index');
     });
 
     // --- GROUP 6: SYSTEM SETTINGS (Khusus Super Admin) ---
