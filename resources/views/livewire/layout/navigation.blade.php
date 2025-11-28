@@ -174,7 +174,7 @@ new class extends Component {
                     </x-nav-dropdown>
 
                     {{-- 4. INFORMASI --}}
-                    <x-nav-dropdown title="Informasi" active="berita*|dokumen*|kemahasiswaan*">
+                    <x-nav-dropdown title="Informasi" active="berita*|dokumen*|kemahasiswaan*|prestasi*">
                         <x-slot:content>
                             <div class="w-48 p-2 space-y-1">
                                 <a href="/berita"
@@ -187,6 +187,8 @@ new class extends Component {
                                     Publik</a>
                                 <a href="/kemahasiswaan"
                                     class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-unmaris-blue">Kemahasiswaan</a>
+                                <a href="/prestasi"
+                                    class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-unmaris-blue">Prestasi</a>
                                 <a href="/fasilitas"
                                     class="block px-3 py-2 rounded text-gray-600 hover:bg-blue-50 hover:text-unmaris-blue">Fasilitas</a>
                             </div>

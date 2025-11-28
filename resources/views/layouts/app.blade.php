@@ -178,7 +178,7 @@
                             'title' => 'Konten Web',
                             'icon' => 'fas fa-globe',
                             'active' =>
-                                'admin/cms/berita*|admin/cms/pengumuman*|admin/cms/halaman*|admin/cms/slider*|admin/cms/dokumen*|admin/cms/pmb-gelombang*|admin/cms/kategori*|admin/fasilitas*',
+                                'admin/cms/berita*|admin/cms/pengumuman*|admin/cms/halaman*|admin/cms/slider*|admin/cms/dokumen*|admin/cms/pmb-gelombang*|admin/cms/kategori*|admin/fasilitas*|admin/cms/prestasi*|admin/cms/pengaturan*',
                             'submenu' => [
                                 [
                                     'title' => 'Berita',
@@ -214,6 +214,11 @@
                                     'title' => 'Pengaturan Web',
                                     'route' => 'admin.cms.settings.index',
                                     'active' => 'admin/cms/pengaturan*',
+                                ],
+                                [
+                                    'title' => 'Prestasi (Wall of Fame)',
+                                    'route' => 'admin.cms.achievements.index',
+                                    'active' => 'admin/cms/prestasi*',
                                 ],
                             ],
                         ];
@@ -369,7 +374,7 @@
         </div>
     </div>
 
-    @livewireScripts
+    <x-toast-notification />
 </body>
 
 </html>

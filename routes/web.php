@@ -56,6 +56,7 @@ use App\Livewire\Manajemen\SettingsManager;
 use App\Livewire\Admin\PengumumanManager;
 use App\Livewire\Admin\DokumenManager;
 use App\Livewire\Admin\KaprodiManager;
+use App\Livewire\Cms\AchievementManager;
 use App\Livewire\Manajemen\PmbGelombangManager;
 
 // Admin: LPM
@@ -119,7 +120,8 @@ Route::get('/kemahasiswaan', [KemahasiswaanController::class, 'index'])->name('p
 Route::get('/lppm', [LppmController::class, 'index'])->name('public.lppm.index');
 Route::get('/fasilitas', FasilitasIndex::class)->name('public.fasilitas.index');
 Route::get('/library', [LibraryController::class, 'index'])->name('public.library.index');
-
+Route::get('/prestasi', \App\Livewire\Public\PrestasiIndex::class)->name('public.prestasi.index');
+Route::get('/prestasi/{id}', \App\Livewire\Public\PrestasiShow::class)->name('public.prestasi.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -206,6 +208,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         Route::get('/dokumen', DokumenManager::class)->name('documents.index');
         Route::get('/pmb-gelombang', PmbGelombangManager::class)->name('pmb-gelombang.index');
         Route::get('/pengaturan', SettingsManager::class)->name('settings.index');
+        Route::get('/prestasi', AchievementManager::class)->name('achievements.index');
     });
 
     // --- GROUP 6: SYSTEM SETTINGS (Khusus Super Admin) ---
