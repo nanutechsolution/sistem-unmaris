@@ -43,15 +43,15 @@ new class extends Component {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="hidden md:flex gap-6 opacity-80">
                 <span><i class="fas fa-phone-alt mr-2 text-unmaris-yellow"></i> +62 812-3456-7890</span>
-                <span><i class="fas fa-envelope mr-2 text-unmaris-yellow"></i> info@unmaris.ac.id</span>
+                <span><i class="fas fa-envelope mr-2 text-unmaris-yellow"></i> info@unmarissumba.ac.id</span>
             </div>
             <div class="flex gap-4 ml-auto font-bold tracking-wide">
-                <a href="https://siakad.unmaris.ac.id" target="_blank"
+                <a href="https://siakad.unmarissumba.ac.id" target="_blank"
                     class="hover:text-unmaris-yellow transition flex items-center gap-1">
                     <i class="fas fa-user-graduate"></i> SIAKAD
                 </a>
                 <div class="w-px h-4 bg-white/20"></div>
-                <a href="https://elearning.unmaris.ac.id" target="_blank"
+                <a href="https://elearning.unmarissumba.ac.id" target="_blank"
                     class="hover:text-unmaris-yellow transition flex items-center gap-1">
                     <i class="fas fa-laptop-code"></i> E-Learning
                 </a>
@@ -326,9 +326,9 @@ new class extends Component {
                         Daftar Mahasiswa Baru
                     </a>
                     <div class="grid grid-cols-2 gap-2 mt-4 text-center text-sm font-bold text-blue-200">
-                        <a href="https://siakad.unmaris.ac.id"
+                        <a href="https://siakad.unmarissumba.ac.id"
                             class="bg-white/10 py-2 rounded hover:bg-white/20">SIAKAD</a>
-                        <a href="https://elearning.unmaris.ac.id"
+                        <a href="https://elearning.unmarissumba.ac.id"
                             class="bg-white/10 py-2 rounded hover:bg-white/20">E-Learning</a>
                     </div>
                 </div>
