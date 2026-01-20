@@ -228,7 +228,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="https://siakad.unmarissumba.ac.id" target="_blank"
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
