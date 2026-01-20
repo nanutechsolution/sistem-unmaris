@@ -11,7 +11,6 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Illuminate\Validation\Rule as ValidationRule;
 
 #[Layout('layouts.app')]
 #[Title('Manajemen Penawaran Kelas')]

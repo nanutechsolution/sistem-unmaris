@@ -91,7 +91,7 @@ class PengisianKrs extends Component
         // 1. Cek SKS
         $sksCalon = $this->totalSks + $kelas->mataKuliah->sks;
         if ($sksCalon > $this->maxSks) {
-            session()->flash('error', 'Batas SKS ('.$this->maxSks.') akan terlampaui.');
+            session()->flash('error', 'Batas SKS (' . $this->maxSks . ') akan terlampaui.');
             return;
         }
 
@@ -131,6 +131,21 @@ class PengisianKrs extends Component
         });
 
         $this->loadData();
+    }
+
+    public function ajukanKrs()
+    {
+        // 1. Validasi minimal SKS (opsional)
+        if ($this->totalSks < 1) {
+            session()->flash('error', 'Anda belum mengambil mata kuliah apapun.');
+            return;
+        }
+
+        // 2. Ubah status menjadi 'Pending' atau 'Diajukan'
+        $this->krsHeader->status = 'Submitted'; // Atau 'Diajukan'
+        $this->krsHeader->save();
+
+        session()->flash('success', 'KRS berhasil diajukan ke Dosen Wali.');
     }
 
     public function render()

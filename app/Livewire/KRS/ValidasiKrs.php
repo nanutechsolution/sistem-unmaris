@@ -67,7 +67,7 @@ class ValidasiKrs extends Component
             // Tutup detail
             $this->selectedKrs = null;
             $this->krsDetails = [];
-            // session()->flash('message', 'KRS berhasil disetujui.');
+            session()->flash('message', 'KRS berhasil disetujui.');
         }
     }
 
@@ -82,7 +82,7 @@ class ValidasiKrs extends Component
             // Tutup detail
             $this->selectedKrs = null;
             $this->krsDetails = [];
-            // session()->flash('message', 'KRS berhasil ditolak.');
+            session()->flash('message', 'KRS berhasil ditolak.');
         }
     }
 
