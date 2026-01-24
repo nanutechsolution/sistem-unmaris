@@ -56,7 +56,7 @@ new class extends Component {
                     <i class="fas fa-laptop-code"></i> E-Learning
                 </a>
                 <div class="w-px h-4 bg-white/20"></div>
-                <a href="/admin/login" class="hover:text-unmaris-yellow transition flex items-center gap-1">
+                <a href="https://siakad.unmarissumba.ac.id" class="hover:text-unmaris-yellow transition flex items-center gap-1">
                     <i class="fas fa-lock"></i> Staff
                 </a>
             </div>
@@ -201,8 +201,9 @@ new class extends Component {
                     </x-nav-dropdown>
 
                     {{-- 5. CTA --}}
+                    <!-- target="_blank" -->
                     <div class="pl-4">
-                        <a href="/pmb"
+                        <a href="https://pmb.unmarissumba.ac.id" target="_blank"
                             class="px-6 py-2.5 rounded-full bg-unmaris-yellow text-unmaris-blue font-bold hover:bg-white hover:scale-105 transition duration-300 shadow-lg shadow-yellow-500/20 flex items-center gap-2">
                             <i class="fas fa-user-plus text-xs"></i> Daftar PMB
                         </a>
@@ -321,7 +322,7 @@ new class extends Component {
 
                 {{-- Mobile CTA --}}
                 <div class="pt-4 border-t border-white/10 mt-4">
-                    <a href="/pmb"
+                    <a href="https://pmb.unmarissumba.ac.id" target="_blank"
                         class="block text-center py-3 bg-unmaris-yellow text-unmaris-blue font-bold rounded-lg shadow-lg">
                         Daftar Mahasiswa Baru
                     </a>

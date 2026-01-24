@@ -489,7 +489,7 @@
                     pendaftar gelombang pertama.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="/pmb"
+                    <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener noreferrer"
                         class="px-8 py-3 bg-unmaris-yellow text-unmaris-blue font-bold rounded-full hover:bg-white hover:scale-105 transition duration-300 shadow-lg shadow-yellow-500/20 flex items-center gap-2">
                         <i class="fas fa-user-plus"></i> Daftar Sekarang
                     </a>
