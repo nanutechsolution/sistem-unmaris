@@ -18,7 +18,7 @@
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
+    <meta name="google-site-verification" content="0VnvIW71PqVxscZScXyOmTWHBzVBzU2wyvt6kU7022w" />
     @trixassets
 </head>
 
@@ -27,33 +27,33 @@
     <div class="sticky top-0 z-[100] w-full">
         {{-- LOGIC PENGUMUMAN URGENT --}}
         @php
-            $urgent = \App\Models\Pengumuman::where('is_pinned', true)->where('status', 'Published')->latest()->first();
+        $urgent = \App\Models\Pengumuman::where('is_pinned', true)->where('status', 'Published')->latest()->first();
         @endphp
         @if ($urgent)
-            <div x-data="{ open: true }" x-show="open" x-transition:leave="transition-all ease-in-out duration-300"
-                x-transition:leave-start="opacity-100 max-h-20" x-transition:leave-end="opacity-0 max-h-0"
-                class="bg-red-600 text-white relative shadow-md overflow-hidden"> {{-- overflow-hidden penting untuk animasi --}}
+        <div x-data="{ open: true }" x-show="open" x-transition:leave="transition-all ease-in-out duration-300"
+            x-transition:leave-start="opacity-100 max-h-20" x-transition:leave-end="opacity-0 max-h-0"
+            class="bg-red-600 text-white relative shadow-md overflow-hidden"> {{-- overflow-hidden penting untuk animasi --}}
 
-                <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-                    <div class="flex items-center gap-3 text-sm font-medium truncate pr-4">
-                        <span
-                            class="bg-white text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 animate-pulse">
-                            PENTING
-                        </span>
-                        <a href="{{ route('public.pengumuman.show', $urgent->slug) }}" class="hover:underline truncate">
-                            {{ $urgent->judul }}
-                        </a>
-                    </div>
-
-                    <button @click="open = false"
-                        class="text-white/80 hover:text-white hover:bg-red-700 rounded-full p-1 transition focus:outline-none shrink-0">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
+            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-3 text-sm font-medium truncate pr-4">
+                    <span
+                        class="bg-white text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider shrink-0 animate-pulse">
+                        PENTING
+                    </span>
+                    <a href="{{ route('public.pengumuman.show', $urgent->slug) }}" class="hover:underline truncate">
+                        {{ $urgent->judul }}
+                    </a>
                 </div>
+
+                <button @click="open = false"
+                    class="text-white/80 hover:text-white hover:bg-red-700 rounded-full p-1 transition focus:outline-none shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
+        </div>
         @endif
 
         {{-- NAVIGATION BAR --}}
@@ -87,10 +87,10 @@
                                 class="absolute -inset-1 bg-unmaris-yellow rounded-full blur opacity-20 group-hover:opacity-40 transition duration-500">
                             </div>
                             @if (\App\Models\Setting::get('site_logo'))
-                                <img src="{{ \App\Models\Setting::get('site_logo') }}" alt="Logo Kampus"
-                                    class="h-12 w-auto relative">
+                            <img src="{{ \App\Models\Setting::get('site_logo') }}" alt="Logo Kampus"
+                                class="h-12 w-auto relative">
                             @else
-                                <img src="{{ asset('logo.png') }}" alt="Logo Default" class="h-12 w-auto relative">
+                            <img src="{{ asset('logo.png') }}" alt="Logo Default" class="h-12 w-auto relative">
                             @endif
                         </div>
                         <div class="flex flex-col">
@@ -106,37 +106,37 @@
                     <div class="flex space-x-4">
 
                         @if (\App\Models\Setting::get('social_facebook'))
-                            <a href="{{ \App\Models\Setting::get('social_facebook') }}" target="_blank"
-                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
+                        <a href="{{ \App\Models\Setting::get('social_facebook') }}" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
                         @endif
 
                         @if (\App\Models\Setting::get('social_instagram'))
-                            <a href="{{ \App\Models\Setting::get('social_instagram') }}" target="_blank"
-                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                                <i class="fab fa-instagram"></i>
-                            </a>
+                        <a href="{{ \App\Models\Setting::get('social_instagram') }}" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
                         @endif
 
                         @if (\App\Models\Setting::get('social_youtube'))
-                            <a href="{{ \App\Models\Setting::get('social_youtube') }}" target="_blank"
-                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                                <i class="fab fa-youtube"></i>
-                            </a>
+                        <a href="{{ \App\Models\Setting::get('social_youtube') }}" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                            <i class="fab fa-youtube"></i>
+                        </a>
                         @endif
 
                         @if (\App\Models\Setting::get('social_linkedin'))
-                            <a href="{{ \App\Models\Setting::get('social_linkedin') }}" target="_blank"
-                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
+                        <a href="{{ \App\Models\Setting::get('social_linkedin') }}" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
                         @endif
                         @if (\App\Models\Setting::get('social_tiktok'))
-                            <a href="{{ \App\Models\Setting::get('social_tiktok') }}" target="_blank"
-                                class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
-                                <i class="fab fa-tiktok"></i>
-                            </a>
+                        <a href="{{ \App\Models\Setting::get('social_tiktok') }}" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
                         @endif
 
                     </div>
@@ -224,7 +224,7 @@
                                 class="text-blue-100 hover:text-unmaris-yellow transition flex items-center group">
                                 <i
                                     class="fas fa-chevron-right text-xs mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-unmaris-yellow"></i>
-                                Perpustakaan 
+                                Perpustakaan
                             </a>
                         </li>
                         <li>
