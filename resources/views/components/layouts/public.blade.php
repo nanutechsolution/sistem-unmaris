@@ -23,9 +23,7 @@
 </head>
 
 <body class="font-sans bg-gray-100 antialiased">
-    {{-- WRAPPER STICKY: Membungkus Pengumuman & Navbar agar menempel bersamaan --}}
     <div class="sticky top-0 z-[100] w-full">
-        {{-- LOGIC PENGUMUMAN URGENT --}}
         @php
         $urgent = \App\Models\Pengumuman::where('is_pinned', true)->where('status', 'Published')->latest()->first();
         @endphp
@@ -56,8 +54,6 @@
         </div>
         @endif
 
-        {{-- NAVIGATION BAR --}}
-        {{-- Pastikan di dalam component navigation tidak ada class 'fixed top-0', ubah jadi relative atau biarkan default --}}
         <div class="w-full bg-unmaris-blue/90 backdrop-blur-md border-b border-white/10 shadow-lg">
             <livewire:layout.navigation />
         </div>
@@ -271,7 +267,6 @@
 
                     {{-- CTA Button Small --}}
                     <div class="mt-6">
-                        {{-- Link bisa diarahkan ke halaman kontak atau WA --}}
                         <a href="/kontak"
                             class="inline-block px-6 py-2 border border-unmaris-yellow text-unmaris-yellow text-sm font-bold rounded-full hover:bg-unmaris-yellow hover:text-unmaris-blue transition duration-300">
                             Pusat Bantuan
