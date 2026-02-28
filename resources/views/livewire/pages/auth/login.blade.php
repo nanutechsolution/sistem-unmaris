@@ -59,9 +59,6 @@ new #[Layout('layouts.guest')] class extends Component
             Masuk
         </button>
 
-        <!-- <p class="text-center text-sm text-gray-500 mt-4">
-            Belum punya akun?
-            <a href="{{ route('register') }}" class="text-unmaris-blue font-semibold hover:underline">Daftar di sini</a>
-        </p> -->
+      
     </form>
 </div>

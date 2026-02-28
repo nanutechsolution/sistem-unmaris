@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             FakultasSeeder::class,
             ProgramStudiSeeder::class,
             CategoriesSeeder::class,
-            PostsSeeder::class,
+            // PostsSeeder::class,
             DosenSeeder::class,
             TahunAkademikSeeder::class,
             PenugasanDosenSeeder::class,
